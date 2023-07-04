@@ -1,0 +1,93 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+
+    <h3>Orders</h3>
+
+    <!-- Top row can add target="_blank" rel="noopener noreferrer" for opening in new tab-->
+    <div class="row">
+        <div class="col-12" id="adminAccess">
+            <a class="btn btn-primary btn-lg" th:href="@{/ui/admin/create-order}" role="button" >Create New Order</a>
+        </div>
+    </div>
+
+
+    <!-- Blank Row -->
+    <div class="row">
+
+    </div>
+    <div class="row">
+
+        <!-- Table -->
+        <div class="col-12">
+            <table class="table table-striped" id="order-table">
+                <thead>
+                <tr>
+                    <th scope="col">Order Id</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+    <div class="modal" tabindex="-1" role="dialog" id="view-order-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <table class="table table-striped" id="order-view">
+                            <thead>
+                            <tr>
+                                <th scope="col">Barcode</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Selling Price</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="download-invoice">Download Invoice</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/static/order.js}"/></script>
+
+</body>
+
+</html>

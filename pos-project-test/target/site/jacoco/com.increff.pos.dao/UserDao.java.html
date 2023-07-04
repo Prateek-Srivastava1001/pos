@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.dao</a> &gt; <span class="el_source">UserDao.java</span></div><h1>UserDao.java</h1><pre class="source lang-java linenums">package com.increff.pos.dao;
+
+import java.util.List;
+
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Repository;
+
+import com.increff.pos.pojo.UserPojo;
+
+@Repository
+<span class="nc" id="L14">public class UserDao extends AbstractDao {</span>
+
+<span class="nc" id="L16">	private static String delete_id = &quot;delete from UserPojo p where id=:id&quot;;</span>
+<span class="nc" id="L17">	private static String select_id = &quot;select p from UserPojo p where id=:id&quot;;</span>
+<span class="nc" id="L18">	private static String select_email = &quot;select p from UserPojo p where email=:email&quot;;</span>
+<span class="nc" id="L19">	private static String select_all = &quot;select p from UserPojo p&quot;;</span>
+
+	
+	@Transactional
+	public void insert(UserPojo p) {
+<span class="nc" id="L24">		em().persist(p);</span>
+<span class="nc" id="L25">	}</span>
+
+	public int delete(int id) {
+<span class="nc" id="L28">		Query query = em().createQuery(delete_id);</span>
+<span class="nc" id="L29">		query.setParameter(&quot;id&quot;, id);</span>
+<span class="nc" id="L30">		return query.executeUpdate();</span>
+	}
+
+	public UserPojo select(int id) {
+<span class="nc" id="L34">		TypedQuery&lt;UserPojo&gt; query = getQuery(select_id, UserPojo.class);</span>
+<span class="nc" id="L35">		query.setParameter(&quot;id&quot;, id);</span>
+<span class="nc" id="L36">		return getSingle(query);</span>
+	}
+
+	public UserPojo select(String email) {
+<span class="nc" id="L40">		TypedQuery&lt;UserPojo&gt; query = getQuery(select_email, UserPojo.class);</span>
+<span class="nc" id="L41">		query.setParameter(&quot;email&quot;, email);</span>
+<span class="nc" id="L42">		return getSingle(query);</span>
+	}
+
+	public List&lt;UserPojo&gt; selectAll() {
+<span class="nc" id="L46">		TypedQuery&lt;UserPojo&gt; query = getQuery(select_all, UserPojo.class);</span>
+<span class="nc" id="L47">		return query.getResultList();</span>
+	}
+
+	public void update(UserPojo p) {
+<span class="nc" id="L51">	}</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.service</a> &gt; <span class="el_source">ProductService.java</span></div><h1>ProductService.java</h1><pre class="source lang-java linenums">package com.increff.pos.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import com.increff.pos.dao.ProductDao;
+import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.pojo.ProductPojo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.increff.pos.util.StringUtil;
+@Service
+<span class="nc" id="L15">public class ProductService {</span>
+    @Autowired
+    private ProductDao dao;
+    @Autowired
+    private InventoryService inventoryService;
+
+    //CREATE
+    @Transactional(rollbackOn = ApiException.class)
+    public void add(ProductPojo p) throws ApiException{
+<span class="nc" id="L24">        normalize(p);</span>
+<span class="nc" id="L25">        InventoryPojo inventory = new InventoryPojo();</span>
+<span class="nc" id="L26">        String barcode = p.getBarcode();</span>
+
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if(StringUtil.isEmpty(p.getBarcode())) {</span>
+<span class="nc" id="L29">            throw new ApiException(&quot;Barcode cannot be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if(StringUtil.isEmpty(p.getName())) {</span>
+<span class="nc" id="L32">            throw new ApiException(&quot;name cannot be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if(p.getMrp()&lt;0){</span>
+<span class="nc" id="L35">            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</span>
+        }
+        //Brand - Category combination should be unique
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if(dao.checkIfBrandIdExists(p.getBrand_category()) == null){</span>
+<span class="nc" id="L39">            throw new ApiException(&quot;There is no Brand-Category combination for given data&quot;);</span>
+        }
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if(dao.checkBarcode(barcode) != null){</span>
+<span class="nc" id="L42">            throw new ApiException(&quot;Product Barcode already exists&quot;);</span>
+        }
+<span class="nc" id="L44">        dao.insert(p);</span>
+<span class="nc" id="L45">        ProductPojo newPojo = dao.checkBarcode(barcode);</span>
+<span class="nc" id="L46">        inventory.setId(newPojo.getId());</span>
+<span class="nc" id="L47">        inventory.setQuantity(0);</span>
+<span class="nc" id="L48">        inventoryService.add(inventory);</span>
+<span class="nc" id="L49">    }</span>
+    //READ
+    @Transactional(rollbackOn = ApiException.class)
+    public ProductPojo get(int id) throws ApiException{
+<span class="nc" id="L53">        return getCheck(id);</span>
+    }
+    //UPDATE
+    @Transactional(rollbackOn  = ApiException.class)
+    public void update(int id, ProductPojo p) throws ApiException{
+<span class="nc" id="L58">        normalize(p);</span>
+        //Same checks as that in add
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(StringUtil.isEmpty(p.getBarcode())) {</span>
+<span class="nc" id="L61">            throw new ApiException(&quot;Barcode cannot be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if(StringUtil.isEmpty(p.getName())) {</span>
+<span class="nc" id="L64">            throw new ApiException(&quot;name cannot be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if(p.getMrp()&lt;0){</span>
+<span class="nc" id="L67">            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</span>
+        }
+        //Brand - Category combination should be unique
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if(dao.checkIfBrandIdExists(p.getBrand_category()) == null){</span>
+<span class="nc" id="L71">            throw new ApiException(&quot;There is no Brand-Category combination for given data&quot;);</span>
+        }
+<span class="nc" id="L73">        ProductPojo checker = dao.checkBarcode(p.getBarcode());</span>
+<span class="nc bnc" id="L74" title="All 4 branches missed.">        if(checker != null &amp;&amp; dao.select(id) != checker){</span>
+<span class="nc" id="L75">            throw new ApiException(&quot;Product Barcode already exists&quot;);</span>
+        }
+<span class="nc" id="L77">        ProductPojo toUpdate = getCheck(id);</span>
+<span class="nc" id="L78">        toUpdate.setBarcode(p.getBarcode());</span>
+<span class="nc" id="L79">        toUpdate.setBrand_category(p.getBrand_category());</span>
+<span class="nc" id="L80">        toUpdate.setName(p.getName());</span>
+<span class="nc" id="L81">        toUpdate.setMrp(p.getMrp());</span>
+<span class="nc" id="L82">    }</span>
+
+    @Transactional
+<span class="nc" id="L85">    public List&lt;ProductPojo&gt; getAll(){return  dao.selectAll();}</span>
+
+    @Transactional
+    public ProductPojo getCheck(int id) throws ApiException{
+<span class="nc" id="L89">        ProductPojo p = dao.select(id);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (p == null) {</span>
+<span class="nc" id="L91">            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</span>
+        }
+<span class="nc" id="L93">        return p;</span>
+    }
+    protected static void normalize(ProductPojo p) {
+<span class="nc" id="L96">        p.setBarcode(p.getBarcode().toLowerCase ().trim());</span>
+<span class="nc" id="L97">        p.setName(p.getName().toLowerCase ().trim());</span>
+<span class="nc" id="L98">    }</span>
+    @Transactional(rollbackOn = ApiException.class)
+    public ProductPojo getByBarcode(String barcode) throws ApiException{
+<span class="nc" id="L101">        ProductPojo pojo = dao.checkBarcode(barcode);</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if(pojo==null){</span>
+<span class="nc" id="L103">            throw new ApiException(&quot;Product with given barcode not found&quot;);</span>
+        }
+<span class="nc" id="L105">        return pojo;</span>
+    }
+    @Transactional
+<span class="nc" id="L108">    public List&lt;ProductPojo&gt; getByBrand(int id){return  dao.getByBrand(id);}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

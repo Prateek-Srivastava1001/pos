@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderItemDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.dao</a> &gt; <span class="el_source">OrderItemDao.java</span></div><h1>OrderItemDao.java</h1><pre class="source lang-java linenums">package com.increff.pos.dao;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+
+import com.increff.pos.pojo.OrderItemPojo;
+import org.springframework.stereotype.Repository;
+
+@Repository
+<span class="nc" id="L13">public class OrderItemDao extends AbstractDao{</span>
+<span class="nc" id="L14">    private String select_id = &quot;select p from OrderItemPojo p where id=:id&quot;;</span>
+<span class="nc" id="L15">    private String select_all = &quot;select p from OrderItemPojo p where order_id=:order_id&quot;;</span>
+<span class="nc" id="L16">    private String check_duplicate = &quot;select p from OrderItemPojo p where product_id=:product_id and order_id=:order_id&quot;;</span>
+
+    @PersistenceContext
+    private EntityManager em;
+    @Transactional
+<span class="nc" id="L21">    public void insert(OrderItemPojo pojo){em.persist(pojo);}</span>
+
+    public OrderItemPojo select(int id){
+<span class="nc" id="L24">        TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_id, OrderItemPojo.class);</span>
+<span class="nc" id="L25">        query.setParameter(&quot;id&quot;,id);</span>
+<span class="nc" id="L26">        return getSingle(query);</span>
+    }
+    public List&lt;OrderItemPojo&gt; selectAll(int order_id){
+<span class="nc" id="L29">        TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_all, OrderItemPojo.class);</span>
+<span class="nc" id="L30">        query.setParameter(&quot;order_id&quot;,order_id);</span>
+<span class="nc" id="L31">        return query.getResultList();</span>
+    }
+    public OrderItemPojo checkDuplicate(int product_id, int order_id){
+<span class="nc" id="L34">        TypedQuery&lt;OrderItemPojo&gt; query = getQuery(check_duplicate, OrderItemPojo.class);</span>
+<span class="nc" id="L35">        query.setParameter(&quot;product_id&quot;,product_id);</span>
+<span class="nc" id="L36">        query.setParameter(&quot;order_id&quot;, order_id);</span>
+<span class="nc" id="L37">        return getSingle(query);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

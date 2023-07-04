@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.service</a> &gt; <span class="el_source">OrderService.java</span></div><h1>OrderService.java</h1><pre class="source lang-java linenums">package com.increff.pos.service;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import com.increff.pos.dao.OrderDao;
+import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.pojo.OrderPojo;
+import com.sun.org.apache.xpath.internal.operations.Or;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="nc" id="L17">public class OrderService {</span>
+    @Autowired
+    private OrderDao dao;
+    @Autowired
+    private OrderItemService orderItemService;
+    @Autowired
+    ProductService productService;
+    @Autowired
+    InventoryService inventoryService;
+
+<span class="nc" id="L27">    private int orderId=0;</span>
+    @Transactional(rollbackOn = ApiException.class)
+    public int add(List&lt;OrderItemForm&gt; formList) throws ApiException{
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if(formList.size()&lt;1){</span>
+<span class="nc" id="L31">            throw new ApiException(&quot;Frontend Validation Breach: Empty Order List Not Supported&quot;);</span>
+        }
+<span class="nc" id="L33">        OrderPojo pojo = new OrderPojo();</span>
+<span class="nc" id="L34">        LocalDateTime dateTime = LocalDateTime.now();</span>
+<span class="nc" id="L35">        pojo.setDate_time(dateTime);</span>
+<span class="nc" id="L36">        orderId = dao.insert(pojo).getId();</span>
+<span class="nc" id="L37">        addItems(formList);</span>
+<span class="nc" id="L38">        return orderId;</span>
+    }
+    @Transactional(rollbackOn = ApiException.class)
+    public void addItems(List&lt;OrderItemForm&gt; formList) throws ApiException{
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        for(OrderItemForm form:formList){</span>
+<span class="nc" id="L43">            OrderItemPojo pojo = convert(form);</span>
+<span class="nc" id="L44">            orderItemService.add(pojo);</span>
+
+            //Updating in Inventory
+<span class="nc" id="L47">            InventoryPojo inventoryPojo = inventoryService.get(pojo.getProduct_id());</span>
+<span class="nc" id="L48">            int quantity = inventoryPojo.getQuantity() - pojo.getQuantity();</span>
+<span class="nc" id="L49">            inventoryPojo.setQuantity(quantity);</span>
+<span class="nc" id="L50">            inventoryService.update(pojo.getProduct_id(),inventoryPojo);</span>
+<span class="nc" id="L51">        }</span>
+<span class="nc" id="L52">    }</span>
+    @Transactional
+    public OrderPojo get(int id) throws ApiException {
+<span class="nc" id="L55">        return getCheck(id);</span>
+    }
+
+    @Transactional
+    public OrderPojo getCheck(int id) throws ApiException {
+<span class="nc" id="L60">        OrderPojo pojo = dao.select(id);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if(pojo==null)</span>
+<span class="nc" id="L62">            throw new ApiException(&quot;Order with given id not found&quot;);</span>
+<span class="nc" id="L63">        return pojo;</span>
+    }
+
+    @Transactional
+    public List&lt;OrderPojo&gt; getAll(){
+<span class="nc" id="L68">        return dao.selectAll();</span>
+    }
+
+    @Transactional
+    public List&lt;OrderPojo&gt; getByDate(LocalDateTime startDate, LocalDateTime endDate){
+<span class="nc" id="L73">        return dao.getByDate(startDate,endDate);</span>
+    }
+
+    public void checkValidity(OrderItemForm form) throws ApiException{
+<span class="nc" id="L77">        OrderItemPojo pojo = convert(form);</span>
+<span class="nc" id="L78">        orderItemService.checks(pojo);</span>
+<span class="nc" id="L79">    }</span>
+    private OrderItemPojo convert(OrderItemForm form) throws ApiException {
+<span class="nc" id="L81">        normalize(form);</span>
+<span class="nc" id="L82">        OrderItemPojo pojo = new OrderItemPojo();</span>
+<span class="nc" id="L83">        pojo.setOrder_id(orderId);</span>
+<span class="nc" id="L84">        pojo.setProduct_id(productService.getByBarcode(form.getBarcode()).getId());</span>
+<span class="nc" id="L85">        pojo.setQuantity(form.getQuantity());</span>
+<span class="nc" id="L86">        pojo.setSelling_price(form.getSelling_price());</span>
+<span class="nc" id="L87">        return pojo;</span>
+    }
+
+    protected static void normalize(OrderItemForm form){
+<span class="nc" id="L91">        form.setBarcode(form.getBarcode().toLowerCase ().trim());</span>
+<span class="nc" id="L92">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

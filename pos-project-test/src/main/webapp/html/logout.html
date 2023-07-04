@@ -1,0 +1,46 @@
+<!doctype html>
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="baseUrl" th:attr="content=${baseUrl}">
+
+	<script src="https://kit.fontawesome.com/c30beb553f.js" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" th:href="@{/static/index.css}">
+</head>
+
+<body>
+<div class="landing-page">
+	<header>
+		<div class="container">
+			<a th:href="@{/}" class="logo">
+				<img th:src="@{/static/logo-new.png}" class="d-inline-block align-top" alt="" width="200">
+			</a>
+			<ul class="links">
+				<li><a th:href="@{/site/login}" role="button">
+					Login
+				</a></li>
+			</ul>
+		</div>
+	</header>
+</div>
+
+<div class="container">
+ <!-- Top row with form-->
+ <div class="row">
+	 <div class="col-12">
+		You have been logged out successfully.
+		Login again
+	 </div>	
+</div> 
+
+</div> <!-- Container-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+</body>
+
+</html>

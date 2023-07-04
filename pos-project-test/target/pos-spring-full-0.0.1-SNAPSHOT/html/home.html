@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+
+<h3>Home</h3>
+
+ <!-- Top row with form-->
+<div class="row">
+	 <div class="col-2">
+	 	<a th:href="@{/ui/admin}" title="Admin"> <i class="fas fa-cog"></i> </a>
+	 </div>
+	<div class="col-2">
+		<a th:href="@{/ui/brand}" title="Brand"> <i class="fas fa-solid fa-ring"></i> </a>
+	</div>
+	<div class="col-2">
+		<a th:href="@{/ui/product}" title="Product"> <i class="fas fa-truck"></i> </a>
+	</div>
+	<div class="col-2">
+		<a th:href="@{/ui/inventory}" title="Inventory"> <i class="fas fa-th-large"></i> </a>
+	</div>
+	<div class="col-2">
+		<a th:href="@{/ui/order}" title="Orders"> <i class="fas fa-shopping-cart"></i> </a>
+	</div>
+</div> 
+
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+
+</body>	
+
+</html>

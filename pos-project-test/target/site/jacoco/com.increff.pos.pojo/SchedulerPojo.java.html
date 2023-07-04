@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SchedulerPojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.pojo</a> &gt; <span class="el_source">SchedulerPojo.java</span></div><h1>SchedulerPojo.java</h1><pre class="source lang-java linenums">package com.increff.pos.pojo;
+
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.LocalDate;
+
+@Entity
+<span class="nc" id="L13">public class SchedulerPojo {</span>
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private int id;
+
+    @JsonFormat(pattern = &quot;dd-MM-yyyy&quot;)
+    private LocalDate date;
+    private int invoiced_orders_count;
+    private int invoiced_items_count;
+    private double total_revenue;
+
+    public LocalDate getDate() {
+<span class="nc" id="L25">        return date;</span>
+    }
+
+    public void setDate(LocalDate date) {
+<span class="nc" id="L29">        this.date = date;</span>
+<span class="nc" id="L30">    }</span>
+
+    public int getInvoiced_orders_count() {
+<span class="nc" id="L33">        return invoiced_orders_count;</span>
+    }
+
+    public void setInvoiced_orders_count(int invoiced_orders_count) {
+<span class="nc" id="L37">        this.invoiced_orders_count = invoiced_orders_count;</span>
+<span class="nc" id="L38">    }</span>
+
+    public int getInvoiced_items_count() {
+<span class="nc" id="L41">        return invoiced_items_count;</span>
+    }
+
+    public void setInvoiced_items_count(int invoiced_items_count) {
+<span class="nc" id="L45">        this.invoiced_items_count = invoiced_items_count;</span>
+<span class="nc" id="L46">    }</span>
+
+    public double getTotal_revenue() {
+<span class="nc" id="L49">        return total_revenue;</span>
+    }
+
+    public void setTotal_revenue(double total_revenue) {
+<span class="nc" id="L53">        this.total_revenue = total_revenue;</span>
+<span class="nc" id="L54">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

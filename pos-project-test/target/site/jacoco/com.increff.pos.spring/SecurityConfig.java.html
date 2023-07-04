@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.spring</a> &gt; <span class="el_source">SecurityConfig.java</span></div><h1>SecurityConfig.java</h1><pre class="source lang-java linenums">package com.increff.pos.spring;
+
+import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
+<span class="nc" id="L14">public class SecurityConfig extends WebSecurityConfigurerAdapter {</span>
+
+<span class="nc" id="L16">	private static Logger logger = Logger.getLogger(SecurityConfig.class);</span>
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+
+<span class="nc" id="L21">		http//</span>
+			// Match only these URLs
+<span class="nc" id="L23">				.requestMatchers()//</span>
+<span class="nc" id="L24">				.antMatchers(&quot;/api/**&quot;)//</span>
+<span class="nc" id="L25">				.antMatchers(&quot;/ui/**&quot;)//</span>
+<span class="nc" id="L26">				.and().authorizeRequests()//</span>
+<span class="nc" id="L27">				.antMatchers(&quot;/api/admin/**&quot;).hasAuthority(&quot;admin&quot;)//</span>
+<span class="nc" id="L28">				.antMatchers(&quot;/api/**&quot;).hasAnyAuthority(&quot;admin&quot;, &quot;standard&quot;)//</span>
+<span class="nc" id="L29">				.antMatchers(&quot;/ui/admin/**&quot;).hasAuthority(&quot;admin&quot;)//</span>
+<span class="nc" id="L30">				.antMatchers(&quot;/ui/**&quot;).hasAnyAuthority(&quot;admin&quot;, &quot;standard&quot;)//</span>
+				// Ignore CSRF and CORS
+<span class="nc" id="L32">				.and().csrf().disable().cors().disable();</span>
+<span class="nc" id="L33">		logger.info(&quot;Configuration complete&quot;);</span>
+<span class="nc" id="L34">	}</span>
+
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+<span class="nc" id="L38">		web.ignoring().antMatchers(&quot;/v2/api-docs&quot;, &quot;/configuration/ui&quot;, &quot;/swagger-resources&quot;, &quot;/configuration/security&quot;,</span>
+				&quot;/swagger-ui.html&quot;, &quot;/webjars/**&quot;);
+<span class="nc" id="L40">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
