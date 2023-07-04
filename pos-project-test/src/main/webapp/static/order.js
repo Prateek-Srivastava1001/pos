@@ -3,7 +3,10 @@ function getOrderUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/order";
 }
-
+function getInvoiceUrl(){
+    var baseUrl = $("meta[name=baseUrl]").attr("content")
+    return baseUrl + "/api/invoice"
+}
 //BUTTON ACTIONS
 
 //UI DISPLAY METHODS
@@ -65,15 +68,23 @@ function displayOrderItems(data){
         $tbody.append(row);
         sum = sum+amount;
     }
-    var totalAmt = '<td>' + ' Total Price:  RS ' + sum  + '</td>';
+    var totalAmt = '<tr><td>' + ' Total Price:  </td><td>Rs ' + sum  + '</td></tr>';
     $tbody.append(totalAmt);
+    var helper = '<td><span id="helper" hidden="hidden">'+e.order_id+'</span></td>';
+    $tbody.append(helper);
 }
-
+function downloadInvoice(){
+    var helper = document.getElementById('helper').innerText;
+    console.log(helper);
+    var invoiceUrl = getInvoiceUrl() + "/"+parseInt(helper);
+    window.open(invoiceUrl);
+}
 function refresh(){
     location.reload(true);
 }
 //INITIALIZATION CODE
 function init(){
+    $('#download-invoice').click(downloadInvoice);
     var roleElement = document.getElementById('role');
     var role = roleElement.innerText;
 

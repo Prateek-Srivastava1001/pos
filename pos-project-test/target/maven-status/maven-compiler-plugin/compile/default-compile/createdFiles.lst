@@ -17,6 +17,7 @@ com/increff/pos/dao/OrderItemDao.class
 com/increff/pos/model/UserData.class
 com/increff/pos/model/ReportsForm.class
 com/increff/pos/util/StringUtil.class
+com/increff/pos/model/OrderItem.class
 com/increff/pos/service/ReportsService.class
 com/increff/pos/dao/InventoryDao.class
 com/increff/pos/controller/BrandApiController.class
@@ -51,6 +52,7 @@ com/increff/pos/model/LoginForm.class
 com/increff/pos/service/AboutAppService.class
 com/increff/pos/controller/ProductApiController.class
 com/increff/pos/dao/AbstractDao.class
+com/increff/pos/model/InvoiceForm.class
 com/increff/pos/model/MessageData.class
 com/increff/pos/controller/InventoryApiController.class
 com/increff/pos/pojo/UserPojo.class

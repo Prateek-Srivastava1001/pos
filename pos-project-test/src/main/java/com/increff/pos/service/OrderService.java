@@ -1,17 +1,28 @@
 package com.increff.pos.service;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import com.increff.pos.dao.OrderDao;
+import com.increff.pos.model.InvoiceForm;
+import com.increff.pos.model.OrderItem;
+import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class OrderService {
@@ -24,11 +35,13 @@ public class OrderService {
     @Autowired
     InventoryService inventoryService;
 
+    @Value("${invoice.url}")
+    private String url;
     private int orderId=0;
     @Transactional(rollbackOn = ApiException.class)
     public int add(List<OrderItemForm> formList) throws ApiException{
         if(formList.size()<1){
-            throw new ApiException("Frontend Validation Breach: Empty Order List Not Supported");
+            throw new ApiException("Empty Order List Not Supported");
         }
         OrderPojo pojo = new OrderPojo();
         LocalDateTime dateTime = LocalDateTime.now();
@@ -85,6 +98,41 @@ public class OrderService {
         pojo.setQuantity(form.getQuantity());
         pojo.setSelling_price(form.getSelling_price());
         return pojo;
+    }
+
+    public ResponseEntity<byte[]> getInvoicePDF(int id) throws Exception {
+        InvoiceForm invoiceForm = generateInvoiceForOrder(id);
+        RestTemplate restTemplate = new RestTemplate();
+        byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        String filename = "invoice.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+        return response;
+    }
+    public InvoiceForm generateInvoiceForOrder(int orderId) throws ApiException{
+        InvoiceForm invoiceForm = new InvoiceForm();
+        OrderPojo orderPojo = getCheck(orderId);
+        invoiceForm.setOrderId(orderId);
+        invoiceForm.setAmount(0.0);
+        invoiceForm.setPlacedDate(orderPojo.getDate_time().toString());
+        List<OrderItem> dataList = new ArrayList<>();
+        List<OrderItemData> transferList = orderItemService.getAll(orderId);
+        Integer i =0;
+        for(OrderItemData element: transferList){
+            OrderItem orderItem = new OrderItem();
+            i++;
+            orderItem.setOrderItemId(i);
+            orderItem.setProductName(element.getName());
+            orderItem.setQuantity(element.getQuantity());
+            orderItem.setSellingPrice(element.getSelling_price());
+            orderItem.setTotalAmount(10.0);
+            dataList.add(orderItem);
+        }
+        invoiceForm.setOrderItemList(dataList);
+        return invoiceForm;
     }
 
     protected static void normalize(OrderItemForm form){

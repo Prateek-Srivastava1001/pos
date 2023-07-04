@@ -7,11 +7,8 @@ import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.OrderItemService;
 import com.increff.pos.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
@@ -48,5 +45,11 @@ public class OrderApiController {
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
     public List<OrderPojo> getListOrder() throws ApiException{
         return orderService.getAll();
+    }
+
+    @ApiOperation(value = "Download Invoice")
+    @GetMapping(path = "/api/invoice/{id}")
+    public ResponseEntity<byte[]> getInvoicePDF(@PathVariable int id) throws Exception{
+        return orderService.getInvoicePDF(id);
     }
 }

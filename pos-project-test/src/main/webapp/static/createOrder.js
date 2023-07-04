@@ -59,8 +59,10 @@ function submit(event){
     var url = getOrderUrl();
 	var json = JSON.stringify(jsonData);
 	console.log(json);
-    if(jsonData.length <1)
+    if(jsonData.length <1){
         alert("Cannot create an empty order");
+        return;
+       }
 	$.ajax({
 	   url: url,
 	   type: 'POST',
@@ -69,10 +71,14 @@ function submit(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        document.getElementById("upload-data").disabled="true";
 	        var baseUrl = $("meta[name=baseUrl]").attr("content");
+	        console.log(response);
 	        var redirectUrl = baseUrl + "/ui/order";
-	        window.location.href = redirectUrl;
-	   		//TODO REDIRECT TO INVOICE GENERATION...
+	   		var invoiceUrl = baseUrl+"/api/invoice/"+parseInt(response);
+	   		window.open(invoiceUrl);
+	   		window.location.href = redirectUrl;
+
 	   },
 	   error: handleAjaxError
 	});
@@ -172,8 +178,6 @@ function fromSerializedToJson(serialized){
     var json = JSON.stringify(data);
     return json;
 }
-
-
 
 function refresh(){
     location.reload(true);

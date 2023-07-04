@@ -43,11 +43,13 @@
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/model/InventoryData.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/model/BrandData.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/model/ReportsData.java
+/Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/model/InvoiceForm.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/service/OrderItemService.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/model/InfoData.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/pojo/ProductPojo.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/service/ProductService.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/service/InventoryService.java
+/Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/model/OrderItem.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/pojo/BrandPojo.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/spring/SpringConfig.java
 /Users/prateeksrivastava/Desktop/projects/POS/pos-project-test/src/main/java/com/increff/pos/pojo/UserPojo.java

@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 public class CreateXMLFile {
     private String xmlFilePath="./src/main/resources/xml/Invoice.xml";
     public void createXML(InvoiceForm invoiceForm) {
+        System.out.println("CreateXML");
         try {
 
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();

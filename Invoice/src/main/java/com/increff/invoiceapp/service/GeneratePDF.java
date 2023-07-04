@@ -14,7 +14,7 @@ public class GeneratePDF {
     private String xslFilePath="./src/main/resources/xsl/Invoice.xsl" ;
     private String generatedDirPath="./generated" ;
     public void createPDF() {
-
+        System.out.println("Create PDF");
         try {
             File xmlfile = new File(xmlFilePath);
             File xsltfile = new File(xslFilePath);
@@ -42,7 +42,6 @@ public class GeneratePDF {
                 // Start XSLT transformation and FOP processing
                 transformer.transform(src, res);
             } catch (FOPException | TransformerException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } finally {
                 out.close();

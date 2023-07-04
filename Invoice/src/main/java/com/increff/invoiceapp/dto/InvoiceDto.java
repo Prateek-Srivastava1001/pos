@@ -20,7 +20,7 @@ public class InvoiceDto {
     private InvoiceService service;
 
     public ResponseEntity<byte[]> getInvoicePDF(InvoiceForm form) throws IOException {
-
+        System.out.println("DTO");
         service.generateInvoice(form);
         String _filename = "./generated/invoice_"+form.getOrderId() +".pdf";
         Path pdfPath = Paths.get("./generated/invoice.pdf");
