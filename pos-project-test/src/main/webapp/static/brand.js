@@ -130,7 +130,8 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
-	   		row.error=response.responseText
+	        row.lineNumber=processCount;
+	   		row.error=response.responseText;
 	   		errorData.push(row);
 	   		uploadRows();
 	   }
@@ -150,6 +151,7 @@ function displayBrandList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
+		var maxLength = 25;
 		var roleElement = document.getElementById('role');
         var role = roleElement.innerText;
         if(role=="operator"){
@@ -157,10 +159,12 @@ function displayBrandList(data){
         }
         else
 		    var buttonHtml = ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>';
+		var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
+		var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.brand + '</td>'
-		+ '<td>'  + e.category + '</td>'
+		+ '<td>' + brand + '</td>'
+		+ '<td>'  + category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 

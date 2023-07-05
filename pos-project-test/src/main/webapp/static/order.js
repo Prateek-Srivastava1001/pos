@@ -27,10 +27,18 @@ function displayOrderList(data){
     	for(var i in data){
     		var e = data[i];
     		var buttonHtml = ' <button onclick="displayParticularOrder(' + e.id + ')">View Order</button>'
+    		var minute = '00';
+    		var hour = '00';
+    		var date = '00';
+    		var month = '00';
+    		(parseInt(e.date_time[4])<10)?minute='0'+e.date_time[4] : minute=e.date_time[4];
+    		(parseInt(e.date_time[3])<10)?hour='0'+e.date_time[3] : hour=e.date_time[3];
+    		(parseInt(e.date_time[2])<10)?date = '0'+e.date_time[2] : date = e.date_time[2];
+    		(parseInt(e.date_time[1])<10)?month='0'+e.date_time[1] : month=e.date_time[1];
     		var row = '<tr>'
     		+ '<td>' + e.id + '</td>'
-    		+ '<td>' + e.date_time[2]+'/'+e.date_time[1]+'/'+e.date_time[0]+',  '
-    		         + e.date_time[3]+':'+e.date_time[4] +'</td>'
+    		+ '<td>' + date+'-'+month+'-'+e.date_time[0]+',  '
+    		         + hour+':'+minute +'</td>'
     		+ '<td>' + buttonHtml + '</td>'
     		+ '</tr>';
             $tbody.append(row);
@@ -57,7 +65,8 @@ function displayOrderItems(data){
     let sum = 0;
     for(var i in data){
         var e = data[i];
-        let amount = parseInt(e.quantity) * parseFloat(e.selling_price);
+        var amount = parseInt(e.quantity) * parseFloat(e.selling_price);
+        amount = Math.round(amount * 100) / 100
         var row = '<tr>'
         + '<td>' + e.barcode + '</td>'
         + '<td>' + e.name + '</td>'
@@ -68,6 +77,7 @@ function displayOrderItems(data){
         $tbody.append(row);
         sum = sum+amount;
     }
+    sum = Math.round(sum * 100) / 100
     var totalAmt = '<tr><td>' + ' Total Price:  </td><td>Rs ' + sum  + '</td></tr>';
     $tbody.append(totalAmt);
     var helper = '<td><span id="helper" hidden="hidden">'+e.order_id+'</span></td>';

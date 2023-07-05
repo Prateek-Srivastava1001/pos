@@ -15,6 +15,17 @@ function addProduct(event){
 	var idOfDuplicate;
 	formData[0].value = formData[0].value.toLowerCase().trim();
 	//Frontend Validations
+	if(formData[0].value==null ||formData[0].value==""){
+	    alert("Barcode cannot be empty");
+	    return;
+	}
+	if(formData[2].value==null || formData[2].value==""){
+	    alert("Selling price cannot be empty");
+	}
+	if(parseFloat(formData[1].value)%1!==0){
+        alert("Please enter a valid integer value for quantity");
+        return;
+    }
 	if(parseInt(formData[1].value)<=0){
 	    alert("Please enter a positive value for Quantity");
 	    return;
@@ -91,6 +102,10 @@ function updateOrder(){
     	var idOfDuplicate;
     	formData[0].value = formData[0].value.toLowerCase().trim();
     	//Frontend Validations
+    	    if(parseFloat(formData[1].value)%1!==0){
+    	        alert("Please enter a valid integer value for quantity");
+    	        return;
+    	    }
         	if(parseInt(formData[1].value)<=0){
         	    alert("Please enter a positive value for Quantity");
         	    return;
@@ -99,6 +114,7 @@ function updateOrder(){
         	    alert("Selling price cannot be negative");
         	    return;
         	    }
+        	    console.log("Successful frontend validations");
     	for(var i in jsonData){
     	    var element = jsonData[i];
     	    if(element.barcode.localeCompare(formData[0].value)==0){
@@ -108,6 +124,7 @@ function updateOrder(){
     	}
     	var checkingUrl = getOrderUrl() + "/check";
     	//creating json
+    	console.log(formData);
     	var json = fromSerializedToJson(formData);
         $.ajax({
         	   url: checkingUrl,
@@ -137,22 +154,24 @@ var $tbody = $('#order-item-table').find('tbody');
     sum=0;
  for(var i in addedData){
            var e = addedData[i];
-           let amount = parseInt(e.quantity) * parseFloat(e.selling_price);
+           var amount = parseInt(e.quantity) * parseFloat(e.selling_price);
+           amount = Math.round(amount * 100) / 100;
            editButtonHtml = ' <button onclick="displayEditOrderDetail(' + i + ')">Edit</button>';
            deleteButtonHtml = ' <button onclick="deleteOrder(' + i + ')">Delete</button>';
            var row = '<tr>'
            + '<td>' + e.barcode + '</td>' //barcode
            + '<td>'  + e.quantity + '</td>' //mrp
-           + '<td>'  + e.selling_price + '</td>' //quantity
-           + '<td>'  + amount + '</td>' //total
+           + '<td>'  + Math.round(parseFloat(e.selling_price)*100)/100 + '</td>' //quantity
+           + '<td>Rs '  + amount + '</td>' //total
            + '<td>' + editButtonHtml + '</td>'
            + '<td>' + deleteButtonHtml + '</td>'
            + '</tr>';
             $tbody.append(row)
             sum = sum+amount;
         }
+        sum = Math.round(sum * 100) / 100
         if(addedData.length>0){
-             var totalAmt = '<td>' + ' Total Payable = RS ' + sum  + '</td>';
+             var totalAmt = '<td>' + ' Total Payable = Rs ' + sum  + '</td>';
               $tbody.append(totalAmt);
         }
 }

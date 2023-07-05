@@ -52,14 +52,22 @@ public class UserService{
 	}
 
 	protected UserPojo convert(LoginForm form){
+		int flag=0;
 		UserPojo pojo = new UserPojo();
 		pojo.setEmail(form.getEmail());
 		pojo.setPassword(form.getPassword());
-		if(service.getSupervisor().equals(pojo.getEmail())){
+		String[] array = service.getSupervisor().split(",");
+		for(String supervisor: array){
+			if(supervisor.equals(pojo.getEmail()))
+				flag=1;
+		}
+		if(flag==1){
 			pojo.setRole("supervisor");
+			System.out.println("Supervisor role assigned");
 		}
 		else{
 			pojo.setRole("operator");
+			System.out.println("operator role assigned");
 		}
 		return pojo;
 	}

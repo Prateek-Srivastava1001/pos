@@ -129,6 +129,7 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
+	        row.lineNumber=processCount;
 	   		row.error=response.responseText
 	   		errorData.push(row);
 	   		uploadRows();
