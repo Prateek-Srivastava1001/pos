@@ -1,27 +1,32 @@
-package com.increff.pos.service;
+package com.increff.pos.dto;
 
+import com.increff.pos.model.OrderItemData;
+import com.increff.pos.model.ReportsData;
+import com.increff.pos.model.ReportsForm;
+import com.increff.pos.pojo.BrandPojo;
+import com.increff.pos.pojo.OrderPojo;
+import com.increff.pos.pojo.ProductPojo;
+import com.increff.pos.pojo.SchedulerPojo;
+import com.increff.pos.scheduler.SalesScheduler;
+import com.increff.pos.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.transaction.Transactional;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.transaction.Transactional;
 
-import com.increff.pos.model.OrderItemData;
-import com.increff.pos.model.ReportsData;
-import com.increff.pos.model.ReportsForm;
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.pojo.OrderPojo;
-import com.increff.pos.pojo.ProductPojo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-@Service
-public class ReportsService {
+@Component
+public class ReportsDto {
+    @Autowired
+    private SalesScheduler scheduler;
+    @Autowired
+    SchedulerService schedulerService;
     @Autowired
     BrandService brandService;
     @Autowired
@@ -32,6 +37,16 @@ public class ReportsService {
     OrderService orderService;
     @Autowired
     OrderItemService orderItemService;
+
+    public List<SchedulerPojo> getScheduledData(){
+        return schedulerService.getAll();
+    }
+    public void generateDailyReport() throws ApiException {
+        scheduler.createReport();
+    }
+    public List<SchedulerPojo> getByDate(ReportsForm form) throws ApiException {
+        return schedulerService.getByDate(form);
+    }
 
     @Transactional(rollbackOn = ApiException.class)
     public List<ReportsData> getSalesReport(ReportsForm dates) throws ApiException{
@@ -51,11 +66,11 @@ public class ReportsService {
             //Iterating through each orderItem
             for(OrderItemData orderItem : orderItemList){
                 //we will bet brandCategory id from product pojo
-                int brandId = productService.get(orderItem.getProduct_id()).getBrand_category();
+                int brandId = productService.getCheck(orderItem.getProduct_id()).getBrand_category();
                 //check in map, if not present, create
                 DecimalFormat df = new DecimalFormat("#.##");
                 if (!map.containsKey(brandId)) {
-                    BrandPojo brandPojo = brandService.get(brandId);
+                    BrandPojo brandPojo = brandService.getCheck(brandId);
                     ReportsData reportsData = new ReportsData();
                     reportsData.setBrand(brandPojo.getBrand());
                     reportsData.setCategory(brandPojo.getCategory());
@@ -89,7 +104,7 @@ public class ReportsService {
             int quantity = 0;
             List<ProductPojo> products = productService.getByBrand(brand.getId());
             for(ProductPojo product: products){
-                quantity += inventoryService.get(product.getId()).getQuantity();
+                quantity += inventoryService.getCheck(product.getId()).getQuantity();
             }
             ReportsData data = new ReportsData();
             data.setQuantity(quantity);
@@ -105,5 +120,4 @@ public class ReportsService {
             throw new ApiException("Start date cannot be after end date");
         }
     }
-
 }

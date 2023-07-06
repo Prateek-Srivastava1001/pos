@@ -2,6 +2,7 @@ package com.increff.pos.controller;
 
 import java.util.List;
 
+import com.increff.pos.dto.InventoryDto;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.pojo.InventoryPojo;
@@ -22,35 +23,26 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class InventoryApiController {
     @Autowired
-    InventoryService service;
+    InventoryDto dto;
     @ApiOperation(value = "Gets by ID")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)
     public InventoryData get(@PathVariable int id) throws ApiException{
-        InventoryPojo pojo = service.get(id);
-        return convert(pojo);
+        return dto.get(id);
     }
     @ApiOperation(value = "Gets list of all inventory data")
     @RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
     public List<InventoryData> getAll() throws ApiException {
-        List<InventoryData> dataList = service.getAll();
-        return dataList;
+        return dto.getAll();
     }
-    @ApiOperation(value = "Updates a record")
+    @ApiOperation(value = "Updates a record (Edit)")
     @RequestMapping(path = "/api/admin/inventory/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody InventoryForm form) throws ApiException{
-        InventoryPojo pojo = convert(form);
-        service.update(id, pojo);
+    public void edit(@PathVariable int id, @RequestBody InventoryForm form) throws ApiException{
+        dto.edit(id, form);
     }
 
-    private static InventoryData convert(InventoryPojo pojo){
-        InventoryData data = new InventoryData();
-        data.setId(pojo.getId());
-        data.setQuantity(pojo.getQuantity());
-        return data;
-    }
-    private static InventoryPojo convert(InventoryForm form){
-        InventoryPojo pojo = new InventoryPojo();
-        pojo.setQuantity(form.getQuantity());
-        return pojo;
+    @ApiOperation(value = "Updates a record (Upload)")
+    @RequestMapping(path = "/api/admin/inventory", method = RequestMethod.PUT)
+    public void editByUpload(@RequestBody InventoryForm form) throws ApiException{
+        dto.editByUpload(form);
     }
 }

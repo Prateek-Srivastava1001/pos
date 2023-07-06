@@ -57,11 +57,23 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#inventoryFile')[0].files[0];
+	//Checking for .tsv extension
+    	var extension = getExtension($('#inventoryFile').val());
+    	console.log(extension);
+        if(extension.toLowerCase() != 'tsv'){
+        alert('Please Upload File with extension .tsv only...');
+        console.log("INVALID FILE TYPE...");
+        return;
+        }
 	readFileData(file, readFileDataCallback);
 }
 
 function readFileDataCallback(results){
 	fileData = results.data;
+	if(fileData.length>5000){
+    	    alert("Cannot upload a file with more than 5000 lines");
+    	    return;
+    	}
 	uploadRows();
 }
 
@@ -70,15 +82,19 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    getInventoryList();
+	    if(errorData.length>0){
+	        $("#download-errors").removeAttr("disabled");
+	    }
 		return;
 	}
 
 	//Process next row
 	var row = fileData[processCount];
 	processCount++;
-    id = row.id;
 	var json = JSON.stringify(row);
-	var url = getAdminInventoryUrl() + "/" + id;
+	console.log(json);
+	var url = getAdminInventoryUrl();
 
 	//Make ajax call
 	$.ajax({
@@ -161,7 +177,7 @@ function updateUploadDialog(){
 
 function updateFileName(){
 	var $file = $('#inventoryFile');
-	var fileName = $file.val();
+	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#inventoryFileName').html(fileName);
 }
 
@@ -176,13 +192,15 @@ function displayInventory(data){
 	$('#edit-inventory-modal').modal('toggle');
 }
 
-function refresh(){
-    location.reload(true);
+function getExtension(filename) {
+    console.log(filename);
+  var parts = filename.split('.');
+  console.log(parts);
+  return parts[parts.length - 1];
 }
 //INITIALIZATION CODE
 function init(){
 	$('#update-inventory').click(updateInventory);
-	$('#refresh-data').click(refresh);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
@@ -196,6 +214,7 @@ function init(){
         document.getElementById("upload-data").disabled = true;
         document.getElementById("process-data").disabled = true;
     }
+    document.getElementById("download-errors").disabled = true;
 }
 
 $(document).ready(init);

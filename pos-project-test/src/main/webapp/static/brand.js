@@ -98,7 +98,8 @@ function getExtension(filename) {
 function readFileDataCallback(results){
 	fileData = results.data;
 	if(fileData.length>5000){
-	alert("Cannot upload a file with more than 5000 lines");
+	    alert("Cannot upload a file with more than 5000 lines");
+	    return;
 	}
 	uploadRows();
 }
@@ -108,6 +109,10 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    if(errorData.length>0){
+    	    $("#download-errors").removeAttr("disabled");
+    	}
+    	getBrandList();
 		return;
 	}
 
@@ -162,7 +167,6 @@ function displayBrandList(data){
 		var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
 		var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + brand + '</td>'
 		+ '<td>'  + category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -205,7 +209,7 @@ function updateUploadDialog(){
 
 function updateFileName(){
 	var $file = $('#brandFile');
-	var fileName = $file.val();
+	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#brandFileName').html(fileName);
 }
 
@@ -221,14 +225,10 @@ function displayBrand(data){
 	$('#edit-brand-modal').modal('toggle');
 }
 
-function refresh(){
-    location.reload(true);
-}
 //INITIALIZATION CODE
 function init(){
 	$('#add-brand').click(addBrand);
 	$('#update-brand').click(updateBrand);
-	$('#refresh-data').click(refresh);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
@@ -243,6 +243,7 @@ function init(){
         document.getElementById("download-errors").disabled = true;
         document.getElementById("upload-data").disabled=true;
     }
+    document.getElementById("download-errors").disabled = true;
 //    $('#brand-table').DataTable();
 }
 $(document).ready(getBrandList);

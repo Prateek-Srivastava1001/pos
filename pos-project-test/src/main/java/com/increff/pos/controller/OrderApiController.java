@@ -1,6 +1,7 @@
 package com.increff.pos.controller;
 import java.util.List;
 
+import com.increff.pos.dto.OrderDto;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderPojo;
@@ -21,35 +22,36 @@ public class OrderApiController {
     OrderService orderService;
     @Autowired
     OrderItemService orderItemService;
+    @Autowired
+    OrderDto dto;
 
     @ApiOperation(value = "Adds a order combination to database")
     @RequestMapping(path = "/api/admin/order", method = RequestMethod.POST)
     public int add(@RequestBody List<OrderItemForm> forms) throws ApiException{
-      return  orderService.add(forms);
-
+      return dto.add(forms);
     }
 
     @ApiOperation(value = "Checks if the entered form is valid for submission")
     @RequestMapping(path = "/api/admin/order/check", method = RequestMethod.POST)
     public void checking(@RequestBody OrderItemForm form) throws ApiException{
-        orderService.checkValidity(form);
+        dto.checker(form);
     }
 
     @ApiOperation(value = "Gets all orders in a particular orderId")
     @RequestMapping(path = "/api/order/{order_id}", method = RequestMethod.GET)
     public List<OrderItemData> getALlOrder(@PathVariable int order_id) throws ApiException {
-        return orderItemService.getAll(order_id);
+        return dto.getOrderItemsByOrderId(order_id);
     }
 
     @ApiOperation(value = "Gets all orders in OrderPojo")
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
     public List<OrderPojo> getListOrder() throws ApiException{
-        return orderService.getAll();
+        return dto.getListOrder();
     }
 
     @ApiOperation(value = "Download Invoice")
     @GetMapping(path = "/api/invoice/{id}")
     public ResponseEntity<byte[]> getInvoicePDF(@PathVariable int id) throws Exception{
-        return orderService.getInvoicePDF(id);
+        return dto.getInvoicePDF(id);
     }
 }

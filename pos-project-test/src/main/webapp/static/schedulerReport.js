@@ -62,7 +62,7 @@ function displaySchedulerReportList(data){
 		+ '<td>' + e.date + '</td>'
 		+ '<td>' + e.invoiced_orders_count + '</td>'
 		+ '<td>' + e.invoiced_items_count + '</td>'
-		+ '<td>' + e.total_revenue + '</td>'
+		+ '<td>Rs ' + e.total_revenue + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}

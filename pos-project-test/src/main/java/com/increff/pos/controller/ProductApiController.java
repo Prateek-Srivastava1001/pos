@@ -3,6 +3,7 @@ package com.increff.pos.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.increff.pos.dto.ProductDto;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.pojo.ProductPojo;
@@ -24,53 +25,32 @@ import io.swagger.annotations.ApiOperation;
 public class ProductApiController {
     @Autowired
     private ProductService service;
+    @Autowired
+    private ProductDto dto;
     @ApiOperation(value = "Adds a brand-category combination to database")
     @RequestMapping(path = "/api/admin/product", method = RequestMethod.POST)
     public void add(@RequestBody ProductForm form) throws ApiException{
-        ProductPojo pojo = convert(form);
-        service.add(pojo);
+        dto.add(form);
     }
 
     @ApiOperation(value = "Gets by ID")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.GET)
     public ProductData get(@PathVariable int id) throws ApiException{
-        ProductPojo pojo = service.get(id);
-        return convert(pojo);
+        return dto.get(id);
     }
 
     @ApiOperation(value = "Gets list of all product data")
     @RequestMapping(path = "/api/product", method = RequestMethod.GET)
-    public List<ProductData> getAll(){
-        List<ProductPojo> list = service.getAll();
-        List<ProductData> list2 = new ArrayList<ProductData>();
-        for(ProductPojo pojo : list)
-            list2.add(convert(pojo));
-        return list2;
+    public List<ProductData> getAll() throws ApiException{
+        return dto.getAll();
     }
 
     @ApiOperation(value = "Updates a record")
     @RequestMapping(path = "/api/admin/product/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException{
-        ProductPojo pojo = convert(form);
-        service.update(id, pojo);
+        dto.update(id, form);
     }
 
 
-    private static ProductData convert(ProductPojo pojo){
-        ProductData data = new ProductData();
-        data.setId(pojo.getId());
-        data.setBarcode(pojo.getBarcode());
-        data.setBrand_category(pojo.getBrand_category());
-        data.setName(pojo.getName());
-        data.setMrp(pojo.getMrp());
-        return  data;
-    }
-    private static ProductPojo convert(ProductForm form){
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode(form.getBarcode());
-        pojo.setBrand_category(form.getBrand_category());
-        pojo.setName(form.getName());
-        pojo.setMrp(form.getMrp());
-        return pojo;
-    }
+
 }

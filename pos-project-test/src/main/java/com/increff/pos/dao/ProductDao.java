@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 public class ProductDao extends AbstractDao{
     private static String select_id = "select p from ProductPojo p where id=:id";
     private static String select_all = "select p from ProductPojo p";
-    private static String brand_category_check = "select p from BrandPojo p where id=:id";
     private static String duplicate_check = "select p from ProductPojo p where barcode=:barcode";
     private static String get_by_brand = "select p from ProductPojo p where brand_category=:brand_category";
     @PersistenceContext
@@ -31,11 +30,6 @@ public class ProductDao extends AbstractDao{
     public List<ProductPojo> selectAll(){
         TypedQuery<ProductPojo> query = getQuery(select_all, ProductPojo.class);
         return query.getResultList();
-    }
-    public BrandPojo checkIfBrandIdExists(int id){
-        TypedQuery<BrandPojo> query = getQuery(brand_category_check, BrandPojo.class);
-        query.setParameter("id", id);
-        return getSingle(query);
     }
     public ProductPojo checkBarcode(String barcode){
         TypedQuery<ProductPojo> query = getQuery(duplicate_check, ProductPojo.class);

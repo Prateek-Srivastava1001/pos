@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import com.increff.pos.dao.BrandDao;
 import com.increff.pos.pojo.BrandPojo;
+import com.increff.pos.util.NormalizeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,12 @@ import com.increff.pos.util.StringUtil;
 public class BrandService {
     @Autowired
     private BrandDao dao;
+    @Autowired
+    private NormalizeUtil normalizeUtil;
 
     //CREATE
     @Transactional(rollbackOn = ApiException.class)
     public void add(BrandPojo p) throws ApiException{
-        normalize(p);
         if(StringUtil.isEmpty(p.getBrand())) {
             throw new ApiException("Brand cannot be empty");
         }
@@ -33,29 +35,22 @@ public class BrandService {
         dao.insert(p);
     }
 
-    //READ
-    @Transactional(rollbackOn = ApiException.class)
-    public BrandPojo get(int id) throws ApiException {
-        return getCheck(id);
-    }
-
     //UPDATE
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(int id, BrandPojo p) throws ApiException{ //TODO Check for uniquness in update statement...
-        normalize(p);
-        BrandPojo toUpdate = getCheck(id);
-        if(StringUtil.isEmpty(p.getBrand())) {
+    public void update(int id, BrandPojo pojo) throws ApiException{
+        if(StringUtil.isEmpty(pojo.getBrand())) {
             throw new ApiException("Brand cannot be empty");
         }
-        if(StringUtil.isEmpty(p.getCategory())) {
+        if(StringUtil.isEmpty(pojo.getCategory())) {
             throw new ApiException("Category cannot be empty");
         }
-        BrandPojo checker = dao.checkForCombination(p.getBrand(),p.getCategory());
+        BrandPojo toUpdate = getCheck(id);
+        BrandPojo checker = dao.checkForCombination(pojo.getBrand(),pojo.getCategory());
         if(checker != null && dao.select(id) != checker){
             throw new ApiException("Brand - Category combination already exists");
         }
-        toUpdate.setCategory(p.getCategory());
-        toUpdate.setBrand(p.getBrand());
+        toUpdate.setCategory(pojo.getCategory());
+        toUpdate.setBrand(pojo.getBrand());
     }
 
     //Gets all brand data from BrandPojo
@@ -72,9 +67,13 @@ public class BrandService {
         return p;
     }
 
-    //To trim and convert to lowercase
-    protected static void normalize(BrandPojo p) {
-        p.setCategory(p.getCategory().toLowerCase ().trim());
-        p.setBrand(p.getBrand().toLowerCase ().trim());
+    @Transactional
+    public BrandPojo combinationChecker(String brand, String category) throws ApiException{
+        BrandPojo pojo = dao.checkForCombination(brand, category);
+        if(pojo == null){
+            throw new ApiException("Brand-Category combination not found");
+        }
+        return pojo;
     }
+
 }

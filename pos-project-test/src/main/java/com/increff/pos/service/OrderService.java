@@ -24,45 +24,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import static com.increff.pos.util.NormalizeUtil.normalize;
+
 @Service
 public class OrderService {
     @Autowired
     private OrderDao dao;
-    @Autowired
-    private OrderItemService orderItemService;
-    @Autowired
-    ProductService productService;
-    @Autowired
-    InventoryService inventoryService;
 
-    @Value("${invoice.url}")
-    private String url;
-    private int orderId=0;
     @Transactional(rollbackOn = ApiException.class)
-    public int add(List<OrderItemForm> formList) throws ApiException{
-        if(formList.size()<1){
-            throw new ApiException("Empty Order List Not Supported");
-        }
-        OrderPojo pojo = new OrderPojo();
-        LocalDateTime dateTime = LocalDateTime.now();
-        pojo.setDate_time(dateTime);
-        orderId = dao.insert(pojo).getId();
-        addItems(formList);
+    public int add(OrderPojo pojo) throws ApiException{
+        int orderId = dao.insert(pojo).getId();
         return orderId;
     }
-    @Transactional(rollbackOn = ApiException.class)
-    public void addItems(List<OrderItemForm> formList) throws ApiException{
-        for(OrderItemForm form:formList){
-            OrderItemPojo pojo = convert(form);
-            orderItemService.add(pojo);
 
-            //Updating in Inventory
-            InventoryPojo inventoryPojo = inventoryService.get(pojo.getProduct_id());
-            int quantity = inventoryPojo.getQuantity() - pojo.getQuantity();
-            inventoryPojo.setQuantity(quantity);
-            inventoryService.update(pojo.getProduct_id(),inventoryPojo);
-        }
-    }
     @Transactional
     public OrderPojo get(int id) throws ApiException {
         return getCheck(id);
@@ -86,56 +60,6 @@ public class OrderService {
         return dao.getByDate(startDate,endDate);
     }
 
-    public void checkValidity(OrderItemForm form) throws ApiException{
-        OrderItemPojo pojo = convert(form);
-        orderItemService.checks(pojo);
-    }
-    private OrderItemPojo convert(OrderItemForm form) throws ApiException {
-        normalize(form);
-        OrderItemPojo pojo = new OrderItemPojo();
-        pojo.setOrder_id(orderId);
-        pojo.setProduct_id(productService.getByBarcode(form.getBarcode()).getId());
-        pojo.setQuantity(form.getQuantity());
-        pojo.setSelling_price(form.getSelling_price());
-        return pojo;
-    }
 
-    public ResponseEntity<byte[]> getInvoicePDF(int id) throws Exception {
-        InvoiceForm invoiceForm = generateInvoiceForOrder(id);
-        RestTemplate restTemplate = new RestTemplate();
-        byte[] contents = Base64.getDecoder().decode(restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        String filename = "invoice.pdf";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
-        return response;
-    }
-    public InvoiceForm generateInvoiceForOrder(int orderId) throws ApiException{
-        InvoiceForm invoiceForm = new InvoiceForm();
-        OrderPojo orderPojo = getCheck(orderId);
-        invoiceForm.setOrderId(orderId);
-        invoiceForm.setAmount(0.0);
-        invoiceForm.setPlacedDate(orderPojo.getDate_time().toString());
-        List<OrderItem> dataList = new ArrayList<>();
-        List<OrderItemData> transferList = orderItemService.getAll(orderId);
-        Integer i =0;
-        for(OrderItemData element: transferList){
-            OrderItem orderItem = new OrderItem();
-            i++;
-            orderItem.setOrderItemId(i);
-            orderItem.setProductName(element.getName());
-            orderItem.setQuantity(element.getQuantity());
-            orderItem.setSellingPrice(element.getSelling_price());
-            orderItem.setTotalAmount(10.0);
-            dataList.add(orderItem);
-        }
-        invoiceForm.setOrderItemList(dataList);
-        return invoiceForm;
-    }
 
-    protected static void normalize(OrderItemForm form){
-        form.setBarcode(form.getBarcode().toLowerCase ().trim());
-    }
 }

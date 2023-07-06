@@ -5,6 +5,8 @@ import com.increff.invoiceapp.model.InvoiceForm;
 import com.increff.invoiceapp.model.OrderItem;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -27,8 +29,12 @@ public class InvoiceService {
             Double cur = 0.0;
             cur = item.getSellingPrice() * item.getQuantity();
             amount+=cur;
+            BigDecimal roundedValue = BigDecimal.valueOf(cur).setScale(2, RoundingMode.HALF_UP);
+            cur = roundedValue.doubleValue();
             item.setTotalAmount(cur);
         }
+        BigDecimal roundedValue = BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP);
+        amount = roundedValue.doubleValue();
         form.setAmount(amount);
         CreateXMLFile createXMLFile = new CreateXMLFile();
 

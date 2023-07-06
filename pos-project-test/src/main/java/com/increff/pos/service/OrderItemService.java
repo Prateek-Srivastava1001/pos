@@ -31,7 +31,7 @@ public class OrderItemService {
 
     @Transactional(rollbackOn = ApiException.class)
     public OrderItemPojo get(int id) throws ApiException{
-        OrderItemPojo pojo = get(id);
+        OrderItemPojo pojo = dao.select(id);
         if(pojo==null){
             throw new ApiException("Order Item with given ID not found");
         }
@@ -54,14 +54,14 @@ public class OrderItemService {
         data.setId(pojo.getId());
         data.setOrder_id(pojo.getOrder_id());
         data.setProduct_id(pojo.getProduct_id());
-        data.setName(productService.get(pojo.getProduct_id()).getName());
-        data.setBarcode(productService.get(pojo.getProduct_id()).getBarcode());
+        data.setName(productService.getCheck(pojo.getProduct_id()).getName());
+        data.setBarcode(productService.getCheck(pojo.getProduct_id()).getBarcode());
         data.setQuantity(pojo.getQuantity());
         data.setSelling_price(pojo.getSelling_price());
         return data;
     }
     //Validations
-    protected void checks(OrderItemPojo pojo) throws ApiException{
+    public void checks(OrderItemPojo pojo) throws ApiException{
         //Negative quantity check
         if(pojo.getQuantity()<=0){
             throw new ApiException("Please enter positive value of quantity");
@@ -71,13 +71,13 @@ public class OrderItemService {
             throw new ApiException("Selling Price cannot be negative");
         }
         //check product with given id in inventory
-        if(inventoryService.get(pojo.getProduct_id())==null){
+        if(inventoryService.getCheck(pojo.getProduct_id())==null){
             throw new ApiException("Product with given ID not available");
         }
-        if(inventoryService.get(pojo.getProduct_id()).getQuantity()<pojo.getQuantity()){
+        if(inventoryService.getCheck(pojo.getProduct_id()).getQuantity()<pojo.getQuantity()){
             throw new ApiException("Not enough quantity is present in the inventory.");
         }
-        if(productService.get(pojo.getProduct_id()).getMrp()<pojo.getSelling_price()){
+        if(productService.getCheck(pojo.getProduct_id()).getMrp()<pojo.getSelling_price()){
             throw new ApiException("Selling price cannot be more than MRP.");
         }
 

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.increff.pos.dto.UserDto;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,71 +31,24 @@ import io.swagger.annotations.ApiOperation;
 
 @Controller
 public class LoginController {
-
 	@Autowired
-	private UserService service;
-	@Autowired
-	private InfoData info;
+	UserDto dto;
 
-	
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
-		UserPojo p = service.get(f.getEmail());
-		boolean authenticated = (p != null && Objects.equals(p.getPassword(), f.getPassword()));
-		if (!authenticated) {
-			info.setMessage("Invalid details");
-			throw new ApiException("Invalid details");
-		}
-		info.setRole(p.getRole());
-		// Create authentication object
-		Authentication authentication = convert(p);
-		// Create new session
-		HttpSession session = req.getSession(true);
-		// Attach Spring SecurityContext to this new session
-		SecurityUtil.createContext(session);
-		// Attach Authentication object to the Security Context
-		SecurityUtil.setAuthentication(authentication);
-
-		return new ModelAndView("redirect:/ui/home");
-
+		return dto.login(req, f);
 	}
 
 	@ApiOperation(value = "Sign Up a new user")
 	@RequestMapping(path = "/session/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView signup(HttpServletRequest req, LoginForm form) throws ApiException{
-		boolean success = service.add(form);
-
-		if(!success){
-			info.setMessage("Email already exists");
-			throw new ApiException("Email already exists");
-		}
-		ModelAndView mav = login(req, form);
-		return mav;
+		return dto.signup(req, form);
 	}
 
 	@RequestMapping(path = "/session/logout", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-		request.getSession().invalidate();
-		return new ModelAndView("redirect:/site/logout");
+		return dto.logout(request, response);
 	}
-
-	private static Authentication convert(UserPojo p) {
-		// Create principal
-		UserPrincipal principal = new UserPrincipal();
-		principal.setEmail(p.getEmail());
-		principal.setId(p.getId());
-
-		// Create Authorities
-		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority(p.getRole()));
-		// you can add more roles if required
-
-		// Create Authentication
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,
-				authorities);
-		return token;
-	}
-
 
 }

@@ -20,70 +20,50 @@ public class ProductService {
 
     //CREATE
     @Transactional(rollbackOn = ApiException.class)
-    public void add(ProductPojo p) throws ApiException{
-        normalize(p);
-        InventoryPojo inventory = new InventoryPojo();
-        String barcode = p.getBarcode();
-
-        if(StringUtil.isEmpty(p.getBarcode())) {
+    public void add(ProductPojo pojo) throws ApiException{
+        String barcode = pojo.getBarcode();
+        if(StringUtil.isEmpty(barcode)){
             throw new ApiException("Barcode cannot be empty");
         }
-        if(StringUtil.isEmpty(p.getName())) {
+        if(StringUtil.isEmpty(pojo.getName())) {
             throw new ApiException("name cannot be empty");
         }
-        if(p.getMrp()<0){
+        if(pojo.getMrp()<0){
             throw new ApiException("MRP cannot be negative. This is not how math works...");
         }
-        //Brand - Category combination should be unique
-        if(dao.checkIfBrandIdExists(p.getBrand_category()) == null){
-            throw new ApiException("There is no Brand-Category combination for given data");
-        }
-        if(dao.checkBarcode(barcode) != null){
+        if(dao.checkBarcode(pojo.getBarcode()) != null){
             throw new ApiException("Product Barcode already exists");
         }
-        dao.insert(p);
-        ProductPojo newPojo = dao.checkBarcode(barcode);
-        inventory.setId(newPojo.getId());
-        inventory.setQuantity(0);
-        inventoryService.add(inventory);
-    }
-    //READ
-    @Transactional(rollbackOn = ApiException.class)
-    public ProductPojo get(int id) throws ApiException{
-        return getCheck(id);
+        dao.insert(pojo);
     }
     //UPDATE
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(int id, ProductPojo p) throws ApiException{
-        normalize(p);
+    public void update(int id, ProductPojo pojo) throws ApiException{
         //Same checks as that in add
-        if(StringUtil.isEmpty(p.getBarcode())) {
+        if(StringUtil.isEmpty(pojo.getBarcode())) {
             throw new ApiException("Barcode cannot be empty");
         }
-        if(StringUtil.isEmpty(p.getName())) {
+        if(StringUtil.isEmpty(pojo.getName())) {
             throw new ApiException("name cannot be empty");
         }
-        if(p.getMrp()<0){
+        if(pojo.getMrp()<0){
             throw new ApiException("MRP cannot be negative. This is not how math works...");
         }
-        //Brand - Category combination should be unique
-        if(dao.checkIfBrandIdExists(p.getBrand_category()) == null){
-            throw new ApiException("There is no Brand-Category combination for given data");
-        }
-        ProductPojo checker = dao.checkBarcode(p.getBarcode());
+        ProductPojo checker = dao.checkBarcode(pojo.getBarcode());
         if(checker != null && dao.select(id) != checker){
             throw new ApiException("Product Barcode already exists");
         }
         ProductPojo toUpdate = getCheck(id);
-        toUpdate.setBarcode(p.getBarcode());
-        toUpdate.setBrand_category(p.getBrand_category());
-        toUpdate.setName(p.getName());
-        toUpdate.setMrp(p.getMrp());
+        toUpdate.setBarcode(pojo.getBarcode());
+        toUpdate.setBrand_category(pojo.getBrand_category());
+        toUpdate.setName(pojo.getName());
+        toUpdate.setMrp(pojo.getMrp());
     }
 
     @Transactional
     public List<ProductPojo> getAll(){return  dao.selectAll();}
 
+    //READ
     @Transactional
     public ProductPojo getCheck(int id) throws ApiException{
         ProductPojo p = dao.select(id);
@@ -91,10 +71,6 @@ public class ProductService {
             throw new ApiException("Product Details with given id does not exist id: " + id);
         }
         return p;
-    }
-    protected static void normalize(ProductPojo p) {
-        p.setBarcode(p.getBarcode().toLowerCase ().trim());
-        p.setName(p.getName().toLowerCase ().trim());
     }
     @Transactional(rollbackOn = ApiException.class)
     public ProductPojo getByBarcode(String barcode) throws ApiException{

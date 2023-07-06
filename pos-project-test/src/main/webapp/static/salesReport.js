@@ -56,7 +56,7 @@ function displayFilteredReport(){
                 		+ '<td>' + element.brand + '</td>'
                 		+ '<td>' + element.category + '</td>'
                 		+ '<td>' + element.quantity + '</td>'
-                		+ '<td>' + element.revenue + '</td>'
+                		+ '<td>Rs ' + element.revenue + '</td>'
                 		+ '</tr>';
                 $tbody.append(row);
                 filteredData.push(element);
@@ -67,7 +67,7 @@ function displayFilteredReport(){
                     + '<td>' + element.brand + '</td>'
                     + '<td>' + element.category + '</td>'
                     + '<td>' + element.quantity + '</td>'
-                    + '<td>' + element.revenue + '</td>'
+                    + '<td>Rs ' + element.revenue + '</td>'
                     + '</tr>';
             $tbody.append(row);
             filteredData.push(element);
@@ -97,7 +97,7 @@ function displaySalesReportList(data){
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>' + e.category + '</td>'
 		+ '<td>' + e.quantity + '</td>'
-		+ '<td>' + e.revenue + '</td>'
+		+ '<td>Rs ' + e.revenue + '</td>'
 		+ '</tr>';
         $tbody.append(row);
 	}

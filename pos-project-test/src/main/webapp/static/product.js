@@ -98,6 +98,7 @@ function readFileDataCallback(results){
 	fileData = results.data;
     if(fileData.length>5000){
 	    alert("Cannot upload a file with more than 5000 lines");
+	    return;
 	}
 	uploadRows();
 }
@@ -107,6 +108,10 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    if(errorData.length>0){
+    	    $("#download-errors").removeAttr("disabled");
+    	}
+    	getProductList();
 		return;
 	}
 
@@ -157,9 +162,9 @@ function displayProductList(data){
         else
 		    var buttonHtml = ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
-		+ '<td>'  + e.brand_category + '</td>'
+		+ '<td>'  + e.brand + '</td>'
+		+ '<td>'  + e.category + '</td>'
 		+ '<td>'  + e.name + '</td>'
 		+ '<td>'  + e.mrp + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
@@ -201,7 +206,7 @@ function updateUploadDialog(){
 
 function updateFileName(){
 	var $file = $('#productFile');
-	var fileName = $file.val();
+	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#productFileName').html(fileName);
 }
 
@@ -212,22 +217,19 @@ function displayUploadData(){
 
 function displayProduct(data){
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
-	$("#product-edit-form input[name=brand_category]").val(data.brand_category);
+	$("#product-edit-form input[name=brand]").val(data.brand);
+	$("#product-edit-form input[name=category]").val(data.category);
 	$("#product-edit-form input[name=name]").val(data.name);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
 	$("#product-edit-form input[name=id]").val(data.id);
 	$('#edit-product-modal').modal('toggle');
 }
 
-function refresh(){
-    location.reload(true);
-}
 
 //INITIALIZATION CODE
 function init(){
 	$('#add-product').click(addProduct);
 	$('#update-product').click(updateProduct);
-	$('#refresh-data').click(refresh);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
@@ -242,6 +244,7 @@ function init(){
         document.getElementById("upload-data").disabled = true;
         document.getElementById("process-data").disabled = true;
     }
+    document.getElementById("download-errors").disabled = true;
 }
 
 $(document).ready(init);

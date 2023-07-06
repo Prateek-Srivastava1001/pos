@@ -71,8 +71,8 @@ function displayOrderItems(data){
         + '<td>' + e.barcode + '</td>'
         + '<td>' + e.name + '</td>'
         + '<td>' + e.quantity + '</td>'
-        + '<td>' + e.selling_price + '</td>'
-        + '<td>' + amount + '</td>'
+        + '<td>Rs ' + e.selling_price + '</td>'
+        + '<td>Rs ' + amount + '</td>'
         + '</tr>';
         $tbody.append(row);
         sum = sum+amount;
