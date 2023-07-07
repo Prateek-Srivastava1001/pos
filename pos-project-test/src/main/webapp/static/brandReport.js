@@ -22,7 +22,12 @@ filteredData =[];
 function displayBrandReportList(data){
 	var $tbody = $('#brand-report-table').find('tbody');
 	$tbody.empty();
-	filteredData=data;
+	result = data.map(o => {
+          let obj = Object.assign({}, o);
+          delete obj.id;
+          return obj;
+        });
+	filteredData=result;
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
@@ -36,22 +41,8 @@ function displayBrandReportList(data){
 	}
 }
 function downloadReport(){
-    var headers = {
-        brand: 'brand'.replace(/,/g, ''), // remove commas to avoid errors
-        category: "category".replace(/,/g, '')
-    };
-    var dataFormatted = [];
-
-    // format the data
-    filteredData.forEach((item) => {
-        dataFormatted.push({
-            brand: item.brand.replace(/,/g, ''), // remove commas to avoid errors,
-            category: item.category.replace(/,/g, '')
-        });
-    });
-
-    var fileTitle = 'BrandReport';
-    exportCSVFile(headers, dataFormatted, fileTitle);
+    var fileName = 'BrandReport.tsv';
+    writeReportData(filteredData, fileName);
 }
 
 //INITIALIZATION CODE

@@ -1,4 +1,4 @@
-
+var table;
 function getProductUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/product";
@@ -11,6 +11,32 @@ function getAdminProductUrl(){
 function addProduct(event){
 	//Set the values to update
 	var $form = $("#product-form");
+	var formData = $form.serializeArray();
+    	var barcode = formData[0].value;
+    	var brand = formData[1].value;
+    	var category = formData[2].value;
+    	var name = formData[3].value;
+    	var mrp = formData[4].value;
+    	if(barcode==null ||barcode==""){
+            warnClick("Barcode cannot be empty");
+            return true;
+        }
+    	if(brand==null ||brand==""){
+            warnClick("Brand cannot be empty");
+            return true;
+        }
+        if(category==null ||category==""){
+            warnClick("Category cannot be empty");
+            return true;
+        }
+        if(name==null ||name==""){
+            warnClick("MRP cannot be empty");
+            return true;
+        }
+       if(mrp==null ||mrp==""){
+            warnClick("MRP cannot be empty");
+            return true;
+        }
 	var json = toJson($form);
 	console.log(json);
 	var url = getAdminProductUrl();
@@ -39,6 +65,33 @@ function updateProduct(event){
 
 	//Set the values to update
 	var $form = $("#product-edit-form");
+	var formData = $form.serializeArray();
+    var barcode = formData[0].value;
+    var brand = formData[1].value;
+    var category = formData[2].value;
+    var name = formData[3].value;
+    var mrp = formData[4].value;
+    console.log(mrp);
+    if(barcode==null ||barcode==""){
+           dangerClick("Barcode cannot be empty");
+           return true;
+       }
+    if(brand==null ||brand==""){
+           dangerClick("Brand cannot be empty");
+           return true;
+       }
+       if(category==null ||category==""){
+           dangerClick("Category cannot be empty");
+           return true;
+       }
+       if(name==null ||name==""){
+           dangerClick("MRP cannot be empty");
+           return true;
+       }
+      if(mrp==null ||mrp==""){
+           dangerClick("MRP cannot be empty");
+           return true;
+       }
 	var json = toJson($form);
 
 	$.ajax({
@@ -83,7 +136,7 @@ function processData(){
 	var extension = getExtension($('#productFile').val());
 	console.log(extension);
     if(extension.toLowerCase() != 'tsv'){
-    alert('Please Upload File with extension .tsv only...');
+    dangerClick('Please Upload File with extension .tsv only...');
     return;
     }
     readFileData(file, readFileDataCallback);
@@ -97,7 +150,7 @@ function getExtension(filename) {
 function readFileDataCallback(results){
 	fileData = results.data;
     if(fileData.length>5000){
-	    alert("Cannot upload a file with more than 5000 lines");
+	    dangerClick("Cannot upload a file with more than 5000 lines");
 	    return;
 	}
 	uploadRows();
@@ -110,6 +163,10 @@ function uploadRows(){
 	if(processCount==fileData.length){
 	    if(errorData.length>0){
     	    $("#download-errors").removeAttr("disabled");
+    	    warnClick("There were some issues with the uploaded files, please download errors to find more");
+    	}
+    	else{
+    	successClick("File upload successful");
     	}
     	getProductList();
 		return;
@@ -151,7 +208,7 @@ function downloadErrors(){
 
 function displayProductList(data){
 	var $tbody = $('#product-table').find('tbody');
-	$tbody.empty();
+	table.clear().draw();
 	for(var i in data){
 		var e = data[i];
 		var roleElement = document.getElementById('role');
@@ -160,16 +217,15 @@ function displayProductList(data){
             var buttonHtml = ' <button class="edit_btn" disabled>edit</button>'
         }
         else
-		    var buttonHtml = ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>'
-		var row = '<tr>'
-		+ '<td>' + e.barcode + '</td>'
-		+ '<td>'  + e.brand + '</td>'
-		+ '<td>'  + e.category + '</td>'
-		+ '<td>'  + e.name + '</td>'
-		+ '<td>'  + e.mrp + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
-		+ '</tr>';
-        $tbody.append(row);
+		    var buttonHtml = ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>';
+        table.row.add([
+                      e.barcode,
+                      e.brand,
+                      e.category,
+                      e.name,
+                      e.mrp,
+                      buttonHtml
+                     ]).draw();
 	}
 }
 
@@ -225,7 +281,9 @@ function displayProduct(data){
 	$('#edit-product-modal').modal('toggle');
 }
 
-
+function refresh(){
+    location.reload(true);
+}
 //INITIALIZATION CODE
 function init(){
 	$('#add-product').click(addProduct);
@@ -245,6 +303,7 @@ function init(){
         document.getElementById("process-data").disabled = true;
     }
     document.getElementById("download-errors").disabled = true;
+    table = $('#product-table').DataTable({'columnDefs': [ {'targets': [5],'orderable': false }]});
 }
 
 $(document).ready(init);

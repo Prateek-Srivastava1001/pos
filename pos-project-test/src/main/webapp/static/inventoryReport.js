@@ -22,7 +22,12 @@ filteredData = []
 function displayInventoryReportList(data){
 	var $tbody = $('#inventory-report-table').find('tbody');
 	$tbody.empty();
-	filteredData=data
+	result = data.map(o => {
+          let obj = Object.assign({}, o);
+          delete obj.revenue;
+          return obj;
+        });
+	filteredData=result;
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
@@ -38,24 +43,8 @@ function displayInventoryReportList(data){
 }
 
 function downloadReport(){
-    var headers = {
-        brand: 'brand'.replace(/,/g, ''), // remove commas to avoid errors
-        category: "category",
-        quantity: "quantity"
-    };
-    var dataFormatted = [];
-
-    // format the data
-    filteredData.forEach((item) => {
-        dataFormatted.push({
-            brand: item.brand.replace(/,/g, ''), // remove commas to avoid errors,
-            category: item.category.replace(/,/g, ''),
-            quantity: item.quantity
-        });
-    });
-
-    var fileTitle = 'InventoryReport';
-    exportCSVFile(headers, dataFormatted, fileTitle);
+    var fileName = 'InventoryReport.tsv';
+    writeReportData(filteredData, fileName);
 }
 //INITIALIZATION CODE
 function init(){

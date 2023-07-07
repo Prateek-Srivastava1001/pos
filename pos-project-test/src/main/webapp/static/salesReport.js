@@ -1,4 +1,4 @@
-
+var table;
 function getSalesReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/reports/sales";
@@ -9,7 +9,7 @@ function getSalesList(event) {
     var dateInput = document.getElementById("inputSD");
     var dateInput2 = document.getElementById("inputED");
     if((!dateInput.value) || (!dateInput2.value) ){
-        alert("Do not keep date field empty");
+        warnClick("Do not keep date field empty");
         return;
     }
     var $form = $("#sales-form");
@@ -37,11 +37,11 @@ let filteredData = [];
 
 function displayFilteredReport(){
     var $tbody = $('#brand-report-table').find('tbody');
-    $tbody.empty();
+    table.clear().draw();
     var brand = document.forms["brand-form"]["brand"].value;
     var category = document.forms["brand-form"]["category"].value;
     if(brand == null || brand ==""){
-        alert("Please fill Brand Data before applying filter");
+        warnClick("Please fill Brand Data before applying filter");
         return;
     }
     brand = brand.toLowerCase().trim();
@@ -52,24 +52,22 @@ function displayFilteredReport(){
         var element = initialData[i];
         if(element.brand == brand){
             if(category == null || category == ""){
-                var row = '<tr>'
-                		+ '<td>' + element.brand + '</td>'
-                		+ '<td>' + element.category + '</td>'
-                		+ '<td>' + element.quantity + '</td>'
-                		+ '<td>Rs ' + element.revenue + '</td>'
-                		+ '</tr>';
-                $tbody.append(row);
+                table.row.add([
+                              element.brand,
+                              element.category,
+                              element.quantity,
+                              element.revenue
+                                ]).draw();
                 filteredData.push(element);
                 flag=1;
             }
             else if(element.category == category){
-            var row = '<tr>'
-                    + '<td>' + element.brand + '</td>'
-                    + '<td>' + element.category + '</td>'
-                    + '<td>' + element.quantity + '</td>'
-                    + '<td>Rs ' + element.revenue + '</td>'
-                    + '</tr>';
-            $tbody.append(row);
+            table.row.add([
+                           element.brand,
+                           element.category,
+                           element.quantity,
+                           element.revenue
+                            ]).draw();
             filteredData.push(element);
             flag=1;
             }
@@ -77,8 +75,6 @@ function displayFilteredReport(){
     }
 
     if(flag == 0){
-        var row = '<tr><td>No transaction for given brand - category found in given timeframe</td></tr>';
-        $tbody.append(row);
         document.getElementById("download-report").disabled = true;
     }
     else{
@@ -88,22 +84,19 @@ function displayFilteredReport(){
 }
 function displaySalesReportList(data){
 	var $tbody = $('#brand-report-table').find('tbody');
-	$tbody.empty();
+	table.clear().draw();
 	initialData = data;
 	filteredData = data;
 	for(var i in data){
 		var e = data[i];
-		var row = '<tr>'
-		+ '<td>' + e.brand + '</td>'
-		+ '<td>' + e.category + '</td>'
-		+ '<td>' + e.quantity + '</td>'
-		+ '<td>Rs ' + e.revenue + '</td>'
-		+ '</tr>';
-        $tbody.append(row);
+        table.row.add([
+                       e.brand,
+                       e.category,
+                       e.quantity,
+                       e.revenue
+                        ]).draw();
 	}
 	if(data.length < 1){
-	    var row = '<tr><td>No transaction for given timeframe found</td></tr>';
-	    $tbody.append(row);
 	    document.getElementById("download-report").disabled = true;
 	}
 	else{
@@ -114,37 +107,19 @@ function displaySalesReportList(data){
 }
 
 function downloadReport(){
-    var headers = {
-        brand: 'brand'.replace(/,/g, ''), // remove commas to avoid errors
-        category: "category",
-        quantity: "quantity",
-        revenue: "revenue"
-    };
-    var dataFormatted = [];
-
-    // format the data
-    filteredData.forEach((item) => {
-        dataFormatted.push({
-            brand: item.brand.replace(/,/g, ''), // remove commas to avoid errors,
-            category: item.category.replace(/,/g, ''),
-            quantity: item.quantity,
-            revenue: item.revenue
-        });
-    });
-
-    var fileTitle = 'SalesReport';
-    exportCSVFile(headers, dataFormatted, fileTitle);
+    var fileName = 'SalesReport.tsv';
+    writeReportData(filteredData, fileName);
 }
 
 function validateDate(input) {
   var dateFormat = /^\d{4}-\d{2}-\d{2}$/;
   var today = new Date();
   if(!input.value){
-      alert("Date field cannot be empty");
+      warnClick("Date field cannot be empty");
     }
   var inputDate = new Date(input.value);
      if (inputDate > today) {
-        alert("Input date cannot be after today's date.");
+        warnClick("Input date cannot be after today's date.");
     input.value = "";
   } else {
     input.setCustomValidity("");
@@ -166,6 +141,7 @@ function init() {
     var today = new Date();
     dateInput.setAttribute("max", today.toISOString().substring(0, 10));
     dateInput2.setAttribute("max", today.toISOString().substring(0, 10));
+    table = $('#brand-report-table').DataTable({searching: false});
  }
 $(document).ready(init);
 

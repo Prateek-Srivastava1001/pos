@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -111,7 +113,9 @@ public class OrderDto {
         pojo.setOrder_id(orderId);
         pojo.setProduct_id(productService.getByBarcode(form.getBarcode()).getId());
         pojo.setQuantity(form.getQuantity());
-        pojo.setSelling_price(form.getSelling_price());
+        BigDecimal roundedValue = BigDecimal.valueOf(form.getSelling_price()).setScale(2, RoundingMode.HALF_UP);
+        double sellingPrice = roundedValue.doubleValue();
+        pojo.setSelling_price(sellingPrice);
         return pojo;
     }
 

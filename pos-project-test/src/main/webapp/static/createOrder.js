@@ -16,22 +16,27 @@ function addProduct(event){
 	formData[0].value = formData[0].value.toLowerCase().trim();
 	//Frontend Validations
 	if(formData[0].value==null ||formData[0].value==""){
-	    alert("Barcode cannot be empty");
+	    warnClick("Barcode cannot be empty");
 	    return;
 	}
-	if(formData[2].value==null || formData[2].value==""){
-	    alert("Selling price cannot be empty");
-	}
+	if(formData[1].value==null || formData[1].value==""){
+        warnClick("Quantity cannot be empty");
+        return;
+    }
 	if(parseFloat(formData[1].value)%1!==0){
-        alert("Please enter a valid integer value for quantity");
+        warnClick("Please enter a valid integer value for quantity");
         return;
     }
 	if(parseInt(formData[1].value)<=0){
-	    alert("Please enter a positive value for Quantity");
+	    warnClick("Please enter a positive value for Quantity");
 	    return;
 	    }
+	if(formData[2].value==null || formData[2].value==""){
+        warnClick("Selling price cannot be empty");
+        return;
+    }
 	if(parseFloat(formData[2].value)<0){
-	    alert("Selling price cannot be negative");
+	    warnClick("Selling price cannot be negative");
 	    return;
 	    }
 	for(var i in jsonData){
@@ -71,7 +76,7 @@ function submit(event){
 	var json = JSON.stringify(jsonData);
 	console.log(json);
     if(jsonData.length <1){
-        alert("Cannot create an empty order");
+        dangerClick("Cannot create an empty order");
         return;
        }
 	$.ajax({
@@ -102,16 +107,24 @@ function updateOrder(){
     	var idOfDuplicate;
     	formData[0].value = formData[0].value.toLowerCase().trim();
     	//Frontend Validations
+    	if(formData[1].value==null || formData[1].value==""){
+                warnClick("Quantity cannot be empty");
+                return;
+            }
     	    if(parseFloat(formData[1].value)%1!==0){
-    	        alert("Please enter a valid integer value for quantity");
+    	        dangerClick("Please enter a valid integer value for quantity");
     	        return;
     	    }
         	if(parseInt(formData[1].value)<=0){
-        	    alert("Please enter a positive value for Quantity");
+        	    dangerClick("Please enter a positive value for Quantity");
         	    return;
         	    }
+        if(formData[2].value==null || formData[2].value==""){
+                warnClick("Selling price cannot be empty");
+                return;
+            }
         	if(parseFloat(formData[2].value)<0){
-        	    alert("Selling price cannot be negative");
+        	    dangerClick("Selling price cannot be negative");
         	    return;
         	    }
         	    console.log("Successful frontend validations");

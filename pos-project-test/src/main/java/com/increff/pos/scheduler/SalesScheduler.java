@@ -15,6 +15,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -51,7 +53,8 @@ public class SalesScheduler {
                 totalRevenue += (data.getQuantity() * data.getSelling_price());
             }
         }
-
+        BigDecimal roundedValue = BigDecimal.valueOf(totalRevenue).setScale(2, RoundingMode.HALF_UP);
+        totalRevenue = roundedValue.doubleValue();
         pojo.setDate(date);
         pojo.setInvoiced_orders_count(totalOrders);
         pojo.setInvoiced_items_count(totalItems);

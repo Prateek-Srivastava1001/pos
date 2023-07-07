@@ -62,7 +62,8 @@ function exportCSVFile(headers, items, fileTitle) {
 
 function handleAjaxError(response){
 	var response = JSON.parse(response.responseText);
-	alert(response.message);
+//	alert(response.message);
+	dangerClick(response.message);
 }
 
 function readFileData(file, callback){
@@ -98,4 +99,76 @@ function writeFileData(arr){
     tempLink.href = fileUrl;
     tempLink.setAttribute('download', 'download.tsv');
     tempLink.click(); 
+}
+
+function writeReportData(arr, name){
+	var config = {
+		quoteChar: '',
+		escapeChar: '',
+		delimiter: "\t"
+	};
+
+	var data = Papa.unparse(arr, config);
+    var blob = new Blob([data], {type: 'text/tsv;charset=utf-8;'});
+    var fileUrl =  null;
+
+    if (navigator.msSaveBlob) {
+        fileUrl = navigator.msSaveBlob(blob, name);
+    } else {
+        fileUrl = window.URL.createObjectURL(blob);
+    }
+    var tempLink = document.createElement('a');
+    tempLink.href = fileUrl;
+    tempLink.setAttribute('download', name);
+    tempLink.click();
+}
+
+//Notify.js
+function dangerClick(alertMessage){
+  $.notify(alertMessage, { position:"top-center",
+                            // whether to hide the notification on click
+                              clickToHide: true,
+                              // whether to auto-hide the notification
+                              autoHide: true,
+                              // if autoHide, hide after milliseconds
+                              autoHideDelay: 5000,
+                              showAnimation: 'slideDown',
+                              // show animation duration
+                              showDuration: 400,
+                              // hide animation
+                              hideAnimation: 'slideUp',
+                              className: 'error'
+   });
+}
+function warnClick(alertMessage){
+   $.notify(alertMessage, { position:"top-center",
+                              // whether to hide the notification on click
+                                clickToHide: true,
+                                // whether to auto-hide the notification
+                                autoHide: true,
+                                // if autoHide, hide after milliseconds
+                                autoHideDelay: 5000,
+                                showAnimation: 'slideDown',
+                                // show animation duration
+                                showDuration: 400,
+                                // hide animation
+                                hideAnimation: 'slideUp',
+                                className: 'warn'
+     });
+}
+function successClick(alertMessage){
+   $.notify(alertMessage, { position:"top-center",
+                              // whether to hide the notification on click
+                                clickToHide: true,
+                                // whether to auto-hide the notification
+                                autoHide: true,
+                                // if autoHide, hide after milliseconds
+                                autoHideDelay: 5000,
+                                showAnimation: 'slideDown',
+                                // show animation duration
+                                showDuration: 400,
+                                // hide animation
+                                hideAnimation: 'slideUp',
+                                className: 'success'
+     });
 }

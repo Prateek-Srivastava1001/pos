@@ -1,4 +1,4 @@
-
+var table;
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/brand";
@@ -11,6 +11,17 @@ function getAdminBrandUrl(){
 function addBrand(event){
 	//Set the values to update
 	var $form = $("#brand-form");
+	var formData = $form.serializeArray();
+	var brand = formData[0].value;
+	var category = formData[1].value;
+	if(brand==null ||brand==""){
+        warnClick("Brand cannot be empty");
+        return;
+    }
+    if(category==null ||category==""){
+        warnClick("Category cannot be empty");
+        return;
+    }
 	var json = toJson($form);
 	console.log(json);
 	var url = getAdminBrandUrl();
@@ -39,6 +50,17 @@ function updateBrand(event){
 
 	//Set the values to update
 	var $form = $("#brand-edit-form");
+	var formData = $form.serializeArray();
+    	var brand = formData[0].value;
+    	var category = formData[1].value;
+    	if(brand==null ||brand==""){
+            dangerClick("Brand cannot be empty");
+            return true;
+        }
+        if(category==null ||category==""){
+            dangerClick("Category cannot be empty");
+            return true;
+        }
 	var json = toJson($form);
 
 	$.ajax({
@@ -68,6 +90,7 @@ function getBrandList(){
 	   },
 	   error: handleAjaxError
 	});
+
 }
 
 
@@ -83,7 +106,7 @@ function processData(){
 	var extension = getExtension($('#brandFile').val());
 	console.log(extension);
     if(extension.toLowerCase() != 'tsv'){
-    alert('Please Upload File with extension .tsv only...');
+    dangerClick('Please Upload File with extension .tsv only...');
     console.log("INVALID FILE TYPE...");
     return;
     }
@@ -98,7 +121,7 @@ function getExtension(filename) {
 function readFileDataCallback(results){
 	fileData = results.data;
 	if(fileData.length>5000){
-	    alert("Cannot upload a file with more than 5000 lines");
+	    dangerClick("Cannot upload a file with more than 5000 lines");
 	    return;
 	}
 	uploadRows();
@@ -111,6 +134,10 @@ function uploadRows(){
 	if(processCount==fileData.length){
 	    if(errorData.length>0){
     	    $("#download-errors").removeAttr("disabled");
+    	    warnClick("There were some issues with the uploaded file, please download errors to find more");
+    	}
+    	else{
+    	successClick("File upload Successful")
     	}
     	getBrandList();
 		return;
@@ -153,7 +180,7 @@ function downloadErrors(){
 function displayBrandList(data){
 
 	var $tbody = $('#brand-table').find('tbody');
-	$tbody.empty();
+	table.clear().draw();
 	for(var i in data){
 		var e = data[i];
 		var maxLength = 25;
@@ -166,13 +193,11 @@ function displayBrandList(data){
 		    var buttonHtml = ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>';
 		var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
 		var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
-		var row = '<tr>'
-		+ '<td>' + brand + '</td>'
-		+ '<td>'  + category + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
-		+ '</tr>';
-
-        $tbody.append(row);
+		table.row.add([
+          brand,
+          category,
+          buttonHtml
+        ]).draw();
 	}
 }
 
@@ -224,6 +249,9 @@ function displayBrand(data){
 	$("#brand-edit-form input[name=id]").val(data.id);
 	$('#edit-brand-modal').modal('toggle');
 }
+function refresh(){
+    location.reload(true);
+}
 
 //INITIALIZATION CODE
 function init(){
@@ -244,7 +272,7 @@ function init(){
         document.getElementById("upload-data").disabled=true;
     }
     document.getElementById("download-errors").disabled = true;
-//    $('#brand-table').DataTable();
+    table = $('#brand-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
 }
 $(document).ready(getBrandList);
 $(document).ready(init);

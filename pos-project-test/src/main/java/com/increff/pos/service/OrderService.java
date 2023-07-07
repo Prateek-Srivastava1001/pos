@@ -7,20 +7,9 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.increff.pos.dao.OrderDao;
-import com.increff.pos.model.InvoiceForm;
-import com.increff.pos.model.OrderItem;
-import com.increff.pos.model.OrderItemData;
-import com.increff.pos.model.OrderItemForm;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

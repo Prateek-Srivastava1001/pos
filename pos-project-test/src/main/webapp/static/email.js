@@ -21,11 +21,11 @@ function login(event){
     var username = $('#email').val();
     var password = $('#password').val();
     if(username==null ||username==""){
-            alert("Email cannot be empty");
+            dangerClick("Email cannot be empty");
             return true;
         }
     if(password==null ||password==""){
-            alert("Password cannot be empty");
+            dangerClick("Password cannot be empty");
             return true;
         }
     if(!ValidateEmail(formData[0].value)){
@@ -61,11 +61,11 @@ function signup(event){
     var username = $('#email').val();
     var password = $('#password').val();
     if(username==null ||username==""){
-        alert("Email cannot be empty");
+        dangerClick("Email cannot be empty");
         return true;
     }
     if(password==null ||password==""){
-        alert("Password cannot be empty");
+        dangerClick("Password cannot be empty");
         return true;
     }
     if(!ValidateEmail(formData[0].value)){
@@ -96,7 +96,7 @@ function ValidateEmail(email) {
     var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!pattern.test(email)) {
-    alert("Invalid email address format!");
+    dangerClick("Invalid email address format!");
     return false
   }
   return true;

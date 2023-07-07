@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 @Component
@@ -42,7 +44,9 @@ public class ConverterUtil {
         pojo.setBarcode(form.getBarcode());
         pojo.setBrand_category(brandPojo.getId());
         pojo.setName(form.getName());
-        pojo.setMrp(form.getMrp());
+        BigDecimal roundedValue = BigDecimal.valueOf(form.getMrp()).setScale(2, RoundingMode.HALF_UP);
+        double mrp = roundedValue.doubleValue();
+        pojo.setMrp(mrp);
         return pojo;
     }
 

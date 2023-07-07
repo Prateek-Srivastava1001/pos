@@ -1,4 +1,4 @@
-
+var table;
 function getOrderUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/order";
@@ -23,7 +23,7 @@ function getOrderList(){
 }
 function displayOrderList(data){
     var $tbody = $('#order-table').find('tbody');
-    	$tbody.empty();
+    	table.clear().draw();
     	for(var i in data){
     		var e = data[i];
     		var buttonHtml = ' <button onclick="displayParticularOrder(' + e.id + ')">View Order</button>'
@@ -35,13 +35,12 @@ function displayOrderList(data){
     		(parseInt(e.date_time[3])<10)?hour='0'+e.date_time[3] : hour=e.date_time[3];
     		(parseInt(e.date_time[2])<10)?date = '0'+e.date_time[2] : date = e.date_time[2];
     		(parseInt(e.date_time[1])<10)?month='0'+e.date_time[1] : month=e.date_time[1];
-    		var row = '<tr>'
-    		+ '<td>' + e.id + '</td>'
-    		+ '<td>' + date+'-'+month+'-'+e.date_time[0]+',  '
-    		         + hour+':'+minute +'</td>'
-    		+ '<td>' + buttonHtml + '</td>'
-    		+ '</tr>';
-            $tbody.append(row);
+    		var formattedDate =date+'-'+month+'-'+e.date_time[0]+',  '+ hour+':'+minute;
+            table.row.add([
+                          e.id,
+                          formattedDate,
+                          buttonHtml
+                        ]).draw();
     	}
 }
 
@@ -101,6 +100,7 @@ function init(){
     if(role=="operator"){
         document.getElementById("adminAccess").innerHTML = "";
     }
+    table = $('#order-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
 }
 $(document).ready(getOrderList);
 $(document).ready(init);
