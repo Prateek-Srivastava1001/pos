@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.increff.pos.dto.UserDto;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,57 +30,25 @@ import com.increff.pos.util.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-<span class="nc" id="L31">public class LoginController {</span>
+<span class="fc" id="L33">public class LoginController {</span>
+	@Autowired
+	UserDto dto;
 
-	@Autowired
-	private UserService service;
-	@Autowired
-	private InfoData info;
-	
 	@ApiOperation(value = &quot;Logs in a user&quot;)
 	@RequestMapping(path = &quot;/session/login&quot;, method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
-<span class="nc" id="L41">		UserPojo p = service.get(f.getEmail());</span>
-<span class="nc bnc" id="L42" title="All 4 branches missed.">		boolean authenticated = (p != null &amp;&amp; Objects.equals(p.getPassword(), f.getPassword()));</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">		if (!authenticated) {</span>
-<span class="nc" id="L44">			info.setMessage(&quot;Invalid username or password&quot;);</span>
-<span class="nc" id="L45">			return new ModelAndView(&quot;redirect:/site/login&quot;);</span>
-		}
+<span class="nc" id="L40">		return dto.login(req, f);</span>
+	}
 
-		// Create authentication object
-<span class="nc" id="L49">		Authentication authentication = convert(p);</span>
-		// Create new session
-<span class="nc" id="L51">		HttpSession session = req.getSession(true);</span>
-		// Attach Spring SecurityContext to this new session
-<span class="nc" id="L53">		SecurityUtil.createContext(session);</span>
-		// Attach Authentication object to the Security Context
-<span class="nc" id="L55">		SecurityUtil.setAuthentication(authentication);</span>
-
-<span class="nc" id="L57">		return new ModelAndView(&quot;redirect:/ui/home&quot;);</span>
-
+	@ApiOperation(value = &quot;Sign Up a new user&quot;)
+	@RequestMapping(path = &quot;/session/signup&quot;, method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ModelAndView signup(HttpServletRequest req, LoginForm form) throws ApiException{
+<span class="nc" id="L46">		return dto.signup(req, form);</span>
 	}
 
 	@RequestMapping(path = &quot;/session/logout&quot;, method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L63">		request.getSession().invalidate();</span>
-<span class="nc" id="L64">		return new ModelAndView(&quot;redirect:/site/logout&quot;);</span>
-	}
-
-	private static Authentication convert(UserPojo p) {
-		// Create principal
-<span class="nc" id="L69">		UserPrincipal principal = new UserPrincipal();</span>
-<span class="nc" id="L70">		principal.setEmail(p.getEmail());</span>
-<span class="nc" id="L71">		principal.setId(p.getId());</span>
-
-		// Create Authorities
-<span class="nc" id="L74">		ArrayList&lt;SimpleGrantedAuthority&gt; authorities = new ArrayList&lt;SimpleGrantedAuthority&gt;();</span>
-<span class="nc" id="L75">		authorities.add(new SimpleGrantedAuthority(p.getRole()));</span>
-		// you can add more roles if required
-
-		// Create Authentication
-<span class="nc" id="L79">		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,</span>
-				authorities);
-<span class="nc" id="L81">		return token;</span>
+<span class="nc" id="L51">		return dto.logout(request, response);</span>
 	}
 
 }

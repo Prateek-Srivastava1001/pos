@@ -1,7 +1,7 @@
 
 function getOrderUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/admin/order";
+	return baseUrl + "/api/order";
 }
 
 var jsonData = [];
@@ -174,8 +174,8 @@ var $tbody = $('#order-item-table').find('tbody');
            var row = '<tr>'
            + '<td>' + e.barcode + '</td>' //barcode
            + '<td>'  + e.quantity + '</td>' //mrp
-           + '<td>'  + Math.round(parseFloat(e.selling_price)*100)/100 + '</td>' //quantity
-           + '<td>Rs '  + amount + '</td>' //total
+           + '<td>'  + (Math.round(parseFloat(e.selling_price)*100)/100).toFixed(2) + '</td>' //quantity
+           + '<td>Rs '  + amount.toFixed(2) + '</td>' //total
            + '<td>' + editButtonHtml + '</td>'
            + '<td>' + deleteButtonHtml + '</td>'
            + '</tr>';
@@ -184,7 +184,7 @@ var $tbody = $('#order-item-table').find('tbody');
         }
         sum = Math.round(sum * 100) / 100
         if(addedData.length>0){
-             var totalAmt = '<td>' + ' Total Payable = Rs ' + sum  + '</td>';
+             var totalAmt = '<td>' + ' Total Payable = Rs ' + sum.toFixed(2)  + '</td>';
               $tbody.append(totalAmt);
         }
 }
@@ -219,13 +219,6 @@ function init(){
 	$('#add-product').click(addProduct);
 	$('#upload-data').click(submit);
 	$('#update-order').click(updateOrder);
-	var roleElement = document.getElementById('role');
-        var role = roleElement.innerText;
-        if(role=="operator"){
-            document.getElementById("add-product").disabled = true;
-            document.getElementById("upload-data").disabled = true;
-            document.getElementById("update-order").disabled = true;
-        }
 }
 
 $(document).ready(init);

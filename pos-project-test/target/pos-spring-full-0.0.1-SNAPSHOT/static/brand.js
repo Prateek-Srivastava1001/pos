@@ -1,16 +1,30 @@
-
+var table;
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/brand";
 }
-
+function getAdminBrandUrl(){
+    var baseUrl = $("meta[name=baseUrl]").attr("content")
+    	return baseUrl + "/api/admin/brand";
+}
 //BUTTON ACTIONS
 function addBrand(event){
 	//Set the values to update
 	var $form = $("#brand-form");
+	var formData = $form.serializeArray();
+	var brand = formData[0].value;
+	var category = formData[1].value;
+	if(brand==null ||brand==""){
+        warnClick("Brand cannot be empty");
+        return;
+    }
+    if(category==null ||category==""){
+        warnClick("Category cannot be empty");
+        return;
+    }
 	var json = toJson($form);
 	console.log(json);
-	var url = getBrandUrl();
+	var url = getAdminBrandUrl();
 
 	$.ajax({
 	   url: url,
@@ -20,6 +34,9 @@ function addBrand(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        successClick("Data added successfully");
+	        $("#brand-form input[name=brand]").val("");
+	        $("#brand-form input[name=category]").val("");
 	   		getBrandList();
 	   },
 	   error: handleAjaxError
@@ -32,10 +49,21 @@ function updateBrand(event){
 	$('#edit-brand-modal').modal('toggle');
 	//Get the ID
 	var id = $("#brand-edit-form input[name=id]").val();
-	var url = getBrandUrl() + "/" + id;
+	var url = getAdminBrandUrl() + "/" + id;
 
 	//Set the values to update
 	var $form = $("#brand-edit-form");
+	var formData = $form.serializeArray();
+    	var brand = formData[0].value;
+    	var category = formData[1].value;
+    	if(brand==null ||brand==""){
+            dangerClick("Brand cannot be empty");
+            return true;
+        }
+        if(category==null ||category==""){
+            dangerClick("Category cannot be empty");
+            return true;
+        }
 	var json = toJson($form);
 
 	$.ajax({
@@ -46,6 +74,7 @@ function updateBrand(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        successClick("Data updated successfully");
 	   		getBrandList();
 	   },
 	   error: handleAjaxError
@@ -65,6 +94,7 @@ function getBrandList(){
 	   },
 	   error: handleAjaxError
 	});
+
 }
 
 
@@ -80,7 +110,7 @@ function processData(){
 	var extension = getExtension($('#brandFile').val());
 	console.log(extension);
     if(extension.toLowerCase() != 'tsv'){
-    alert('Please Upload File with extension .tsv only...');
+    dangerClick('Please Upload File with extension .tsv only...');
     console.log("INVALID FILE TYPE...");
     return;
     }
@@ -95,7 +125,8 @@ function getExtension(filename) {
 function readFileDataCallback(results){
 	fileData = results.data;
 	if(fileData.length>5000){
-	alert("Cannot upload a file with more than 5000 lines");
+	    dangerClick("Cannot upload a file with more than 5000 lines");
+	    return;
 	}
 	uploadRows();
 }
@@ -105,6 +136,14 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    if(errorData.length>0){
+    	    $("#download-errors").removeAttr("disabled");
+    	    warnClick("There were some issues with the uploaded file, please download errors to find more");
+    	}
+    	else{
+    	successClick("File upload Successful")
+    	}
+    	getBrandList();
 		return;
 	}
 
@@ -113,7 +152,7 @@ function uploadRows(){
 	processCount++;
 
 	var json = JSON.stringify(row);
-	var url = getBrandUrl();
+	var url = getAdminBrandUrl();
     console.log(json);
 	//Make ajax call
 	$.ajax({
@@ -127,7 +166,8 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
-	   		row.error=response.responseText
+	        row.lineNumber=processCount;
+	   		row.error=response.responseText;
 	   		errorData.push(row);
 	   		uploadRows();
 	   }
@@ -142,18 +182,26 @@ function downloadErrors(){
 //UI DISPLAY METHODS
 
 function displayBrandList(data){
+
 	var $tbody = $('#brand-table').find('tbody');
-	$tbody.empty();
+	table.clear().draw();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>'
-		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
-		+ '<td>' + e.brand + '</td>'
-		+ '<td>'  + e.category + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
-		+ '</tr>';
-        $tbody.append(row);
+		var maxLength = 25;
+		var roleElement = document.getElementById('role');
+        var role = roleElement.innerText;
+        if(role=="operator"){
+        var buttonHtml = ' <button class="edit_btn" onclick="displayEditBrand(' + e.id + ')" disabled>edit</button>'
+        }
+        else
+		    var buttonHtml = ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>';
+		var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
+		var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
+		table.row.add([
+          brand,
+          category,
+          buttonHtml
+        ]).draw();
 	}
 }
 
@@ -190,7 +238,7 @@ function updateUploadDialog(){
 
 function updateFileName(){
 	var $file = $('#brandFile');
-	var fileName = $file.val();
+	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#brandFileName').html(fileName);
 }
 
@@ -205,21 +253,35 @@ function displayBrand(data){
 	$("#brand-edit-form input[name=id]").val(data.id);
 	$('#edit-brand-modal').modal('toggle');
 }
-
 function refresh(){
     location.reload(true);
 }
+
 //INITIALIZATION CODE
 function init(){
 	$('#add-brand').click(addBrand);
 	$('#update-brand').click(updateBrand);
-	$('#refresh-data').click(refresh);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#brandFile').on('change', updateFileName);
-}
+    var roleElement = document.getElementById('role');
+    var role = roleElement.innerText;
 
-$(document).ready(init);
+    if(role=="operator"){
+        document.getElementById("add-brand").disabled = true;
+        document.getElementById("update-brand").disabled = true;
+        document.getElementById("process-data").disabled = true;
+        document.getElementById("download-errors").disabled = true;
+        document.getElementById("upload-data").disabled=true;
+        document.getElementById("brand-form").innerHTML = "";
+        document.getElementById("edit-brand-modal").innerHTML = "";
+//      document.getElementById("upload-brand-modal").innerHTML = "";
+    }
+    document.getElementById("download-errors").disabled = true;
+    table = $('#brand-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
+}
 $(document).ready(getBrandList);
+$(document).ready(init);
+
 

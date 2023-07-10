@@ -3,10 +3,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import com.increff.pos.dto.BrandDto;
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.BrandService;
+import com.increff.pos.util.ConverterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,53 +22,33 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 @Api
 @RestController
-<span class="nc" id="L23">public class BrandApiController {</span>
+<span class="fc" id="L25">public class BrandApiController {</span>
     @Autowired
-    private BrandService service;
+    private BrandDto dto;
+
 
     @ApiOperation(value = &quot;Adds a brand-category combination to database&quot;)
-    @RequestMapping(path = &quot;/api/brand&quot;, method = RequestMethod.POST)
+    @RequestMapping(path = &quot;/api/admin/brand&quot;, method = RequestMethod.POST)
     public void add(@RequestBody BrandForm form) throws ApiException{
-<span class="nc" id="L30">        BrandPojo p = convert(form);</span>
-<span class="nc" id="L31">        service.add(p);</span>
-<span class="nc" id="L32">    }</span>
-
+<span class="nc" id="L33">        dto.add(form);</span>
+<span class="nc" id="L34">    }</span>
+    //Using in edit
     @ApiOperation(value = &quot;Gets by ID&quot;)
     @RequestMapping(path = &quot;/api/brand/{id}&quot;, method = RequestMethod.GET)
     public BrandData get(@PathVariable int id) throws ApiException{
-<span class="nc" id="L37">        BrandPojo pojo = service.get(id);</span>
-<span class="nc" id="L38">        return convert(pojo);</span>
+<span class="nc" id="L39">        return dto.get(id);</span>
     }
 
     @ApiOperation(value = &quot;Gets list of all brand-category combination (Also used for brand report)&quot;)
     @RequestMapping(path = &quot;/api/brand&quot;, method = RequestMethod.GET)
     public List&lt;BrandData&gt; getAll(){
-<span class="nc" id="L44">        List&lt;BrandPojo&gt; list = service.getAll();</span>
-<span class="nc" id="L45">        List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        for(BrandPojo p: list){</span>
-<span class="nc" id="L47">            list2.add(convert(p));</span>
-<span class="nc" id="L48">        }</span>
-<span class="nc" id="L49">        return list2;</span>
+<span class="nc" id="L45">        return dto.getAll();</span>
     }
     @ApiOperation(value = &quot;Updates a record&quot;)
-    @RequestMapping(path = &quot;/api/brand/{id}&quot;, method = RequestMethod.PUT)
+    @RequestMapping(path = &quot;/api/admin/brand/{id}&quot;, method = RequestMethod.PUT)
     public void update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException{
-<span class="nc" id="L54">        BrandPojo pojo = convert(form);</span>
-<span class="nc" id="L55">        service.update(id, pojo);</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L50">        dto.update(id, form);</span>
+<span class="nc" id="L51">    }</span>
 
-    private static BrandData convert(BrandPojo pojo){
-<span class="nc" id="L59">        BrandData data = new BrandData();</span>
-<span class="nc" id="L60">        data.setCategory(pojo.getCategory());</span>
-<span class="nc" id="L61">        data.setBrand(pojo.getBrand());</span>
-<span class="nc" id="L62">        data.setId(pojo.getId());</span>
-<span class="nc" id="L63">        return data;</span>
-    }
-    private static BrandPojo convert(BrandForm form){
-<span class="nc" id="L66">        BrandPojo pojo = new BrandPojo();</span>
-<span class="nc" id="L67">        pojo.setBrand(form.getBrand());</span>
-<span class="nc" id="L68">        pojo.setCategory(form.getCategory());</span>
-<span class="nc" id="L69">        return pojo;</span>
-    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

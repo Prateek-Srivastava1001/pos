@@ -1,10 +1,8 @@
 package com.increff.pos.util;
 
 import com.increff.pos.model.*;
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.pojo.UserPojo;
+import com.increff.pos.pojo.*;
+import com.increff.pos.service.ApiException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -99,5 +97,6 @@ public class ConverterUtil {
         }
         return pojo;
     }
+
 
 }

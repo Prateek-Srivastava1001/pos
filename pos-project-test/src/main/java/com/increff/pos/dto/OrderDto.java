@@ -54,7 +54,8 @@ public class OrderDto {
     public void addItems(List<OrderItemForm> formList) throws ApiException{
         for(OrderItemForm form:formList){
             normalize(form);
-            OrderItemPojo pojo = convert(form);
+            int productId = productService.getByBarcode(form.getBarcode()).getId();
+            OrderItemPojo pojo = convert(form, productId);
             orderItemService.add(pojo);
             //Updating in Inventory
             InventoryPojo inventoryPojo = inventoryService.getCheck(pojo.getProduct_id());
@@ -65,7 +66,8 @@ public class OrderDto {
     }
     public void checker(OrderItemForm form) throws ApiException{
         normalize(form);
-        OrderItemPojo pojo = convert(form);
+        int productId = productService.getByBarcode(form.getBarcode()).getId();
+        OrderItemPojo pojo = convert(form, productId);
         orderItemService.checks(pojo);
     }
     public List<OrderItemData> getOrderItemsByOrderId(int order_id) throws ApiException{
@@ -108,10 +110,11 @@ public class OrderDto {
         invoiceForm.setOrderItemList(dataList);
         return invoiceForm;
     }
-    private OrderItemPojo convert(OrderItemForm form) throws ApiException {
+
+    private OrderItemPojo convert(OrderItemForm form, int productId) throws ApiException {
         OrderItemPojo pojo = new OrderItemPojo();
         pojo.setOrder_id(orderId);
-        pojo.setProduct_id(productService.getByBarcode(form.getBarcode()).getId());
+        pojo.setProduct_id(productId);
         pojo.setQuantity(form.getQuantity());
         BigDecimal roundedValue = BigDecimal.valueOf(form.getSelling_price()).setScale(2, RoundingMode.HALF_UP);
         double sellingPrice = roundedValue.doubleValue();

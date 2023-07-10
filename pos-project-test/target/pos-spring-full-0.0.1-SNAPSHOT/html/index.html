@@ -2,29 +2,48 @@
 
 <html lang="en">
 
-<head th:replace="snippets.html :: name_head"></head>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="baseUrl" th:attr="content=${baseUrl}">
+
+  <script src="https://kit.fontawesome.com/c30beb553f.js" crossorigin="anonymous"></script>
+
+
+  <link rel="stylesheet" th:href="@{/static/index.css}">
+</head>
 
 <body>
-
-<nav th:replace="snippets.html :: name_site_navbar"></nav>
-
-<div class="container">
-<div class="row">
-<div class="col-6">
- 
-<div class="jumbotron">
-  <h1 class="display-4">Hello, world!</h1>
-  <p class="lead">Welcome to Increff Spring Tutorial</p>
-  <hr class="my-4">
-  <p>This application teaches you Spring concepts and creating awesome web applications</p>
-  <a class="btn btn-primary btn-lg" th:href="@{/site/login}" role="button">Get Started</a>
+<!-- Start Landing Page -->
+<div class="landing-page">
+  <header>
+    <div class="container">
+      <a th:href="@{/}" class="logo">
+        <img th:src="@{/static/logo-new.png}" class="d-inline-block align-top" alt="" width="200">
+      </a>
+      <ul class="links">
+        <li><a th:href="@{/site/signup}" role="button">
+          Sign Up
+        </a></li>
+      </ul>
+    </div>
+  </header>
+  <div class="content">
+    <div class="container">
+      <div class="info">
+        <h1>Your POS Application</h1>
+        <p>POS application to make your life simple and give your business "Incredible Efficiency"</p>
+        <div>&nbsp;</div>
+        <a th:href="@{/site/login}" class="button">Login</a>
+      </div>
+      <div class="image">
+        <img src="https://i.postimg.cc/65QxYYzh/001234.png">
+      </div>
+    </div>
+  </div>
 </div>
-
-</div>
-</div>
-</div> <!--Container-->
-
-<footer th:replace="snippets.html :: name_footer"></footer>
+<!-- End Landing Page -->
 
 </body>
 

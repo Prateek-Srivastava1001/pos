@@ -44,7 +44,13 @@ function displayInventoryReportList(data){
 
 function downloadReport(){
     var fileName = 'InventoryReport.tsv';
+    if(filteredData.length>0){
     writeReportData(filteredData, fileName);
+    successClick("Report Downloaded Successfully");
+    }
+    else{
+    warnClick("Empty Report");
+    }
 }
 //INITIALIZATION CODE
 function init(){

@@ -4,6 +4,10 @@ function getSchedulerReportUrl(){
 	return baseUrl + "/api/reports/scheduler";
 }
 
+function getGenerateReportUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/reports/scheduler/generate";
+}
 
 function getSchedulerList(){
 	var url = getSchedulerReportUrl();
@@ -17,11 +21,24 @@ function getSchedulerList(){
 	});
 }
 
+function generateReport(){
+	var url = getGenerateReportUrl();
+	$.ajax({
+	   url: url,
+	   type: 'GET',
+	   success: function(data) {
+	   		getSchedulerList();
+	   		successClick("Report Generated Successfully");
+	   },
+	   error: handleAjaxError
+	});
+}
+
 function getFilteredList(event) {
     var dateInput = document.getElementById("inputSD");
     var dateInput2 = document.getElementById("inputED");
     if((!dateInput.value) || (!dateInput2.value) ){
-        warnClick("Do not keep date field empty");
+        warnClick("Empty date field not supported");
         return;
     }
     var $form = $("#sales-form");
@@ -73,7 +90,13 @@ function resetForm() {
 }
 function downloadReport(){
     var fileName = 'SchedulerReport.tsv';
+    if(filteredData.length>0){
     writeReportData(filteredData, fileName);
+    successClick("Report Downloaded Successfully");
+    }
+    else{
+        warnClick("Report is empty");
+    }
 }
 
 function validateDate(input) {
@@ -90,16 +113,18 @@ function validateDate(input) {
     input.setCustomValidity("");
   }
 }
+
 //INITIALIZATION CODE
 function init() {
    $("#apply-filter").click(getFilteredList);
-   $("#download-report").click(downloadReport)
+   $("#download-report").click(downloadReport);
+   $("#generate-report").click(generateReport);
     var dateInput = document.getElementById("inputSD");
     var dateInput2 = document.getElementById("inputED");
     var today = new Date();
     dateInput.setAttribute("max", today.toISOString().substring(0, 10));
     dateInput2.setAttribute("max", today.toISOString().substring(0, 10));
-    table = $('#brand-report-table').DataTable();
+    table = $('#brand-report-table').DataTable({'columnDefs': [ {'targets': [1,2,3],'orderable': false }]});
  }
 $(document).ready(getSchedulerList);
 $(document).ready(init);

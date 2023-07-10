@@ -12,16 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-
-@EnableAsync
-<span class="nc" id="L24">public class SalesScheduler {</span>
+@Configuration
+@EnableScheduling
+<span class="fc" id="L27">public class SalesScheduler {</span>
     @Autowired
     SchedulerService schedulerService;
     @Autowired
@@ -29,35 +32,36 @@ import java.util.List;
     @Autowired
     OrderItemService orderItemService;
     @Async
-    @Scheduled(cron = &quot;0 0/1 * 1/1 * ? *&quot;)
+    @Scheduled(cron = &quot;59 59 23 * * *&quot;)
     public void createReport() throws ApiException {
-<span class="nc" id="L34">        System.out.println(&quot;Ran Scheduler...&quot;);</span>
-<span class="nc" id="L35">        SchedulerPojo pojo = new SchedulerPojo();</span>
-<span class="nc" id="L36">        LocalDate date = LocalDate.now();</span>
-<span class="nc" id="L37">        int totalItems = 0;</span>
-<span class="nc" id="L38">        double totalRevenue = 0.0;</span>
-<span class="nc" id="L39">        LocalDateTime startDate = date.atStartOfDay();</span>
-<span class="nc" id="L40">        LocalDateTime endDate =  LocalDateTime.of(date, LocalTime.MAX);</span>
+<span class="nc" id="L37">        System.out.println(&quot;Ran Scheduler...&quot;);</span>
+<span class="nc" id="L38">        SchedulerPojo pojo = new SchedulerPojo();</span>
+<span class="nc" id="L39">        LocalDate date = LocalDate.now();</span>
+<span class="nc" id="L40">        int totalItems = 0;</span>
+<span class="nc" id="L41">        double totalRevenue = 0.0;</span>
+<span class="nc" id="L42">        LocalDateTime startDate = date.atStartOfDay();</span>
+<span class="nc" id="L43">        LocalDateTime endDate =  LocalDateTime.of(date, LocalTime.MAX);</span>
 
-<span class="nc" id="L42">        List&lt;OrderPojo&gt; orderPojoList = orderService.getByDate(startDate,endDate);</span>
-<span class="nc" id="L43">        int totalOrders = orderPojoList.size();</span>
+<span class="nc" id="L45">        List&lt;OrderPojo&gt; orderPojoList = orderService.getByDate(startDate,endDate);</span>
+<span class="nc" id="L46">        int totalOrders = orderPojoList.size();</span>
 
-<span class="nc bnc" id="L45" title="All 2 branches missed.">        for (OrderPojo orderPojo : orderPojoList) {</span>
-<span class="nc" id="L46">            int id = orderPojo.getId();</span>
-<span class="nc" id="L47">            List&lt;OrderItemData&gt; orderItemPojoList = orderItemService.getAll(id);</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">            for (OrderItemData data: orderItemPojoList) {</span>
-<span class="nc" id="L49">                totalItems += data.getQuantity();</span>
-<span class="nc" id="L50">                totalRevenue += (data.getQuantity() * data.getSelling_price());</span>
-<span class="nc" id="L51">            }</span>
-<span class="nc" id="L52">        }</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        for (OrderPojo orderPojo : orderPojoList) {</span>
+<span class="nc" id="L49">            int id = orderPojo.getId();</span>
+<span class="nc" id="L50">            List&lt;OrderItemData&gt; orderItemPojoList = orderItemService.getAll(id);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">            for (OrderItemData data: orderItemPojoList) {</span>
+<span class="nc" id="L52">                totalItems += data.getQuantity();</span>
+<span class="nc" id="L53">                totalRevenue += (data.getQuantity() * data.getSelling_price());</span>
+<span class="nc" id="L54">            }</span>
+<span class="nc" id="L55">        }</span>
+<span class="nc" id="L56">        BigDecimal roundedValue = BigDecimal.valueOf(totalRevenue).setScale(2, RoundingMode.HALF_UP);</span>
+<span class="nc" id="L57">        totalRevenue = roundedValue.doubleValue();</span>
+<span class="nc" id="L58">        pojo.setDate(date);</span>
+<span class="nc" id="L59">        pojo.setInvoiced_orders_count(totalOrders);</span>
+<span class="nc" id="L60">        pojo.setInvoiced_items_count(totalItems);</span>
+<span class="nc" id="L61">        pojo.setTotal_revenue(totalRevenue);</span>
 
-<span class="nc" id="L54">        pojo.setDate(date);</span>
-<span class="nc" id="L55">        pojo.setInvoiced_orders_count(totalOrders);</span>
-<span class="nc" id="L56">        pojo.setInvoiced_items_count(totalItems);</span>
-<span class="nc" id="L57">        pojo.setTotal_revenue(totalRevenue);</span>
+<span class="nc" id="L63">        schedulerService.add(pojo);</span>
 
-<span class="nc" id="L59">        schedulerService.add(pojo);</span>
-
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L65">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -2,55 +2,25 @@
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
+@Getter
+<span class="nc" id="L12">@Setter</span>
 @Entity
-<span class="nc" id="L13">public class SchedulerPojo {</span>
+@Table(name=&quot;DailyReport&quot;)
+<span class="fc" id="L15">public class SchedulerPojo {</span>
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+<span class="nc" id="L18">    private int id;</span>
 
     @JsonFormat(pattern = &quot;dd-MM-yyyy&quot;)
-    private LocalDate date;
-    private int invoiced_orders_count;
-    private int invoiced_items_count;
-    private double total_revenue;
-
-    public LocalDate getDate() {
-<span class="nc" id="L25">        return date;</span>
-    }
-
-    public void setDate(LocalDate date) {
-<span class="nc" id="L29">        this.date = date;</span>
-<span class="nc" id="L30">    }</span>
-
-    public int getInvoiced_orders_count() {
-<span class="nc" id="L33">        return invoiced_orders_count;</span>
-    }
-
-    public void setInvoiced_orders_count(int invoiced_orders_count) {
-<span class="nc" id="L37">        this.invoiced_orders_count = invoiced_orders_count;</span>
-<span class="nc" id="L38">    }</span>
-
-    public int getInvoiced_items_count() {
-<span class="nc" id="L41">        return invoiced_items_count;</span>
-    }
-
-    public void setInvoiced_items_count(int invoiced_items_count) {
-<span class="nc" id="L45">        this.invoiced_items_count = invoiced_items_count;</span>
-<span class="nc" id="L46">    }</span>
-
-    public double getTotal_revenue() {
-<span class="nc" id="L49">        return total_revenue;</span>
-    }
-
-    public void setTotal_revenue(double total_revenue) {
-<span class="nc" id="L53">        this.total_revenue = total_revenue;</span>
-<span class="nc" id="L54">    }</span>
+<span class="nc" id="L21">    private LocalDate date;</span>
+<span class="nc" id="L22">    private int invoiced_orders_count;</span>
+<span class="nc" id="L23">    private int invoiced_items_count;</span>
+<span class="nc" id="L24">    private double total_revenue;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

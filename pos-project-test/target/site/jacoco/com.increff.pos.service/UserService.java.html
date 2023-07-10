@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.increff.pos.model.LoginForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,39 +12,40 @@ import com.increff.pos.dao.UserDao;
 import com.increff.pos.pojo.UserPojo;
 
 @Service
-<span class="nc" id="L14">public class UserService {</span>
-
+<span class="fc" id="L15">public class UserService{</span>
 	@Autowired
 	private UserDao dao;
 
 	@Transactional
-	public void add(UserPojo p) throws ApiException {
-<span class="nc" id="L21">		normalize(p);</span>
-<span class="nc" id="L22">		UserPojo existing = dao.select(p.getEmail());</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">		if (existing != null) {</span>
-<span class="nc" id="L24">			throw new ApiException(&quot;User with given email already exists&quot;);</span>
+	public boolean add(UserPojo p) throws ApiException {
+<span class="nc bnc" id="L21" title="All 4 branches missed.">		if(p.getEmail()==null || p.getEmail() == &quot;&quot;){</span>
+<span class="nc" id="L22">			throw new ApiException(&quot;Email cannot be empty&quot;);</span>
 		}
-<span class="nc" id="L26">		dao.insert(p);</span>
-<span class="nc" id="L27">	}</span>
+<span class="nc bnc" id="L24" title="All 4 branches missed.">		if(p.getPassword()==null || p.getPassword() == &quot;&quot;){</span>
+<span class="nc" id="L25">			throw new ApiException(&quot;Password cannot be empty&quot;);</span>
+		}
+<span class="nc" id="L27">		UserPojo existing = dao.select(p.getEmail());</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">		if (existing != null) {</span>
+<span class="nc" id="L29">			return false;</span>
+		}
+<span class="nc" id="L31">		dao.insert(p);</span>
+<span class="nc" id="L32">		return true;</span>
+	}
 
 	@Transactional(rollbackOn = ApiException.class)
 	public UserPojo get(String email) throws ApiException {
-<span class="nc" id="L31">		return dao.select(email);</span>
+<span class="nc" id="L37">		return dao.select(email);</span>
 	}
 
 	@Transactional
 	public List&lt;UserPojo&gt; getAll() {
-<span class="nc" id="L36">		return dao.selectAll();</span>
+<span class="nc" id="L42">		return dao.selectAll();</span>
 	}
 
 	@Transactional
 	public void delete(int id) {
-<span class="nc" id="L41">		dao.delete(id);</span>
-<span class="nc" id="L42">	}</span>
+<span class="nc" id="L47">		dao.delete(id);</span>
+<span class="nc" id="L48">	}</span>
 
-	protected static void normalize(UserPojo p) {
-<span class="nc" id="L45">		p.setEmail(p.getEmail().toLowerCase().trim());</span>
-<span class="nc" id="L46">		p.setRole(p.getRole().toLowerCase().trim());</span>
-<span class="nc" id="L47">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

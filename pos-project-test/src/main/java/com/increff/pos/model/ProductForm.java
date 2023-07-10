@@ -1,49 +1,25 @@
 package com.increff.pos.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+@Getter
+@Setter
 public class ProductForm {
+    @NotBlank
+    @Size(min=1, max=15)
     private String barcode;
+    @NotBlank
+    @Size(min=1, max=100)
     private String brand;
+    @NotBlank
+    @Size(min=1, max=100)
     private String category;
+    @NotBlank
+    @Size(min=1, max=100)
     private String name;
     private double mrp;
-
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getMrp() {
-        return mrp;
-    }
-
-    public void setMrp(double mrp) {
-        this.mrp = mrp;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }

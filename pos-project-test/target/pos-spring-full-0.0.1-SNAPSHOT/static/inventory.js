@@ -1,41 +1,28 @@
-
+var table;
 function getInventoryUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/inventory";
 }
-
-//BUTTON ACTIONS
-function addInventory(event){
-	//Set the values to update
-	var $form = $("#inventory-form");
-	var json = toJson($form);
-	var url = getInventoryUrl();
-
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },
-	   success: function(response) {
-	   		getInventoryList();
-	   },
-	   error: handleAjaxError
-	});
-
-	return false;
+function getAdminInventoryUrl(){
+    var baseUrl = $("meta[name=baseUrl]").attr("content")
+    return baseUrl + "/api/admin/inventory";
 }
 
+//BUTTON ACTIONS
 function updateInventory(event){
 	$('#edit-inventory-modal').modal('toggle');
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();
-	var url = getInventoryUrl() + "/" + id;
+	var url = getAdminInventoryUrl() + "/" + id;
 
 	//Set the values to update
 	var $form = $("#inventory-edit-form");
-	var json = toJson($form);
+	var formData = $form.serializeArray();
+	if(parseFloat(formData[0].value)%1!==0){
+        dangerClick("Please enter a valid integer value for quantity");
+        return;
+    }
+	var json = fromSerializedToJson(formData);
 
 	$.ajax({
 	   url: url,
@@ -45,6 +32,7 @@ function updateInventory(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        successClick("Data updated successfully");
 	   		getInventoryList();
 	   },
 	   error: handleAjaxError
@@ -75,11 +63,23 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#inventoryFile')[0].files[0];
+	//Checking for .tsv extension
+    	var extension = getExtension($('#inventoryFile').val());
+    	console.log(extension);
+        if(extension.toLowerCase() != 'tsv'){
+        dangerClick('Please Upload File with extension .tsv only...');
+        console.log("INVALID FILE TYPE...");
+        return;
+        }
 	readFileData(file, readFileDataCallback);
 }
 
 function readFileDataCallback(results){
 	fileData = results.data;
+	if(fileData.length>5000){
+    	    dangerClick("Cannot upload a file with more than 5000 lines");
+    	    return;
+    	}
 	uploadRows();
 }
 
@@ -88,16 +88,22 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    if(errorData.length>0){
+	        $("#download-errors").removeAttr("disabled");
+	        warnClick("There were some issues with the uploaded file, please download errors to find more");
+	    }
+	    else{
+	    successClick("File upload successful");
+	    }
+	    getInventoryList();
 		return;
 	}
 
 	//Process next row
 	var row = fileData[processCount];
 	processCount++;
-    id = row.id;
 	var json = JSON.stringify(row);
-	var url = getInventoryUrl() + "/" + id;
-
+	var url = getAdminInventoryUrl();
 	//Make ajax call
 	$.ajax({
 	   url: url,
@@ -110,6 +116,7 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
+	        row.lineNumber=processCount;
 	   		row.error=response.responseText
 	   		errorData.push(row);
 	   		uploadRows();
@@ -126,16 +133,21 @@ function downloadErrors(){
 
 function displayInventoryList(data){
 	var $tbody = $('#inventory-table').find('tbody');
-	$tbody.empty();
+	table.clear().draw();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>'
-		var row = '<tr>'
-		+ '<td>' + e.barcode + '</td>'
-		+ '<td>' + e.quantity + '</td>'
-		+ '<td>' + buttonHtml + '</td>'
-		+ '</tr>';
-        $tbody.append(row);
+		var roleElement = document.getElementById('role');
+        var role = roleElement.innerText;
+        if(role=="operator"){
+            var buttonHtml = ' <button class="edit_btn" disabled>edit</button>';
+        }
+        else
+		    var buttonHtml = ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>';
+        table.row.add([
+                  e.barcode,
+                  e.quantity,
+                  buttonHtml
+                ]).draw();
 	}
 }
 
@@ -172,7 +184,7 @@ function updateUploadDialog(){
 
 function updateFileName(){
 	var $file = $('#inventoryFile');
-	var fileName = $file.val();
+	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#inventoryFileName').html(fileName);
 }
 
@@ -187,18 +199,41 @@ function displayInventory(data){
 	$('#edit-inventory-modal').modal('toggle');
 }
 
-function refresh(){
-    location.reload(true);
+function getExtension(filename) {
+    console.log(filename);
+  var parts = filename.split('.');
+  console.log(parts);
+  return parts[parts.length - 1];
 }
+ function fromSerializedToJson(serialized){
+     var s = '';
+     var data = {};
+     for(s in serialized){
+         data[serialized[s]['name']] = serialized[s]['value']
+     }
+     var json = JSON.stringify(data);
+     return json;
+ }
 //INITIALIZATION CODE
 function init(){
-	$('#add-inventory').click(addInventory);
 	$('#update-inventory').click(updateInventory);
-	$('#refresh-data').click(refresh);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
-    $('#inventoryFile').on('change', updateFileName)
+    $('#inventoryFile').on('change', updateFileName);
+
+    var roleElement = document.getElementById('role');
+    var role = roleElement.innerText;
+
+    if(role=="operator"){
+        document.getElementById("update-inventory").disabled = true;
+        document.getElementById("upload-data").disabled = true;
+        document.getElementById("process-data").disabled = true;
+        document.getElementById("inventory-form").innerHTML = "";
+        document.getElementById("edit-inventory-modal").innerHTML = "";
+    }
+    document.getElementById("download-errors").disabled = true;
+    table = $('#inventory-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
 }
 
 $(document).ready(init);

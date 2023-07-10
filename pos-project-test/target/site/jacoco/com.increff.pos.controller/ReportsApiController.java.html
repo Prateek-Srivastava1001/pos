@@ -3,12 +3,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import com.increff.pos.dto.ReportsDto;
 import com.increff.pos.model.ReportsData;
 import com.increff.pos.model.ReportsForm;
 import com.increff.pos.pojo.SchedulerPojo;
-import com.increff.pos.scheduler.SalesScheduler;
-import com.increff.pos.service.ReportsService;
-import com.increff.pos.service.SchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,36 +19,37 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
-<span class="nc" id="L24">public class ReportsApiController {</span>
+<span class="fc" id="L22">public class ReportsApiController {</span>
     @Autowired
-    private SchedulerService schedulerService;
-    @Autowired
-    ReportsService reportsService;
-    @Autowired
-    private SalesScheduler scheduler;
+    ReportsDto dto;
 
     @ApiOperation(value = &quot;Gets list of scheduler report&quot;)
     @RequestMapping(path = &quot;/api/reports/scheduler&quot;, method = RequestMethod.GET)
     public List&lt;SchedulerPojo&gt; getScheduledData(){
-<span class="nc" id="L35">        return schedulerService.getAll();</span>
+<span class="nc" id="L29">        return dto.getScheduledData();</span>
     }
-    @ApiOperation(value = &quot;Gets list of scheduler report&quot;)
+    @ApiOperation(value = &quot;Generates scheduler report&quot;)
     @RequestMapping(path = &quot;/api/reports/scheduler/generate&quot;, method = RequestMethod.GET)
     public void generateDailyReport() throws ApiException {
-<span class="nc" id="L40">        scheduler.createReport();</span>
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L34">        dto.generateDailyReport();</span>
+<span class="nc" id="L35">    }</span>
 
+    @ApiOperation(value = &quot;Gets list of scheduler report&quot;)
+    @RequestMapping(path = &quot;/api/reports/scheduler&quot;, method = RequestMethod.POST)
+    public List&lt;SchedulerPojo&gt; getByDate(@RequestBody ReportsForm form) throws ApiException{
+<span class="nc" id="L40">        return dto.getByDate(form);</span>
+    }
 
     @ApiOperation(value = &quot;Gets list of inventory report&quot;)
     @RequestMapping(path = &quot;/api/reports/inventory&quot;, method = RequestMethod.GET)
     public List&lt;ReportsData&gt; inventoryReport() throws ApiException {
-<span class="nc" id="L47">        return reportsService.getInventoryReport();</span>
+<span class="nc" id="L46">        return dto.getInventoryReport();</span>
     }
 
     @ApiOperation(value = &quot;gets sales report for particular timeline&quot;)
     @RequestMapping(path = &quot;/api/reports/sales&quot;, method = RequestMethod.POST)
     public List&lt;ReportsData&gt; salesReport(@RequestBody ReportsForm form) throws ApiException {
-<span class="nc" id="L53">        return reportsService.getSalesReport(form);</span>
+<span class="nc" id="L52">        return dto.getSalesReport(form);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

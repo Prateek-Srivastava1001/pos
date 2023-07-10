@@ -32,7 +32,7 @@ public class BrandApiController {
     public void add(@RequestBody BrandForm form) throws ApiException{
         dto.add(form);
     }
-
+    //Using in edit
     @ApiOperation(value = "Gets by ID")
     @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.GET)
     public BrandData get(@PathVariable int id) throws ApiException{

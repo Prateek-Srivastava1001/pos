@@ -15,7 +15,7 @@
     <!-- Top row can add target="_blank" rel="noopener noreferrer" for opening in new tab-->
     <div class="row">
         <div class="col-12" id="adminAccess">
-            <a class="btn btn-primary btn-lg" th:href="@{/ui/admin/create-order}" role="button" >Create New Order</a>
+            <a class="btn btn-primary btn-lg" th:href="@{/ui/create-order}" role="button" >Create New Order</a>
         </div>
     </div>
 
@@ -32,8 +32,8 @@
                 <thead>
                 <tr>
                     <th scope="col">Order Id</th>
-                    <th scope="col">Created At</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col" data-orderable="false">Created At</th>
+                    <th scope="col" data-orderable="false">Actions</th>
                 </tr>
                 </thead>
                 <tbody>

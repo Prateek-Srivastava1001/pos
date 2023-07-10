@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.increff.pos.util.StringUtil;
 @Service
-<span class="nc" id="L15">public class ProductService {</span>
+<span class="fc" id="L15">public class ProductService {</span>
     @Autowired
     private ProductDao dao;
     @Autowired
@@ -20,91 +20,67 @@ import com.increff.pos.util.StringUtil;
 
     //CREATE
     @Transactional(rollbackOn = ApiException.class)
-    public void add(ProductPojo p) throws ApiException{
-<span class="nc" id="L24">        normalize(p);</span>
-<span class="nc" id="L25">        InventoryPojo inventory = new InventoryPojo();</span>
-<span class="nc" id="L26">        String barcode = p.getBarcode();</span>
-
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if(StringUtil.isEmpty(p.getBarcode())) {</span>
-<span class="nc" id="L29">            throw new ApiException(&quot;Barcode cannot be empty&quot;);</span>
+    public void add(ProductPojo pojo) throws ApiException{
+<span class="nc" id="L24">        String barcode = pojo.getBarcode();</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if(StringUtil.isEmpty(barcode)){</span>
+<span class="nc" id="L26">            throw new ApiException(&quot;Barcode cannot be empty&quot;);</span>
         }
-<span class="nc bnc" id="L31" title="All 2 branches missed.">        if(StringUtil.isEmpty(p.getName())) {</span>
-<span class="nc" id="L32">            throw new ApiException(&quot;name cannot be empty&quot;);</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if(StringUtil.isEmpty(pojo.getName())) {</span>
+<span class="nc" id="L29">            throw new ApiException(&quot;name cannot be empty&quot;);</span>
         }
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        if(p.getMrp()&lt;0){</span>
-<span class="nc" id="L35">            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if(pojo.getMrp()&lt;0){</span>
+<span class="nc" id="L32">            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</span>
         }
-        //Brand - Category combination should be unique
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        if(dao.checkIfBrandIdExists(p.getBrand_category()) == null){</span>
-<span class="nc" id="L39">            throw new ApiException(&quot;There is no Brand-Category combination for given data&quot;);</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if(dao.checkBarcode(pojo.getBarcode()) != null){</span>
+<span class="nc" id="L35">            throw new ApiException(&quot;Product Barcode already exists&quot;);</span>
         }
-<span class="nc bnc" id="L41" title="All 2 branches missed.">        if(dao.checkBarcode(barcode) != null){</span>
-<span class="nc" id="L42">            throw new ApiException(&quot;Product Barcode already exists&quot;);</span>
-        }
-<span class="nc" id="L44">        dao.insert(p);</span>
-<span class="nc" id="L45">        ProductPojo newPojo = dao.checkBarcode(barcode);</span>
-<span class="nc" id="L46">        inventory.setId(newPojo.getId());</span>
-<span class="nc" id="L47">        inventory.setQuantity(0);</span>
-<span class="nc" id="L48">        inventoryService.add(inventory);</span>
-<span class="nc" id="L49">    }</span>
-    //READ
-    @Transactional(rollbackOn = ApiException.class)
-    public ProductPojo get(int id) throws ApiException{
-<span class="nc" id="L53">        return getCheck(id);</span>
-    }
+<span class="nc" id="L37">        dao.insert(pojo);</span>
+<span class="nc" id="L38">    }</span>
     //UPDATE
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(int id, ProductPojo p) throws ApiException{
-<span class="nc" id="L58">        normalize(p);</span>
+    public void update(int id, ProductPojo pojo) throws ApiException{
         //Same checks as that in add
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(StringUtil.isEmpty(p.getBarcode())) {</span>
-<span class="nc" id="L61">            throw new ApiException(&quot;Barcode cannot be empty&quot;);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if(StringUtil.isEmpty(pojo.getBarcode())) {</span>
+<span class="nc" id="L44">            throw new ApiException(&quot;Barcode cannot be empty&quot;);</span>
         }
-<span class="nc bnc" id="L63" title="All 2 branches missed.">        if(StringUtil.isEmpty(p.getName())) {</span>
-<span class="nc" id="L64">            throw new ApiException(&quot;name cannot be empty&quot;);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if(StringUtil.isEmpty(pojo.getName())) {</span>
+<span class="nc" id="L47">            throw new ApiException(&quot;name cannot be empty&quot;);</span>
         }
-<span class="nc bnc" id="L66" title="All 2 branches missed.">        if(p.getMrp()&lt;0){</span>
-<span class="nc" id="L67">            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(pojo.getMrp()&lt;0){</span>
+<span class="nc" id="L50">            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</span>
         }
-        //Brand - Category combination should be unique
-<span class="nc bnc" id="L70" title="All 2 branches missed.">        if(dao.checkIfBrandIdExists(p.getBrand_category()) == null){</span>
-<span class="nc" id="L71">            throw new ApiException(&quot;There is no Brand-Category combination for given data&quot;);</span>
+<span class="nc" id="L52">        ProductPojo checker = dao.checkBarcode(pojo.getBarcode());</span>
+<span class="nc bnc" id="L53" title="All 4 branches missed.">        if(checker != null &amp;&amp; dao.select(id) != checker){</span>
+<span class="nc" id="L54">            throw new ApiException(&quot;Product Barcode already exists&quot;);</span>
         }
-<span class="nc" id="L73">        ProductPojo checker = dao.checkBarcode(p.getBarcode());</span>
-<span class="nc bnc" id="L74" title="All 4 branches missed.">        if(checker != null &amp;&amp; dao.select(id) != checker){</span>
-<span class="nc" id="L75">            throw new ApiException(&quot;Product Barcode already exists&quot;);</span>
-        }
-<span class="nc" id="L77">        ProductPojo toUpdate = getCheck(id);</span>
-<span class="nc" id="L78">        toUpdate.setBarcode(p.getBarcode());</span>
-<span class="nc" id="L79">        toUpdate.setBrand_category(p.getBrand_category());</span>
-<span class="nc" id="L80">        toUpdate.setName(p.getName());</span>
-<span class="nc" id="L81">        toUpdate.setMrp(p.getMrp());</span>
-<span class="nc" id="L82">    }</span>
+<span class="nc" id="L56">        ProductPojo toUpdate = getCheck(id);</span>
+<span class="nc" id="L57">        toUpdate.setBarcode(pojo.getBarcode());</span>
+<span class="nc" id="L58">        toUpdate.setBrand_category(pojo.getBrand_category());</span>
+<span class="nc" id="L59">        toUpdate.setName(pojo.getName());</span>
+<span class="nc" id="L60">        toUpdate.setMrp(pojo.getMrp());</span>
+<span class="nc" id="L61">    }</span>
 
     @Transactional
-<span class="nc" id="L85">    public List&lt;ProductPojo&gt; getAll(){return  dao.selectAll();}</span>
+<span class="nc" id="L64">    public List&lt;ProductPojo&gt; getAll(){return  dao.selectAll();}</span>
 
+    //READ
     @Transactional
     public ProductPojo getCheck(int id) throws ApiException{
-<span class="nc" id="L89">        ProductPojo p = dao.select(id);</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (p == null) {</span>
-<span class="nc" id="L91">            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</span>
+<span class="nc" id="L69">        ProductPojo p = dao.select(id);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (p == null) {</span>
+<span class="nc" id="L71">            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</span>
         }
-<span class="nc" id="L93">        return p;</span>
+<span class="nc" id="L73">        return p;</span>
     }
-    protected static void normalize(ProductPojo p) {
-<span class="nc" id="L96">        p.setBarcode(p.getBarcode().toLowerCase ().trim());</span>
-<span class="nc" id="L97">        p.setName(p.getName().toLowerCase ().trim());</span>
-<span class="nc" id="L98">    }</span>
     @Transactional(rollbackOn = ApiException.class)
     public ProductPojo getByBarcode(String barcode) throws ApiException{
-<span class="nc" id="L101">        ProductPojo pojo = dao.checkBarcode(barcode);</span>
-<span class="nc bnc" id="L102" title="All 2 branches missed.">        if(pojo==null){</span>
-<span class="nc" id="L103">            throw new ApiException(&quot;Product with given barcode not found&quot;);</span>
+<span class="nc" id="L77">        ProductPojo pojo = dao.checkBarcode(barcode);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if(pojo==null){</span>
+<span class="nc" id="L79">            throw new ApiException(&quot;Product with given barcode not found&quot;);</span>
         }
-<span class="nc" id="L105">        return pojo;</span>
+<span class="nc" id="L81">        return pojo;</span>
     }
     @Transactional
-<span class="nc" id="L108">    public List&lt;ProductPojo&gt; getByBrand(int id){return  dao.getByBrand(id);}</span>
+<span class="nc" id="L84">    public List&lt;ProductPojo&gt; getByBrand(int id){return  dao.getByBrand(id);}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -62,6 +62,7 @@ com/increff/pos/pojo/UserPojo.class
 com/increff/pos/model/OrderData.class
 com/increff/pos/service/ApiException.class
 com/increff/pos/dto/BrandDto.class
+com/increff/pos/util/ValidateUtil.class
 com/increff/pos/scheduler/SalesScheduler.class
 com/increff/pos/pojo/BrandPojo.class
 com/increff/pos/controller/SiteUiController.class

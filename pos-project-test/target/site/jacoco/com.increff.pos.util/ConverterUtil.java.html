@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConverterUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.util</a> &gt; <span class="el_source">ConverterUtil.java</span></div><h1>ConverterUtil.java</h1><pre class="source lang-java linenums">package com.increff.pos.util;
+
+import com.increff.pos.model.*;
+import com.increff.pos.pojo.*;
+import com.increff.pos.service.ApiException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+
+@Component
+<span class="fc" id="L16">public class ConverterUtil {</span>
+    public static BrandData convert(BrandPojo pojo){
+<span class="fc" id="L18">        BrandData data = new BrandData();</span>
+<span class="fc" id="L19">        data.setCategory(pojo.getCategory());</span>
+<span class="fc" id="L20">        data.setBrand(pojo.getBrand());</span>
+<span class="fc" id="L21">        data.setId(pojo.getId());</span>
+<span class="fc" id="L22">        return data;</span>
+    }
+    public static BrandPojo convert(BrandForm form){
+<span class="fc" id="L25">        BrandPojo pojo = new BrandPojo();</span>
+<span class="fc" id="L26">        pojo.setBrand(form.getBrand());</span>
+<span class="fc" id="L27">        pojo.setCategory(form.getCategory());</span>
+<span class="fc" id="L28">        return pojo;</span>
+    }
+    public static ProductData convert(ProductPojo pojo, BrandPojo brandPojo){
+<span class="nc" id="L31">        ProductData data = new ProductData();</span>
+<span class="nc" id="L32">        data.setId(pojo.getId());</span>
+<span class="nc" id="L33">        data.setBarcode(pojo.getBarcode());</span>
+<span class="nc" id="L34">        data.setBrand(brandPojo.getBrand());</span>
+<span class="nc" id="L35">        data.setCategory(brandPojo.getCategory());</span>
+<span class="nc" id="L36">        data.setName(pojo.getName());</span>
+<span class="nc" id="L37">        data.setMrp(pojo.getMrp());</span>
+<span class="nc" id="L38">        return  data;</span>
+    }
+    public static ProductPojo convert(ProductForm form, BrandPojo brandPojo){
+<span class="nc" id="L41">        ProductPojo pojo = new ProductPojo();</span>
+<span class="nc" id="L42">        pojo.setBarcode(form.getBarcode());</span>
+<span class="nc" id="L43">        pojo.setBrand_category(brandPojo.getId());</span>
+<span class="nc" id="L44">        pojo.setName(form.getName());</span>
+<span class="nc" id="L45">        BigDecimal roundedValue = BigDecimal.valueOf(form.getMrp()).setScale(2, RoundingMode.HALF_UP);</span>
+<span class="nc" id="L46">        double mrp = roundedValue.doubleValue();</span>
+<span class="nc" id="L47">        pojo.setMrp(mrp);</span>
+<span class="nc" id="L48">        return pojo;</span>
+    }
+
+    public static InventoryData convert(InventoryPojo pojo){
+<span class="nc" id="L52">        InventoryData data = new InventoryData();</span>
+<span class="nc" id="L53">        data.setId(pojo.getId());</span>
+<span class="nc" id="L54">        data.setQuantity(pojo.getQuantity());</span>
+<span class="nc" id="L55">        return data;</span>
+    }
+    public static InventoryPojo convert(InventoryForm form){
+<span class="nc" id="L58">        InventoryPojo pojo = new InventoryPojo();</span>
+<span class="nc" id="L59">        pojo.setQuantity(form.getQuantity());</span>
+<span class="nc" id="L60">        return pojo;</span>
+    }
+
+
+    public static Authentication convert(UserPojo p) {
+        // Create principal
+<span class="nc" id="L66">        UserPrincipal principal = new UserPrincipal();</span>
+<span class="nc" id="L67">        principal.setEmail(p.getEmail());</span>
+<span class="nc" id="L68">        principal.setId(p.getId());</span>
+
+        // Create Authorities
+<span class="nc" id="L71">        ArrayList&lt;SimpleGrantedAuthority&gt; authorities = new ArrayList&lt;SimpleGrantedAuthority&gt;();</span>
+<span class="nc" id="L72">        authorities.add(new SimpleGrantedAuthority(p.getRole()));</span>
+        // you can add more roles if required
+
+        // Create Authentication
+<span class="nc" id="L76">        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,</span>
+                authorities);
+<span class="nc" id="L78">        return token;</span>
+    }
+
+    public static UserPojo convert(LoginForm form, String[] array){
+<span class="nc" id="L82">        int flag=0;</span>
+<span class="nc" id="L83">        UserPojo pojo = new UserPojo();</span>
+<span class="nc" id="L84">        pojo.setEmail(form.getEmail());</span>
+<span class="nc" id="L85">        pojo.setPassword(form.getPassword());</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        for(String supervisor: array){</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">            if(supervisor.equals(pojo.getEmail()))</span>
+<span class="nc" id="L88">                flag=1;</span>
+        }
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if(flag==1){</span>
+<span class="nc" id="L91">            pojo.setRole(&quot;supervisor&quot;);</span>
+<span class="nc" id="L92">            System.out.println(&quot;Supervisor role assigned&quot;);</span>
+        }
+        else{
+<span class="nc" id="L95">            pojo.setRole(&quot;operator&quot;);</span>
+<span class="nc" id="L96">            System.out.println(&quot;operator role assigned&quot;);</span>
+        }
+<span class="nc" id="L98">        return pojo;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

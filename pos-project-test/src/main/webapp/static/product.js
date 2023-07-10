@@ -49,7 +49,13 @@ function addProduct(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-	   		refresh();
+	        successClick("Data added successfully");
+            $("#product-form input[name=barcode]").val("");
+            $("#product-form input[name=brand]").val("");
+            $("#product-form input[name=category]").val("");
+            $("#product-form input[name=name]").val("");
+            $("#product-form input[name=mrp]").val("");
+	   		getProductList();
 	   },
 	   error: handleAjaxError
 	});
@@ -102,6 +108,7 @@ function updateProduct(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        successClick("Data updated successfully");
 	   		getProductList();
 	   },
 	   error: handleAjaxError
@@ -223,7 +230,7 @@ function displayProductList(data){
                       e.brand,
                       e.category,
                       e.name,
-                      e.mrp,
+                      'Rs '+(Math.round(parseFloat(e.mrp) * 100) / 100).toFixed(2),
                       buttonHtml
                      ]).draw();
 	}
@@ -301,6 +308,8 @@ function init(){
         document.getElementById("update-product").disabled = true;
         document.getElementById("upload-data").disabled = true;
         document.getElementById("process-data").disabled = true;
+        document.getElementById("product-form").innerHTML = "";
+        document.getElementById("edit-product-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
     table = $('#product-table').DataTable({'columnDefs': [ {'targets': [5],'orderable': false }]});

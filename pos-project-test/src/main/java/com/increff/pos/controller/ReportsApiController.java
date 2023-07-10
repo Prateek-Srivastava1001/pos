@@ -29,7 +29,7 @@ public class ReportsApiController {
         return dto.getScheduledData();
     }
     @ApiOperation(value = "Generates scheduler report")
-    @RequestMapping(path = "/api/admin/reports/scheduler/generate", method = RequestMethod.GET)
+    @RequestMapping(path = "/api/reports/scheduler/generate", method = RequestMethod.GET)
     public void generateDailyReport() throws ApiException {
         dto.generateDailyReport();
     }

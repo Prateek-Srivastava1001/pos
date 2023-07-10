@@ -18,10 +18,16 @@ function getBrandList(){
 }
 
 //UI DISPLAY METHODS
-
+filteredData =[];
 function displayBrandReportList(data){
 	var $tbody = $('#brand-report-table').find('tbody');
 	$tbody.empty();
+	result = data.map(o => {
+          let obj = Object.assign({}, o);
+          delete obj.id;
+          return obj;
+        });
+	filteredData=result;
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
@@ -30,7 +36,25 @@ function displayBrandReportList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
+	if(data.length>0){
+	    $("#download-report").removeAttr("disabled");
+	}
+}
+function downloadReport(){
+    var fileName = 'BrandReport.tsv';
+    if(filteredData.length>0){
+    writeReportData(filteredData, fileName);
+    successClick("Report Downloaded Successfully");
+    }
+    else{
+        warnClick("Empty Report")
+    }
 }
 
 //INITIALIZATION CODE
+function init(){
+    $("#download-report").click(downloadReport);
+}
+
 $(document).ready(getBrandList);
+$(document).ready(init);

@@ -8,6 +8,7 @@ import com.increff.pos.service.BrandService;
 import com.increff.pos.util.ConverterUtil;
 import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
+import com.increff.pos.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +21,15 @@ public class BrandDto {
     private BrandService service;
     private ConverterUtil converterUtil;
     private NormalizeUtil normalizeUtil;
+    private ValidateUtil validateUtil;
 
     public void add(BrandForm form) throws ApiException {
-        BrandPojo p = converterUtil.convert(form);
-        normalizeUtil.normalize(p);
-        service.add(p);
+        BrandPojo pojo = converterUtil.convert(form);
+        normalizeUtil.normalize(pojo);
+        validateUtil.checkValid(pojo);
+        service.add(pojo);
     }
+
     public BrandData get(int id) throws ApiException{
         BrandPojo pojo = service.getCheck(id);
         return converterUtil.convert(pojo);
@@ -43,6 +47,7 @@ public class BrandDto {
     public void update(int id, BrandForm form) throws ApiException{
         BrandPojo pojo = converterUtil.convert(form);
         normalizeUtil.normalize(pojo);
+        validateUtil.checkValid(pojo);
         service.update(id, pojo);
     }
 }

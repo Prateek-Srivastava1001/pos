@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.dto</a> &gt; <span class="el_source">UserDto.java</span></div><h1>UserDto.java</h1><pre class="source lang-java linenums">package com.increff.pos.dto;
+
+import com.increff.pos.model.InfoData;
+import com.increff.pos.model.LoginForm;
+import com.increff.pos.pojo.UserPojo;
+import com.increff.pos.service.ApiException;
+import com.increff.pos.service.UserService;
+import com.increff.pos.util.ConverterUtil;
+import com.increff.pos.util.NormalizeUtil;
+import com.increff.pos.util.SecurityUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Objects;
+
+@Component
+<span class="fc" id="L23">public class UserDto {</span>
+    @Value(&quot;${app.supervisor}&quot;)
+    private String supervisor;
+    @Autowired
+    private UserService service;
+    @Autowired
+    private InfoData info;
+    @Autowired
+    private ConverterUtil util;
+    @Autowired
+    private NormalizeUtil normalizeUtil;
+
+    public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
+<span class="nc" id="L36">        UserPojo p = service.get(f.getEmail());</span>
+<span class="nc bnc" id="L37" title="All 4 branches missed.">        boolean authenticated = (p != null &amp;&amp; Objects.equals(p.getPassword(), f.getPassword()));</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (!authenticated) {</span>
+<span class="nc" id="L39">            info.setMessage(&quot;Invalid details&quot;);</span>
+<span class="nc" id="L40">            throw new ApiException(&quot;Invalid details&quot;);</span>
+        }
+<span class="nc" id="L42">        info.setRole(p.getRole());</span>
+        // Create authentication object
+<span class="nc" id="L44">        Authentication authentication = util.convert(p);</span>
+        // Create new session
+<span class="nc" id="L46">        HttpSession session = req.getSession(true);</span>
+        // Attach Spring SecurityContext to this new session
+<span class="nc" id="L48">        SecurityUtil.createContext(session);</span>
+        // Attach Authentication object to the Security Context
+<span class="nc" id="L50">        SecurityUtil.setAuthentication(authentication);</span>
+
+<span class="nc" id="L52">        return new ModelAndView(&quot;redirect:/ui/home&quot;);</span>
+
+    }
+
+    public ModelAndView signup(HttpServletRequest req, LoginForm form) throws ApiException{
+<span class="nc" id="L57">        String[] array = supervisor.split(&quot;,&quot;);</span>
+<span class="nc" id="L58">        UserPojo p= util.convert(form, array);</span>
+<span class="nc" id="L59">        normalizeUtil.normalize(p);</span>
+<span class="nc" id="L60">        boolean success = service.add(p);</span>
+
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if(!success){</span>
+<span class="nc" id="L63">            info.setMessage(&quot;Email already exists&quot;);</span>
+<span class="nc" id="L64">            throw new ApiException(&quot;Email already exists&quot;);</span>
+        }
+<span class="nc" id="L66">        ModelAndView mav = login(req, form);</span>
+<span class="nc" id="L67">        return mav;</span>
+    }
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
+<span class="nc" id="L70">        request.getSession().invalidate();</span>
+<span class="nc" id="L71">        return new ModelAndView(&quot;redirect:/site/logout&quot;);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

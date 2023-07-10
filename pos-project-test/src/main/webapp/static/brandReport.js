@@ -42,7 +42,13 @@ function displayBrandReportList(data){
 }
 function downloadReport(){
     var fileName = 'BrandReport.tsv';
+    if(filteredData.length>0){
     writeReportData(filteredData, fileName);
+    successClick("Report Downloaded Successfully");
+    }
+    else{
+        warnClick("Empty Report")
+    }
 }
 
 //INITIALIZATION CODE

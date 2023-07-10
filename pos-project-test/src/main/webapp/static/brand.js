@@ -34,7 +34,10 @@ function addBrand(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
-	   		refresh();
+	        successClick("Data added successfully");
+	        $("#brand-form input[name=brand]").val("");
+	        $("#brand-form input[name=category]").val("");
+	   		getBrandList();
 	   },
 	   error: handleAjaxError
 	});
@@ -71,6 +74,7 @@ function updateBrand(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        successClick("Data updated successfully");
 	   		getBrandList();
 	   },
 	   error: handleAjaxError
@@ -270,6 +274,9 @@ function init(){
         document.getElementById("process-data").disabled = true;
         document.getElementById("download-errors").disabled = true;
         document.getElementById("upload-data").disabled=true;
+        document.getElementById("brand-form").innerHTML = "";
+        document.getElementById("edit-brand-modal").innerHTML = "";
+//      document.getElementById("upload-brand-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
     table = $('#brand-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});

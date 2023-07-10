@@ -70,14 +70,14 @@ function displayOrderItems(data){
         + '<td>' + e.barcode + '</td>'
         + '<td>' + e.name + '</td>'
         + '<td>' + e.quantity + '</td>'
-        + '<td>Rs ' + e.selling_price + '</td>'
-        + '<td>Rs ' + amount + '</td>'
+        + '<td>Rs ' + (Math.round(parseFloat(e.selling_price)*100)/100).toFixed(2) + '</td>'
+        + '<td>Rs ' + amount.toFixed(2) + '</td>'
         + '</tr>';
         $tbody.append(row);
         sum = sum+amount;
     }
     sum = Math.round(sum * 100) / 100
-    var totalAmt = '<tr><td>' + ' Total Price:  </td><td>Rs ' + sum  + '</td></tr>';
+    var totalAmt = '<tr><td>' + ' Total Price:  </td><td>Rs ' + sum.toFixed(2)  + '</td></tr>';
     $tbody.append(totalAmt);
     var helper = '<td><span id="helper" hidden="hidden">'+e.order_id+'</span></td>';
     $tbody.append(helper);
@@ -87,20 +87,14 @@ function downloadInvoice(){
     console.log(helper);
     var invoiceUrl = getInvoiceUrl() + "/"+parseInt(helper);
     window.open(invoiceUrl);
-}
-function refresh(){
-    location.reload(true);
+    successClick("Invoice Downloaded");
 }
 //INITIALIZATION CODE
 function init(){
     $('#download-invoice').click(downloadInvoice);
-    var roleElement = document.getElementById('role');
-    var role = roleElement.innerText;
-
-    if(role=="operator"){
-        document.getElementById("adminAccess").innerHTML = "";
-    }
-    table = $('#order-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
+    table = $('#order-table').DataTable(
+                                        {order: [[0, 'desc']]}
+    );
 }
 $(document).ready(getOrderList);
 $(document).ready(init);

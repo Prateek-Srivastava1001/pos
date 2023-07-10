@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SchedulerDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos-spring</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.dao</a> &gt; <span class="el_source">SchedulerDao.java</span></div><h1>SchedulerDao.java</h1><pre class="source lang-java linenums">package com.increff.pos.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,18 +12,26 @@ import com.increff.pos.pojo.SchedulerPojo;
 import org.springframework.stereotype.Repository;
 
 @Repository
-<span class="nc" id="L14">public class SchedulerDao extends AbstractDao{</span>
-<span class="nc" id="L15">    private static String select_all = &quot;select p from SchedulerPojo p&quot;;</span>
+<span class="fc" id="L15">public class SchedulerDao extends AbstractDao{</span>
+<span class="fc" id="L16">    private static String select_all = &quot;select p from SchedulerPojo p&quot;;</span>
+<span class="fc" id="L17">    private static String select_by_date = &quot;select p from SchedulerPojo p where date&gt;=:start_date and date&lt;=:end_date&quot;;</span>
 
     @PersistenceContext
     private EntityManager em;
 
     @Transactional
-<span class="nc" id="L21">    public void insert(SchedulerPojo pojo){em.persist(pojo);}</span>
+<span class="nc" id="L23">    public void insert(SchedulerPojo pojo){em.persist(pojo);}</span>
 
     public List&lt;SchedulerPojo&gt; selectAll(){
-<span class="nc" id="L24">        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_all, SchedulerPojo.class);</span>
-<span class="nc" id="L25">        return query.getResultList();</span>
+<span class="nc" id="L26">        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_all, SchedulerPojo.class);</span>
+<span class="nc" id="L27">        return query.getResultList();</span>
+    }
+
+    public List&lt;SchedulerPojo&gt; selectByDate(LocalDate start_date, LocalDate end_date){
+<span class="nc" id="L31">        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_by_date, SchedulerPojo.class);</span>
+<span class="nc" id="L32">        query.setParameter(&quot;start_date&quot;, start_date);</span>
+<span class="nc" id="L33">        query.setParameter(&quot;end_date&quot;, end_date);</span>
+<span class="nc" id="L34">        return query.getResultList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

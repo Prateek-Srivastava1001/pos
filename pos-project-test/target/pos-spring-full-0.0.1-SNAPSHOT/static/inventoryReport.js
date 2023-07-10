@@ -18,10 +18,16 @@ function getInventoryList(){
 }
 
 //UI DISPLAY METHODS
-
+filteredData = []
 function displayInventoryReportList(data){
 	var $tbody = $('#inventory-report-table').find('tbody');
 	$tbody.empty();
+	result = data.map(o => {
+          let obj = Object.assign({}, o);
+          delete obj.revenue;
+          return obj;
+        });
+	filteredData=result;
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
@@ -31,7 +37,24 @@ function displayInventoryReportList(data){
 		+ '</tr>';
         $tbody.append(row);
 	}
+	if(filteredData.length>0){
+	    $("#download-report").removeAttr("disabled");
+	}
 }
 
+function downloadReport(){
+    var fileName = 'InventoryReport.tsv';
+    if(filteredData.length>0){
+    writeReportData(filteredData, fileName);
+    successClick("Report Downloaded Successfully");
+    }
+    else{
+    warnClick("Empty Report");
+    }
+}
 //INITIALIZATION CODE
+function init(){
+    $("#download-report").click(downloadReport);
+}
 $(document).ready(getInventoryList);
+$(document).ready(init);

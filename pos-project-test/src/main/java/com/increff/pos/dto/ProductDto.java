@@ -12,6 +12,7 @@ import com.increff.pos.service.ProductService;
 import com.increff.pos.util.ConverterUtil;
 import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
+import com.increff.pos.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,11 +29,13 @@ public class ProductDto {
     InventoryService inventoryService;
     ConverterUtil converterUtil;
     NormalizeUtil normalizeUtil;
+    ValidateUtil validateUtil;
 
     public void add(ProductForm form) throws ApiException {
         BrandPojo brandPojo = brandService.combinationChecker(form.getBrand(), form.getCategory());
         ProductPojo pojo = converterUtil.convert(form, brandPojo);
         normalizeUtil.normalize(pojo);
+        validateUtil.checkValid(pojo);
         InventoryPojo inventory = new InventoryPojo();
         productService.add(pojo);
         ProductPojo newPojo = productService.getByBarcode(pojo.getBarcode());
@@ -58,6 +61,7 @@ public class ProductDto {
         BrandPojo brandPojo = brandService.combinationChecker(form.getBrand(), form.getCategory());
         ProductPojo pojo = converterUtil.convert(form, brandPojo);
         normalizeUtil.normalize(pojo);
+        validateUtil.checkValid(pojo);
         productService.update(id, pojo);
     }
 }

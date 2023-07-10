@@ -13,58 +13,37 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 @Service
-<span class="nc" id="L16">public class InventoryService {</span>
+<span class="fc" id="L16">public class InventoryService {</span>
     @Autowired
     InventoryDao dao;
-    @Autowired
-    ProductService service;
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(InventoryPojo pojo) throws ApiException{
-<span class="nc bnc" id="L24" title="All 2 branches missed.">        if(pojo.getQuantity()&lt;0){</span>
-<span class="nc" id="L25">            throw new ApiException(&quot;Quantity cannot be negative&quot;);</span>
+<span class="nc bnc" id="L22" title="All 2 branches missed.">        if(pojo.getQuantity()&lt;0){</span>
+<span class="nc" id="L23">            throw new ApiException(&quot;Quantity cannot be negative&quot;);</span>
         }
-<span class="nc" id="L27">        dao.insert(pojo);</span>
-<span class="nc" id="L28">    }</span>
-
-    @Transactional(rollbackOn = ApiException.class)
-    public InventoryPojo get(int id) throws ApiException{
-<span class="nc" id="L32">        return getCheck(id);</span>
-    }
+<span class="nc" id="L25">        dao.insert(pojo);</span>
+<span class="nc" id="L26">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
     public void update(int id, InventoryPojo pojo) throws ApiException{
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        if(pojo.getQuantity()&lt;0){</span>
-<span class="nc" id="L38">            throw new ApiException(&quot;Quantity cannot be negative&quot;);</span>
-        }
-<span class="nc" id="L40">        InventoryPojo toUpdate = getCheck(id);</span>
-<span class="nc" id="L41">        toUpdate.setQuantity(pojo.getQuantity());</span>
-
-<span class="nc" id="L43">    }</span>
+<span class="nc" id="L30">        InventoryPojo toUpdate = getCheck(id);</span>
+<span class="nc" id="L31">        toUpdate.setQuantity(pojo.getQuantity());</span>
+<span class="nc" id="L32">    }</span>
 
     @Transactional
-    public List&lt;InventoryData&gt; getAll() throws ApiException {
-<span class="nc" id="L47">        List&lt;InventoryPojo&gt; pojoList =  dao.selectAll();</span>
-<span class="nc" id="L48">        List&lt;InventoryData&gt; dataList = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        for(InventoryPojo pojo : pojoList){</span>
-<span class="nc" id="L50">            InventoryData data = new InventoryData();</span>
-<span class="nc" id="L51">            ProductPojo product = service.get(pojo.getId());</span>
-<span class="nc" id="L52">            data.setId(pojo.getId());</span>
-<span class="nc" id="L53">            data.setQuantity(pojo.getQuantity());</span>
-<span class="nc" id="L54">            data.setBarcode(product.getBarcode());</span>
-<span class="nc" id="L55">            dataList.add(data);</span>
-<span class="nc" id="L56">        }</span>
-
-<span class="nc" id="L58">        return dataList;</span>
+    public List&lt;InventoryPojo&gt; getAll() throws ApiException {
+<span class="nc" id="L36">        List&lt;InventoryPojo&gt; pojoList =  dao.selectAll();</span>
+<span class="nc" id="L37">        return pojoList;</span>
     }
 
     @Transactional
     public InventoryPojo getCheck(int id) throws ApiException{
-<span class="nc" id="L63">        InventoryPojo pojo = dao.select(id);</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (pojo == null) {</span>
-<span class="nc" id="L65">            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</span>
+<span class="nc" id="L42">        InventoryPojo pojo = dao.select(id);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (pojo == null) {</span>
+<span class="nc" id="L44">            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</span>
         }
-<span class="nc" id="L67">        return pojo;</span>
+<span class="nc" id="L46">        return pojo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

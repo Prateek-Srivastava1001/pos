@@ -32,6 +32,7 @@ function updateInventory(event){
        	'Content-Type': 'application/json'
        },
 	   success: function(response) {
+	        successClick("Data updated successfully");
 	   		getInventoryList();
 	   },
 	   error: handleAjaxError
@@ -228,6 +229,8 @@ function init(){
         document.getElementById("update-inventory").disabled = true;
         document.getElementById("upload-data").disabled = true;
         document.getElementById("process-data").disabled = true;
+        document.getElementById("inventory-form").innerHTML = "";
+        document.getElementById("edit-inventory-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
     table = $('#inventory-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});

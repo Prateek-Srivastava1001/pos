@@ -1,28 +1,25 @@
 package com.increff.pos.pojo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+@Getter
+@Setter
 @Entity
+@Table(name="Brand")
 public class BrandPojo {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Brand cannot be empty")
+    @Size(max = 30, message="Brand cannot be more than 30 characters long")
     private String brand;
+    @NotBlank(message = "Category cannot be empty")
+    @Size(max = 50, message="Category cannot be more than 50 characters long")
     private String category;
 
-
-    public int getId() {return id;}
-
-    public void setId(int id) {this.id = id;}
-
-    public String getBrand() {return brand;}
-
-    public void setBrand(String brand) {this.brand = brand;}
-
-    public String getCategory() {return category;}
-
-    public void setCategory(String category) {this.category = category; }
 }

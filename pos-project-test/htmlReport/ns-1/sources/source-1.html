@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > BrandDto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.increff.pos.dto</a>
+</div>
+
+<h1>Coverage Summary for Class: BrandDto (com.increff.pos.dto)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BrandDto</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.dto;
+&nbsp;
+&nbsp;import com.increff.pos.model.BrandData;
+&nbsp;import com.increff.pos.model.BrandForm;
+&nbsp;import com.increff.pos.pojo.BrandPojo;
+&nbsp;import com.increff.pos.service.ApiException;
+&nbsp;import com.increff.pos.service.BrandService;
+&nbsp;import com.increff.pos.util.ConverterUtil;
+&nbsp;import com.increff.pos.util.NormalizeUtil;
+&nbsp;import com.increff.pos.util.StringUtil;
+&nbsp;import com.increff.pos.util.ValidateUtil;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Component
+<b class="fc">&nbsp;public class BrandDto {</b>
+&nbsp;    @Autowired
+&nbsp;    private BrandService service;
+&nbsp;    private ConverterUtil converterUtil;
+&nbsp;    private NormalizeUtil normalizeUtil;
+&nbsp;    private ValidateUtil validateUtil;
+&nbsp;
+&nbsp;    public void add(BrandForm form) throws ApiException {
+<b class="fc">&nbsp;        BrandPojo pojo = converterUtil.convert(form);</b>
+<b class="fc">&nbsp;        normalizeUtil.normalize(pojo);</b>
+<b class="fc">&nbsp;        validateUtil.checkValid(pojo);</b>
+<b class="fc">&nbsp;        service.add(pojo);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public BrandData get(int id) throws ApiException{
+<b class="fc">&nbsp;        BrandPojo pojo = service.getCheck(id);</b>
+<b class="fc">&nbsp;        return converterUtil.convert(pojo);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;BrandData&gt; getAll(){
+<b class="fc">&nbsp;        List&lt;BrandPojo&gt; list = service.getAll();</b>
+<b class="fc">&nbsp;        List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</b>
+<b class="fc">&nbsp;        for(BrandPojo p: list){</b>
+<b class="fc">&nbsp;            list2.add(converterUtil.convert(p));</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return list2;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void update(int id, BrandForm form) throws ApiException{
+<b class="fc">&nbsp;        BrandPojo pojo = converterUtil.convert(form);</b>
+<b class="fc">&nbsp;        normalizeUtil.normalize(pojo);</b>
+<b class="fc">&nbsp;        validateUtil.checkValid(pojo);</b>
+<b class="fc">&nbsp;        service.update(id, pojo);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-10 16:44</div>
+</div>
+</body>
+</html>

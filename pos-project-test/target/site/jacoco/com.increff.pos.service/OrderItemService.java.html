@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-<span class="nc" id="L14">public class OrderItemService {</span>
+<span class="fc" id="L14">public class OrderItemService {</span>
     @Autowired
     private OrderItemDao dao;
     @Autowired
@@ -22,64 +22,65 @@ import org.springframework.stereotype.Service;
     @Transactional(rollbackOn = ApiException.class)
     public void add(OrderItemPojo pojo) throws ApiException{
 <span class="nc" id="L24">        checks(pojo);</span>
-<span class="nc" id="L25">        dao.insert(pojo);</span>
-<span class="nc" id="L26">    }</span>
+        //check for duplicate in same order.
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if(dao.checkDuplicate(pojo.getProduct_id(), pojo.getOrder_id())!=null){</span>
+<span class="nc" id="L27">            throw new ApiException(&quot;Frontend Validation Breach: Duplicate barcodes detected&quot;);</span>
+        }
+<span class="nc" id="L29">        dao.insert(pojo);</span>
+<span class="nc" id="L30">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
     public OrderItemPojo get(int id) throws ApiException{
-<span class="nc" id="L30">        OrderItemPojo pojo = get(id);</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">        if(pojo==null){</span>
-<span class="nc" id="L32">            throw new ApiException(&quot;Order Item with given ID not found&quot;);</span>
+<span class="nc" id="L34">        OrderItemPojo pojo = dao.select(id);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if(pojo==null){</span>
+<span class="nc" id="L36">            throw new ApiException(&quot;Order Item with given ID not found&quot;);</span>
         }
-<span class="nc" id="L34">        return pojo;</span>
+<span class="nc" id="L38">        return pojo;</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;OrderItemData&gt; getAll(int order_id) throws ApiException {
-<span class="nc" id="L39">        List&lt;OrderItemPojo&gt; pojoList =  dao.selectAll(order_id);</span>
-<span class="nc" id="L40">        List&lt;OrderItemData&gt; dataList = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L41" title="All 2 branches missed.">        for(OrderItemPojo pojo: pojoList){</span>
-<span class="nc" id="L42">            OrderItemData data = convert(pojo);</span>
-<span class="nc" id="L43">            dataList.add(data);</span>
-<span class="nc" id="L44">        }</span>
-<span class="nc" id="L45">        return dataList;</span>
+<span class="nc" id="L43">        List&lt;OrderItemPojo&gt; pojoList =  dao.selectAll(order_id);</span>
+<span class="nc" id="L44">        List&lt;OrderItemData&gt; dataList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for(OrderItemPojo pojo: pojoList){</span>
+<span class="nc" id="L46">            OrderItemData data = convert(pojo);</span>
+<span class="nc" id="L47">            dataList.add(data);</span>
+<span class="nc" id="L48">        }</span>
+<span class="nc" id="L49">        return dataList;</span>
     }
 
     private OrderItemData convert(OrderItemPojo pojo) throws ApiException {
-<span class="nc" id="L49">        OrderItemData data = new OrderItemData();</span>
-<span class="nc" id="L50">        data.setId(pojo.getId());</span>
-<span class="nc" id="L51">        data.setOrder_id(pojo.getOrder_id());</span>
-<span class="nc" id="L52">        data.setProduct_id(pojo.getProduct_id());</span>
-<span class="nc" id="L53">        data.setName(productService.get(pojo.getProduct_id()).getName());</span>
-<span class="nc" id="L54">        data.setBarcode(productService.get(pojo.getProduct_id()).getBarcode());</span>
-<span class="nc" id="L55">        data.setQuantity(pojo.getQuantity());</span>
-<span class="nc" id="L56">        data.setSelling_price(pojo.getSelling_price());</span>
-<span class="nc" id="L57">        return data;</span>
+<span class="nc" id="L53">        OrderItemData data = new OrderItemData();</span>
+<span class="nc" id="L54">        data.setId(pojo.getId());</span>
+<span class="nc" id="L55">        data.setOrder_id(pojo.getOrder_id());</span>
+<span class="nc" id="L56">        data.setProduct_id(pojo.getProduct_id());</span>
+<span class="nc" id="L57">        data.setName(productService.getCheck(pojo.getProduct_id()).getName());</span>
+<span class="nc" id="L58">        data.setBarcode(productService.getCheck(pojo.getProduct_id()).getBarcode());</span>
+<span class="nc" id="L59">        data.setQuantity(pojo.getQuantity());</span>
+<span class="nc" id="L60">        data.setSelling_price(pojo.getSelling_price());</span>
+<span class="nc" id="L61">        return data;</span>
     }
     //Validations
-    protected void checks(OrderItemPojo pojo) throws ApiException{
+    public void checks(OrderItemPojo pojo) throws ApiException{
         //Negative quantity check
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if(pojo.getQuantity()&lt;=0){</span>
-<span class="nc" id="L63">            throw new ApiException(&quot;Please enter positive value of quantity&quot;);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if(pojo.getQuantity()&lt;=0){</span>
+<span class="nc" id="L67">            throw new ApiException(&quot;Please enter positive value of quantity&quot;);</span>
         }
         //Negative Selling price check
-<span class="nc bnc" id="L66" title="All 2 branches missed.">        if(pojo.getSelling_price()&lt;0){</span>
-<span class="nc" id="L67">            throw new ApiException(&quot;Selling Price cannot be negative&quot;);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if(pojo.getSelling_price()&lt;0){</span>
+<span class="nc" id="L71">            throw new ApiException(&quot;Selling Price cannot be negative&quot;);</span>
         }
         //check product with given id in inventory
-<span class="nc bnc" id="L70" title="All 2 branches missed.">        if(inventoryService.get(pojo.getProduct_id())==null){</span>
-<span class="nc" id="L71">            throw new ApiException(&quot;Product with given ID not available&quot;);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if(inventoryService.getCheck(pojo.getProduct_id())==null){</span>
+<span class="nc" id="L75">            throw new ApiException(&quot;Product with given ID not available&quot;);</span>
         }
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        if(inventoryService.get(pojo.getProduct_id()).getQuantity()&lt;pojo.getQuantity()){</span>
-<span class="nc" id="L74">            throw new ApiException(&quot;Not enough quantity is present in the inventory.&quot;);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if(inventoryService.getCheck(pojo.getProduct_id()).getQuantity()&lt;pojo.getQuantity()){</span>
+<span class="nc" id="L78">            throw new ApiException(&quot;Not enough quantity is present in the inventory.&quot;);</span>
         }
-<span class="nc bnc" id="L76" title="All 2 branches missed.">        if(productService.get(pojo.getProduct_id()).getMrp()&lt;pojo.getSelling_price()){</span>
-<span class="nc" id="L77">            throw new ApiException(&quot;Selling price cannot be more than MRP.&quot;);</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if(productService.getCheck(pojo.getProduct_id()).getMrp()&lt;pojo.getSelling_price()){</span>
+<span class="nc" id="L81">            throw new ApiException(&quot;Selling price cannot be more than MRP.&quot;);</span>
         }
-        //check for duplicate in same order.
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        if(dao.checkDuplicate(pojo.getProduct_id(), pojo.getOrder_id())!=null){</span>
-<span class="nc" id="L81">            throw new ApiException(&quot;Frontend Validation Breach: Duplicate barcodes detected&quot;);</span>
-        }
-<span class="nc" id="L83">    }</span>
+
+<span class="nc" id="L84">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
