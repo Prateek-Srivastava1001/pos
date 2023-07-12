@@ -45,7 +45,6 @@ com/increff/pos/controller/AppRestControllerAdvice.class
 com/increff/pos/dao/ProductDao.class
 com/increff/pos/spring/DbConfig.class
 com/increff/pos/service/UserService.class
-com/increff/pos/util/IOUtil.class
 com/increff/pos/service/OrderItemService.class
 com/increff/pos/dao/UserDao.class
 com/increff/pos/pojo/ProductPojo.class
@@ -66,8 +65,6 @@ com/increff/pos/util/ValidateUtil.class
 com/increff/pos/scheduler/SalesScheduler.class
 com/increff/pos/pojo/BrandPojo.class
 com/increff/pos/controller/SiteUiController.class
-com/increff/pos/util/CookieUtil.class
-com/increff/pos/controller/SampleController.class
 com/increff/pos/service/ProductService.class
 com/increff/pos/util/NormalizeUtil.class
 com/increff/pos/dao/OrderDao.class

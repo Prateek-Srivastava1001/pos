@@ -23,31 +23,10 @@ public class UserDao extends AbstractDao {
 	public void insert(UserPojo p) {
 		em().persist(p);
 	}
-
-	public int delete(int id) {
-		Query query = em().createQuery(delete_id);
-		query.setParameter("id", id);
-		return query.executeUpdate();
-	}
-
-	public UserPojo select(int id) {
-		TypedQuery<UserPojo> query = getQuery(select_id, UserPojo.class);
-		query.setParameter("id", id);
-		return getSingle(query);
-	}
-
 	public UserPojo select(String email) {
 		TypedQuery<UserPojo> query = getQuery(select_email, UserPojo.class);
 		query.setParameter("email", email);
 		return getSingle(query);
-	}
-
-	public List<UserPojo> selectAll() {
-		TypedQuery<UserPojo> query = getQuery(select_all, UserPojo.class);
-		return query.getResultList();
-	}
-
-	public void update(UserPojo p) {
 	}
 
 

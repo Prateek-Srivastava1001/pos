@@ -130,9 +130,7 @@ console.log(alertMessage);
                             // whether to hide the notification on click
                               clickToHide: true,
                               // whether to auto-hide the notification
-                              autoHide: true,
-                              // if autoHide, hide after milliseconds
-                              autoHideDelay: 5000,
+                              autoHide: false,
                               showAnimation: 'slideDown',
                               // show animation duration
                               showDuration: 400,

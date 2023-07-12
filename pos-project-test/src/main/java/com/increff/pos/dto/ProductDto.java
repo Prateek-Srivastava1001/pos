@@ -32,9 +32,9 @@ public class ProductDto {
     ValidateUtil validateUtil;
 
     public void add(ProductForm form) throws ApiException {
+        normalizeUtil.normalize(form);
         BrandPojo brandPojo = brandService.combinationChecker(form.getBrand(), form.getCategory());
         ProductPojo pojo = converterUtil.convert(form, brandPojo);
-        normalizeUtil.normalize(pojo);
         validateUtil.checkValid(pojo);
         InventoryPojo inventory = new InventoryPojo();
         productService.add(pojo);
@@ -58,9 +58,9 @@ public class ProductDto {
         return list2;
     }
     public void update(int id, ProductForm form) throws ApiException{
+        normalizeUtil.normalize(form);
         BrandPojo brandPojo = brandService.combinationChecker(form.getBrand(), form.getCategory());
         ProductPojo pojo = converterUtil.convert(form, brandPojo);
-        normalizeUtil.normalize(pojo);
         validateUtil.checkValid(pojo);
         productService.update(id, pojo);
     }

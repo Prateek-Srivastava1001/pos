@@ -19,9 +19,6 @@ public class InventoryService {
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(InventoryPojo pojo) throws ApiException{
-        if(pojo.getQuantity()<0){
-            throw new ApiException("Quantity cannot be negative");
-        }
         dao.insert(pojo);
     }
 

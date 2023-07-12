@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
+@Component
 public class ValidateUtil {
     public static <T> Set<ConstraintViolation<T>> validate(T form) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

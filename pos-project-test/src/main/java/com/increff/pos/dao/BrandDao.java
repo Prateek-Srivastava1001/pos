@@ -41,7 +41,4 @@ public class BrandDao extends AbstractDao{
         return getSingle(query);
     }
 
-    //Update does not have any query, it is handled by BrandService
-    public void update(BrandPojo p){
-    }
 }

@@ -19,12 +19,12 @@ public class OrderItemDao extends AbstractDao{
     private EntityManager em;
     @Transactional
     public void insert(OrderItemPojo pojo){em.persist(pojo);}
-
-    public OrderItemPojo select(int id){
-        TypedQuery<OrderItemPojo> query = getQuery(select_id, OrderItemPojo.class);
-        query.setParameter("id",id);
-        return getSingle(query);
-    }
+//TODO delete
+//    public OrderItemPojo select(int id){
+//        TypedQuery<OrderItemPojo> query = getQuery(select_id, OrderItemPojo.class);
+//        query.setParameter("id",id);
+//        return getSingle(query);
+//    }
     public List<OrderItemPojo> selectAll(int order_id){
         TypedQuery<OrderItemPojo> query = getQuery(select_all, OrderItemPojo.class);
         query.setParameter("order_id",order_id);

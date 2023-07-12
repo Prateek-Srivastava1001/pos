@@ -1,5 +1,6 @@
 com/increff/pos/dto/BrandDtoTest.class
-com/increff/pos/helper/FormHelper.class
 com/increff/pos/QaConfig.class
 com/increff/pos/dto/ProductDtoTest.class
+com/increff/pos/helper/FormHelper.class
+com/increff/pos/dto/UserDtoTest.class
 com/increff/pos/AbstractUnitTest.class

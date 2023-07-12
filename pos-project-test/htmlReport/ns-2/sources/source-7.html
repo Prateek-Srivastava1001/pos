@@ -1,0 +1,149 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > SchedulerDao</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.increff.pos.dao</a>
+</div>
+
+<h1>Coverage Summary for Class: SchedulerDao (com.increff.pos.dao)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SchedulerDao</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (2/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30%
+  </span>
+  <span class="absValue">
+    (3/10)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SchedulerDao$$EnhancerBySpringCGLIB$$858d58de</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (2/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30%
+  </span>
+  <span class="absValue">
+    (3/10)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.dao;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import javax.persistence.EntityManager;
+&nbsp;import javax.persistence.PersistenceContext;
+&nbsp;import javax.persistence.TypedQuery;
+&nbsp;import javax.transaction.Transactional;
+&nbsp;
+&nbsp;import com.increff.pos.pojo.SchedulerPojo;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;@Repository
+<b class="fc">&nbsp;public class SchedulerDao extends AbstractDao{</b>
+<b class="fc">&nbsp;    private static String select_all = &quot;select p from SchedulerPojo p&quot;;</b>
+<b class="fc">&nbsp;    private static String select_by_date = &quot;select p from SchedulerPojo p where date&gt;=:start_date and date&lt;=:end_date&quot;;</b>
+&nbsp;
+&nbsp;    @PersistenceContext
+&nbsp;    private EntityManager em;
+&nbsp;
+&nbsp;    @Transactional
+<b class="nc">&nbsp;    public void insert(SchedulerPojo pojo){em.persist(pojo);}</b>
+&nbsp;
+&nbsp;    public List&lt;SchedulerPojo&gt; selectAll(){
+<b class="nc">&nbsp;        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_all, SchedulerPojo.class);</b>
+<b class="nc">&nbsp;        return query.getResultList();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;SchedulerPojo&gt; selectByDate(LocalDate start_date, LocalDate end_date){
+<b class="nc">&nbsp;        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_by_date, SchedulerPojo.class);</b>
+<b class="nc">&nbsp;        query.setParameter(&quot;start_date&quot;, start_date);</b>
+<b class="nc">&nbsp;        query.setParameter(&quot;end_date&quot;, end_date);</b>
+<b class="nc">&nbsp;        return query.getResultList();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-12 09:43</div>
+</div>
+</body>
+</html>

@@ -37,14 +37,5 @@ public class UserService{
 		return dao.select(email);
 	}
 
-	@Transactional
-	public List<UserPojo> getAll() {
-		return dao.selectAll();
-	}
-
-	@Transactional
-	public void delete(int id) {
-		dao.delete(id);
-	}
 
 }

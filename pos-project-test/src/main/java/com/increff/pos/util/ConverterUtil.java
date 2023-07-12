@@ -84,8 +84,9 @@ public class ConverterUtil {
         pojo.setEmail(form.getEmail());
         pojo.setPassword(form.getPassword());
         for(String supervisor: array){
-            if(supervisor.equals(pojo.getEmail()))
-                flag=1;
+            if(supervisor.equals(pojo.getEmail())) {
+                flag = 1;
+            }
         }
         if(flag==1){
             pojo.setRole("supervisor");

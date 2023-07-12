@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > InventoryDto</title>
+  <title>Coverage Report > BrandDao</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -18,18 +18,15 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">com.increff.pos.dto</a>
+    <a href="../index.html">com.increff.pos.dao</a>
 </div>
 
-<h1>Coverage Summary for Class: InventoryDto (com.increff.pos.dto)</h1>
+<h1>Coverage Summary for Class: BrandDao (com.increff.pos.dao)</h1>
 
 <table class="coverageStats">
+
 <tr>
   <th class="name">Class</th>
-<th class="coverageStat 
-">
-  Class, %
-</th>
 <th class="coverageStat 
 ">
   Method, %
@@ -40,33 +37,52 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">InventoryDto</td>
+  <td class="name">BrandDao</td>
 <td class="coverageStat">
   <span class="percent">
     100%
   </span>
   <span class="absValue">
-    (1/1)
+    (6/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    20%
+    100%
   </span>
   <span class="absValue">
-    (1/5)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    3.8%
-  </span>
-  <span class="absValue">
-    (1/26)
+    (14/14)
   </span>
 </td>
 </tr>
-
+  <tr>
+    <td class="name">BrandDao$$EnhancerBySpringCGLIB$$83226bca</td>
+  </tr>
+  <tr>
+    <td class="name">BrandDao$$EnhancerBySpringCGLIB$$83226bca$$FastClassBySpringCGLIB$$a957e2f3</td>
+  </tr>
+  <tr>
+    <td class="name">BrandDao$$FastClassBySpringCGLIB$$8104a3eb</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+</tr>
 </table>
 
 <br/>
@@ -74,65 +90,49 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.dto;
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.dao;
 &nbsp;
-&nbsp;import com.increff.pos.model.InventoryData;
-&nbsp;import com.increff.pos.model.InventoryForm;
-&nbsp;import com.increff.pos.pojo.InventoryPojo;
-&nbsp;import com.increff.pos.pojo.ProductPojo;
-&nbsp;import com.increff.pos.service.ApiException;
-&nbsp;import com.increff.pos.service.InventoryService;
-&nbsp;import com.increff.pos.service.ProductService;
-&nbsp;import com.increff.pos.util.ConverterUtil;
-&nbsp;import org.springframework.beans.factory.annotation.Autowired;
-&nbsp;import org.springframework.stereotype.Component;
-&nbsp;
-&nbsp;import java.util.ArrayList;
 &nbsp;import java.util.List;
 &nbsp;
-&nbsp;@Component
-<b class="fc">&nbsp;public class InventoryDto {</b>
-&nbsp;    @Autowired
-&nbsp;    InventoryService inventoryService;
-&nbsp;    @Autowired
-&nbsp;    ProductService productService;
-&nbsp;    ConverterUtil converterUtil;
+&nbsp;import javax.persistence.EntityManager;
+&nbsp;import javax.persistence.PersistenceContext;
+&nbsp;import javax.persistence.TypedQuery;
+&nbsp;import javax.transaction.Transactional;
 &nbsp;
-&nbsp;    public InventoryData get(int id) throws ApiException{
-<b class="nc">&nbsp;        InventoryPojo pojo = inventoryService.getCheck(id);</b>
-<b class="nc">&nbsp;        return converterUtil.convert(pojo);</b>
+&nbsp;import com.increff.pos.pojo.BrandPojo;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;@Repository
+<b class="fc">&nbsp;public class BrandDao extends AbstractDao{</b>
+<b class="fc">&nbsp;    private static String select_id = &quot;select p from BrandPojo p where id=:id&quot;;</b>
+<b class="fc">&nbsp;    private static String select_all = &quot;select p from BrandPojo p&quot;;</b>
+<b class="fc">&nbsp;    private static String combination_checker = &quot;select p from BrandPojo p where brand=:brand and category= :category&quot;;</b>
+&nbsp;
+&nbsp;    @PersistenceContext
+&nbsp;    private EntityManager em;
+&nbsp;
+&nbsp;    @Transactional
+<b class="fc">&nbsp;    public void insert(BrandPojo p){ em.persist(p);}</b>
+&nbsp;
+&nbsp;
+&nbsp;    public BrandPojo select(int id) {
+<b class="fc">&nbsp;        TypedQuery&lt;BrandPojo&gt; query = getQuery(select_id, BrandPojo.class);</b>
+<b class="fc">&nbsp;        query.setParameter(&quot;id&quot;, id);</b>
+<b class="fc">&nbsp;        return getSingle(query);</b>
 &nbsp;    }
-&nbsp;    public List&lt;InventoryData&gt; getAll() throws ApiException{
-<b class="nc">&nbsp;        List&lt;InventoryPojo&gt; pojoList = inventoryService.getAll();</b>
-<b class="nc">&nbsp;        List&lt;InventoryData&gt; dataList = new ArrayList&lt;&gt;();</b>
-<b class="nc">&nbsp;        for(InventoryPojo pojo : pojoList){</b>
-<b class="nc">&nbsp;            InventoryData data = new InventoryData();</b>
-<b class="nc">&nbsp;            ProductPojo product = productService.getCheck(pojo.getId());</b>
-<b class="nc">&nbsp;            data.setId(pojo.getId());</b>
-<b class="nc">&nbsp;            data.setQuantity(pojo.getQuantity());</b>
-<b class="nc">&nbsp;            data.setBarcode(product.getBarcode());</b>
-<b class="nc">&nbsp;            dataList.add(data);</b>
-<b class="nc">&nbsp;        }</b>
-<b class="nc">&nbsp;        return dataList;</b>
+&nbsp;
+&nbsp;    public List&lt;BrandPojo&gt; selectAll(){
+<b class="fc">&nbsp;        TypedQuery&lt;BrandPojo&gt; query = getQuery(select_all, BrandPojo.class);</b>
+<b class="fc">&nbsp;        return query.getResultList();</b>
 &nbsp;    }
-&nbsp;    public void edit(int id, InventoryForm form) throws ApiException {
-<b class="nc">&nbsp;        InventoryPojo pojo = converterUtil.convert(form);</b>
-<b class="nc">&nbsp;        if(pojo.getQuantity()&lt;0){</b>
-<b class="nc">&nbsp;            throw new ApiException(&quot;Quantity cannot be negative&quot;);</b>
-&nbsp;        }
-<b class="nc">&nbsp;        inventoryService.update(id, pojo);</b>
+&nbsp;
+&nbsp;    public BrandPojo checkForCombination(String brand, String category){
+<b class="fc">&nbsp;        TypedQuery&lt;BrandPojo&gt; query = getQuery(combination_checker, BrandPojo.class);</b>
+<b class="fc">&nbsp;        query.setParameter(&quot;brand&quot;, brand);</b>
+<b class="fc">&nbsp;        query.setParameter(&quot;category&quot;, category);</b>
+<b class="fc">&nbsp;        return getSingle(query);</b>
 &nbsp;    }
-&nbsp;    public void editByUpload(InventoryForm form) throws ApiException{
-<b class="nc">&nbsp;        String barcode = form.getBarcode();</b>
-<b class="nc">&nbsp;        InventoryPojo pojo = converterUtil.convert(form);</b>
-<b class="nc">&nbsp;        if(pojo.getQuantity()&lt;0){</b>
-<b class="nc">&nbsp;            throw new ApiException(&quot;Quantity cannot be negative&quot;);</b>
-&nbsp;        }
-<b class="nc">&nbsp;        ProductPojo productPojo = productService.getByBarcode(barcode);</b>
-<b class="nc">&nbsp;        int previousQty = inventoryService.getCheck(productPojo.getId()).getQuantity();</b>
-<b class="nc">&nbsp;        pojo.setQuantity(pojo.getQuantity()+previousQty);</b>
-<b class="nc">&nbsp;        inventoryService.update(productPojo.getId(), pojo);</b>
-&nbsp;    }
+&nbsp;
 &nbsp;}
 </code>
 </pre>
@@ -157,7 +157,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-10 16:44</div>
+    <div style="float:right;">generated on 2023-07-12 13:27</div>
 </div>
 </body>
 </html>

@@ -7,7 +7,6 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.util.ConverterUtil;
 import com.increff.pos.util.NormalizeUtil;
-import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

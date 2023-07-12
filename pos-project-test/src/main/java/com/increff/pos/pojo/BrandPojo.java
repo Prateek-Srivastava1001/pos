@@ -15,10 +15,8 @@ public class BrandPojo {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
-    @NotBlank(message = "Brand cannot be empty")
     @Size(max = 30, message="Brand cannot be more than 30 characters long")
     private String brand;
-    @NotBlank(message = "Category cannot be empty")
     @Size(max = 50, message="Category cannot be more than 50 characters long")
     private String category;
 

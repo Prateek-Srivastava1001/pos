@@ -15,11 +15,10 @@ public class ProductPojo {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
-    @NotBlank(message = "Barcode cannot be empty")
+
     @Size(max = 15, message="Barcode cannot be more than 15 characters long")
     private String barcode;
     private int brand_category;
-    @NotBlank(message = "Product name cannot be empty")
     @Size(max = 50, message="Product name cannot be more than 50 characters long")
     private String name;
     private double mrp;

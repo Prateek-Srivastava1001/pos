@@ -28,15 +28,15 @@ public class OrderItemService {
         }
         dao.insert(pojo);
     }
-
-    @Transactional(rollbackOn = ApiException.class)
-    public OrderItemPojo get(int id) throws ApiException{
-        OrderItemPojo pojo = dao.select(id);
-        if(pojo==null){
-            throw new ApiException("Order Item with given ID not found");
-        }
-        return pojo;
-    }
+    //TODO delete
+//    @Transactional(rollbackOn = ApiException.class)
+//    public OrderItemPojo get(int id) throws ApiException{
+//        OrderItemPojo pojo = dao.select(id);
+//        if(pojo==null){
+//            throw new ApiException("Order Item with given ID not found");
+//        }
+//        return pojo;
+//    }
 
     @Transactional(rollbackOn = ApiException.class)
     public List<OrderItemData> getAll(int order_id) throws ApiException {
@@ -69,10 +69,6 @@ public class OrderItemService {
         //Negative Selling price check
         if(pojo.getSelling_price()<0){
             throw new ApiException("Selling Price cannot be negative");
-        }
-        //check product with given id in inventory
-        if(inventoryService.getCheck(pojo.getProduct_id())==null){
-            throw new ApiException("Product with given ID not available");
         }
         if(inventoryService.getCheck(pojo.getProduct_id()).getQuantity()<pojo.getQuantity()){
             throw new ApiException("Not enough quantity is present in the inventory.");

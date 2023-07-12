@@ -1,0 +1,206 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ConverterUtil</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.increff.pos.util</a>
+</div>
+
+<h1>Coverage Summary for Class: ConverterUtil (com.increff.pos.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ConverterUtil</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    44.4%
+  </span>
+  <span class="absValue">
+    (4/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    34%
+  </span>
+  <span class="absValue">
+    (18/53)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.util;
+&nbsp;
+&nbsp;import com.increff.pos.model.*;
+&nbsp;import com.increff.pos.pojo.*;
+&nbsp;import com.increff.pos.service.ApiException;
+&nbsp;import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+&nbsp;import org.springframework.security.core.Authentication;
+&nbsp;import org.springframework.security.core.authority.SimpleGrantedAuthority;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.math.RoundingMode;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;@Component
+<b class="fc">&nbsp;public class ConverterUtil {</b>
+&nbsp;    public static BrandData convert(BrandPojo pojo){
+<b class="nc">&nbsp;        BrandData data = new BrandData();</b>
+<b class="nc">&nbsp;        data.setCategory(pojo.getCategory());</b>
+<b class="nc">&nbsp;        data.setBrand(pojo.getBrand());</b>
+<b class="nc">&nbsp;        data.setId(pojo.getId());</b>
+<b class="nc">&nbsp;        return data;</b>
+&nbsp;    }
+&nbsp;    public static BrandPojo convert(BrandForm form){
+<b class="fc">&nbsp;        BrandPojo pojo = new BrandPojo();</b>
+<b class="fc">&nbsp;        pojo.setBrand(form.getBrand());</b>
+<b class="fc">&nbsp;        pojo.setCategory(form.getCategory());</b>
+<b class="fc">&nbsp;        return pojo;</b>
+&nbsp;    }
+&nbsp;    public static ProductData convert(ProductPojo pojo, BrandPojo brandPojo){
+<b class="nc">&nbsp;        ProductData data = new ProductData();</b>
+<b class="nc">&nbsp;        data.setId(pojo.getId());</b>
+<b class="nc">&nbsp;        data.setBarcode(pojo.getBarcode());</b>
+<b class="nc">&nbsp;        data.setBrand(brandPojo.getBrand());</b>
+<b class="nc">&nbsp;        data.setCategory(brandPojo.getCategory());</b>
+<b class="nc">&nbsp;        data.setName(pojo.getName());</b>
+<b class="nc">&nbsp;        data.setMrp(pojo.getMrp());</b>
+<b class="nc">&nbsp;        return  data;</b>
+&nbsp;    }
+&nbsp;    public static ProductPojo convert(ProductForm form, BrandPojo brandPojo){
+<b class="nc">&nbsp;        ProductPojo pojo = new ProductPojo();</b>
+<b class="nc">&nbsp;        pojo.setBarcode(form.getBarcode());</b>
+<b class="nc">&nbsp;        pojo.setBrand_category(brandPojo.getId());</b>
+<b class="nc">&nbsp;        pojo.setName(form.getName());</b>
+<b class="nc">&nbsp;        BigDecimal roundedValue = BigDecimal.valueOf(form.getMrp()).setScale(2, RoundingMode.HALF_UP);</b>
+<b class="nc">&nbsp;        double mrp = roundedValue.doubleValue();</b>
+<b class="nc">&nbsp;        pojo.setMrp(mrp);</b>
+<b class="nc">&nbsp;        return pojo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static InventoryData convert(InventoryPojo pojo){
+<b class="nc">&nbsp;        InventoryData data = new InventoryData();</b>
+<b class="nc">&nbsp;        data.setId(pojo.getId());</b>
+<b class="nc">&nbsp;        data.setQuantity(pojo.getQuantity());</b>
+<b class="nc">&nbsp;        return data;</b>
+&nbsp;    }
+&nbsp;    public static InventoryPojo convert(InventoryForm form){
+<b class="fc">&nbsp;        InventoryPojo pojo = new InventoryPojo();</b>
+<b class="fc">&nbsp;        pojo.setQuantity(form.getQuantity());</b>
+<b class="fc">&nbsp;        return pojo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public static Authentication convert(UserPojo p) {
+&nbsp;        // Create principal
+<b class="nc">&nbsp;        UserPrincipal principal = new UserPrincipal();</b>
+<b class="nc">&nbsp;        principal.setEmail(p.getEmail());</b>
+<b class="nc">&nbsp;        principal.setId(p.getId());</b>
+&nbsp;
+&nbsp;        // Create Authorities
+<b class="nc">&nbsp;        ArrayList&lt;SimpleGrantedAuthority&gt; authorities = new ArrayList&lt;SimpleGrantedAuthority&gt;();</b>
+<b class="nc">&nbsp;        authorities.add(new SimpleGrantedAuthority(p.getRole()));</b>
+&nbsp;        // you can add more roles if required
+&nbsp;
+&nbsp;        // Create Authentication
+<b class="nc">&nbsp;        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,</b>
+&nbsp;                authorities);
+<b class="nc">&nbsp;        return token;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static UserPojo convert(LoginForm form, String[] array){
+<b class="fc">&nbsp;        int flag=0;</b>
+<b class="fc">&nbsp;        UserPojo pojo = new UserPojo();</b>
+<b class="fc">&nbsp;        pojo.setEmail(form.getEmail());</b>
+<b class="fc">&nbsp;        pojo.setPassword(form.getPassword());</b>
+<b class="fc">&nbsp;        for(String supervisor: array){</b>
+<b class="fc">&nbsp;            if(supervisor.equals(pojo.getEmail())) {</b>
+<b class="nc">&nbsp;                flag = 1;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        if(flag==1){</b>
+<b class="nc">&nbsp;            pojo.setRole(&quot;supervisor&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Supervisor role assigned&quot;);</b>
+&nbsp;        }
+&nbsp;        else{
+<b class="fc">&nbsp;            pojo.setRole(&quot;operator&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;operator role assigned&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return pojo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-12 09:43</div>
+</div>
+</body>
+</html>

@@ -108,4 +108,51 @@ public class BrandDtoTest extends AbstractUnitTest {
         BrandForm form = FormHelper.createBrand("brand", "category");
         dto.update(1,form);
     }
+    //Updating to duplicate value
+    @Test(expected = ApiException.class)
+    public void testUpdatingDuplicate() throws ApiException{
+        BrandForm form = FormHelper.createBrand("brand1", "category1");
+        dto.add(form);
+        BrandForm form1 = FormHelper.createBrand("brand2", "category2");
+        dto.add(form1);
+        int id = service.combinationChecker(form1.getBrand(), form1.getCategory()).getId();
+        dto.update(id, form);
+    }
+    // Updating to empty brand
+    @Test(expected = ApiException.class)
+    public void testUpdatingEmptyBrand() throws ApiException{
+        BrandForm form = FormHelper.createBrand("brand1", "category1");
+        dto.add(form);
+        BrandForm form1 = FormHelper.createBrand("", "category2");
+        int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
+        dto.update(id, form1);
+    }
+    // Updating to empty category
+    @Test(expected = ApiException.class)
+    public void testUpdatingEmptyCategory() throws ApiException{
+        BrandForm form = FormHelper.createBrand("brand1", "category1");
+        dto.add(form);
+        BrandForm form1 = FormHelper.createBrand("brand2", "");
+        int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
+        dto.update(id, form1);
+    }
+    // Updating to brand value having length more than 30 characters
+    @Test(expected = ApiException.class)
+    public void testUpdatingLongBrand() throws ApiException{
+        BrandForm form = FormHelper.createBrand("brand1", "category1");
+        dto.add(form);
+        BrandForm form1 = FormHelper.createBrand("This brand name is supposed to be more than 30 characters long",
+                                            "category2");
+        int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
+        dto.update(id, form1);
+    }
+    @Test(expected = ApiException.class)
+    public void testUpdatingLongCategory() throws ApiException{
+        BrandForm form = FormHelper.createBrand("brand1", "category1");
+        dto.add(form);
+        BrandForm form1 = FormHelper.createBrand("brand2",
+                "This category name is supposed to be more than 50 characters long");
+        int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
+        dto.update(id, form1);
+    }
 }
