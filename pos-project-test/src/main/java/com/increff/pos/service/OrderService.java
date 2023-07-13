@@ -25,11 +25,6 @@ public class OrderService {
         int orderId = dao.insert(pojo).getId();
         return orderId;
     }
-//TODO delete
-//    @Transactional
-//    public OrderPojo get(int id) throws ApiException {
-//        return getCheck(id);
-//    }
 
     @Transactional
     public OrderPojo getCheck(int id) throws ApiException {

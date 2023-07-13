@@ -56,10 +56,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 </tr>
   <tr>
-    <td class="name">SchedulerService$$EnhancerBySpringCGLIB$$fda05bce</td>
+    <td class="name">SchedulerService$$EnhancerBySpringCGLIB$$aa82304d</td>
   </tr>
   <tr>
-    <td class="name">SchedulerService$$EnhancerBySpringCGLIB$$fda05bce$$FastClassBySpringCGLIB$$3964a59e</td>
+    <td class="name">SchedulerService$$EnhancerBySpringCGLIB$$aa82304d$$FastClassBySpringCGLIB$$4d6fe6e9</td>
   </tr>
   <tr>
     <td class="name">SchedulerService$$FastClassBySpringCGLIB$$24dba017</td>
@@ -108,7 +108,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Autowired
 &nbsp;    SchedulerDao schedulerDao;
 &nbsp;
-&nbsp;
 &nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public void add(SchedulerPojo pojo) throws ApiException{
 <b class="fc">&nbsp;        List&lt;SchedulerPojo&gt; checkerList = schedulerDao.selectByDate(pojo.getDate(), pojo.getDate());</b>
@@ -122,12 +121,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            checker.setInvoiced_items_count(pojo.getInvoiced_items_count());</b>
 &nbsp;        }
 &nbsp;    }
-&nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public List&lt;SchedulerPojo&gt; getAll(){
 <b class="fc">&nbsp;        return schedulerDao.selectAll();</b>
 &nbsp;    }
-&nbsp;
-&nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public List&lt;SchedulerPojo&gt; getByDate(ReportsForm form) throws ApiException {
 <b class="fc">&nbsp;        LocalDate startDate = LocalDate.parse(form.getStartDate());</b>
 <b class="fc">&nbsp;        LocalDate endDate = LocalDate.parse(form.getEndDate());</b>
@@ -164,7 +160,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-12 13:27</div>
+    <div style="float:right;">generated on 2023-07-13 13:30</div>
 </div>
 </body>
 </html>

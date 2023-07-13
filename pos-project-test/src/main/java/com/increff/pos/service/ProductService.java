@@ -60,11 +60,9 @@ public class ProductService {
         toUpdate.setMrp(pojo.getMrp());
     }
 
-    @Transactional
     public List<ProductPojo> getAll(){return  dao.selectAll();}
 
     //READ
-    @Transactional
     public ProductPojo getCheck(int id) throws ApiException{
         ProductPojo p = dao.select(id);
         if (p == null) {
@@ -72,7 +70,6 @@ public class ProductService {
         }
         return p;
     }
-    @Transactional(rollbackOn = ApiException.class)
     public ProductPojo getByBarcode(String barcode) throws ApiException{
         ProductPojo pojo = dao.checkBarcode(barcode);
         if(pojo==null){
@@ -80,6 +77,5 @@ public class ProductService {
         }
         return pojo;
     }
-    @Transactional
     public List<ProductPojo> getByBrand(int id){return  dao.getByBrand(id);}
 }

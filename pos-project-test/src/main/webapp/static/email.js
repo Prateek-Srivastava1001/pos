@@ -101,6 +101,21 @@ function ValidateEmail(email) {
   }
   return true;
 }
+function togglePasswordVisibility() {
+  var passwordField = document.getElementById("password");
+  var toggleContainer = document.querySelector(".toggle-password");
+  var toggleIcon = toggleContainer.querySelector(".toggle-icon");
+
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+    toggleIcon.classList.remove("fa-eye");
+    toggleIcon.classList.add("fa-eye-slash");
+  } else {
+    passwordField.type = "password";
+    toggleIcon.classList.remove("fa-eye-slash");
+    toggleIcon.classList.add("fa-eye");
+  }
+}
 //INITIALIZATION CODE
 function init(){
 	$('#login').click(login);

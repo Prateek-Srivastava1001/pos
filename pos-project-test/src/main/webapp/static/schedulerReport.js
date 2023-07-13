@@ -55,6 +55,7 @@ function getFilteredList(event) {
     success: function (response) {
         resetForm();
         displaySchedulerReportList(response);
+        successClick("Date filter applied successfully");
     },
     error: handleAjaxError,
   });

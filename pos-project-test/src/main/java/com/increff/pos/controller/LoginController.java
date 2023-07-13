@@ -40,11 +40,9 @@ public class LoginController {
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
-
 		// Create authentication object
 		Authentication authentication = dto.login(f);
 		// Create new session
-
 		HttpSession session = req.getSession(true);
 		// Attach Spring SecurityContext to this new session
 		SecurityUtil.createContext(session);

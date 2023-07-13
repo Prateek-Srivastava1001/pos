@@ -32,7 +32,6 @@ public class UserService{
 		return true;
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
 	public UserPojo get(String email) throws ApiException {
 		return dao.select(email);
 	}

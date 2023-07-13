@@ -54,11 +54,9 @@ public class BrandService {
     }
 
     //Gets all brand data from BrandPojo
-    @Transactional
     public List<BrandPojo> getAll(){return dao.selectAll();}
 
     //Check if given id exists in Database
-    @Transactional
     public BrandPojo getCheck(int id) throws ApiException {
         BrandPojo p = dao.select(id);
         if (p == null) {
@@ -67,7 +65,6 @@ public class BrandService {
         return p;
     }
 
-    @Transactional
     public BrandPojo combinationChecker(String brand, String category) throws ApiException{
         BrandPojo pojo = dao.checkForCombination(brand, category);
         if(pojo == null){

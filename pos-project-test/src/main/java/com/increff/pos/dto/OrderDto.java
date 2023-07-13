@@ -56,6 +56,7 @@ public class OrderDto {
             normalize(form);
             int productId = productService.getByBarcode(form.getBarcode()).getId();
             OrderItemPojo pojo = convert(form, productId);
+            checks(pojo);
             orderItemService.add(pojo);
             //Updating in Inventory
             InventoryPojo inventoryPojo = inventoryService.getCheck(pojo.getProduct_id());
@@ -68,7 +69,7 @@ public class OrderDto {
         normalize(form);
         int productId = productService.getByBarcode(form.getBarcode()).getId();
         OrderItemPojo pojo = convert(form, productId);
-        orderItemService.checks(pojo);
+        checks(pojo);
     }
     public List<OrderItemData> getOrderItemsByOrderId(int order_id) throws ApiException{
         return orderItemService.getAll(order_id);
@@ -109,6 +110,24 @@ public class OrderDto {
         }
         invoiceForm.setOrderItemList(dataList);
         return invoiceForm;
+    }
+    //Validations
+    public void checks(OrderItemPojo pojo) throws ApiException{
+        //Negative quantity check
+        if(pojo.getQuantity()<=0){
+            throw new ApiException("Please enter positive value of quantity");
+        }
+        //Negative Selling price check
+        if(pojo.getSelling_price()<0){
+            throw new ApiException("Selling Price cannot be negative");
+        }
+        if(inventoryService.getCheck(pojo.getProduct_id()).getQuantity()<pojo.getQuantity()){
+            throw new ApiException("Not enough quantity is present in the inventory.");
+        }
+        if(productService.getCheck(pojo.getProduct_id()).getMrp()<pojo.getSelling_price()){
+            throw new ApiException("Selling price cannot be more than MRP.");
+        }
+
     }
 
     private OrderItemPojo convert(OrderItemForm form, int productId) throws ApiException {

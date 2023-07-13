@@ -12,13 +12,8 @@ import com.increff.pos.pojo.UserPojo;
 
 @Repository
 public class UserDao extends AbstractDao {
-
-	private static String delete_id = "delete from UserPojo p where id=:id";
-	private static String select_id = "select p from UserPojo p where id=:id";
 	private static String select_email = "select p from UserPojo p where email=:email";
-	private static String select_all = "select p from UserPojo p";
 
-	
 	@Transactional
 	public void insert(UserPojo p) {
 		em().persist(p);
@@ -28,6 +23,4 @@ public class UserDao extends AbstractDao {
 		query.setParameter("email", email);
 		return getSingle(query);
 	}
-
-
 }

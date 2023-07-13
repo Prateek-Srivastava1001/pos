@@ -56,10 +56,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 </tr>
   <tr>
-    <td class="name">BrandService$$EnhancerBySpringCGLIB$$f1e646ea</td>
+    <td class="name">BrandService$$EnhancerBySpringCGLIB$$9ec81b69</td>
   </tr>
   <tr>
-    <td class="name">BrandService$$EnhancerBySpringCGLIB$$f1e646ea$$FastClassBySpringCGLIB$$95097628</td>
+    <td class="name">BrandService$$EnhancerBySpringCGLIB$$9ec81b69$$FastClassBySpringCGLIB$$dea5c23</td>
   </tr>
   <tr>
     <td class="name">BrandService$$FastClassBySpringCGLIB$$45e56e4b</td>
@@ -146,11 +146,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    //Gets all brand data from BrandPojo
-&nbsp;    @Transactional
 <b class="fc">&nbsp;    public List&lt;BrandPojo&gt; getAll(){return dao.selectAll();}</b>
 &nbsp;
 &nbsp;    //Check if given id exists in Database
-&nbsp;    @Transactional
 &nbsp;    public BrandPojo getCheck(int id) throws ApiException {
 <b class="fc">&nbsp;        BrandPojo p = dao.select(id);</b>
 <b class="fc">&nbsp;        if (p == null) {</b>
@@ -159,7 +157,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return p;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    @Transactional
 &nbsp;    public BrandPojo combinationChecker(String brand, String category) throws ApiException{
 <b class="fc">&nbsp;        BrandPojo pojo = dao.checkForCombination(brand, category);</b>
 <b class="fc">&nbsp;        if(pojo == null){</b>
@@ -192,7 +189,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-12 13:27</div>
+    <div style="float:right;">generated on 2023-07-13 13:30</div>
 </div>
 </body>
 </html>

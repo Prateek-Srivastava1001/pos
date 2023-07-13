@@ -54,7 +54,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (9/9)
+    (10/10)
   </span>
 </td>
 <td class="coverageStat">
@@ -62,7 +62,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (64/64)
+    (73/73)
   </span>
 </td>
 </tr>
@@ -132,6 +132,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            normalize(form);</b>
 <b class="fc">&nbsp;            int productId = productService.getByBarcode(form.getBarcode()).getId();</b>
 <b class="fc">&nbsp;            OrderItemPojo pojo = convert(form, productId);</b>
+<b class="fc">&nbsp;            checks(pojo);</b>
 <b class="fc">&nbsp;            orderItemService.add(pojo);</b>
 &nbsp;            //Updating in Inventory
 <b class="fc">&nbsp;            InventoryPojo inventoryPojo = inventoryService.getCheck(pojo.getProduct_id());</b>
@@ -144,7 +145,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        normalize(form);</b>
 <b class="fc">&nbsp;        int productId = productService.getByBarcode(form.getBarcode()).getId();</b>
 <b class="fc">&nbsp;        OrderItemPojo pojo = convert(form, productId);</b>
-<b class="fc">&nbsp;        orderItemService.checks(pojo);</b>
+<b class="fc">&nbsp;        checks(pojo);</b>
 &nbsp;    }
 &nbsp;    public List&lt;OrderItemData&gt; getOrderItemsByOrderId(int order_id) throws ApiException{
 <b class="fc">&nbsp;        return orderItemService.getAll(order_id);</b>
@@ -186,6 +187,24 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        invoiceForm.setOrderItemList(dataList);</b>
 <b class="fc">&nbsp;        return invoiceForm;</b>
 &nbsp;    }
+&nbsp;    //Validations
+&nbsp;    public void checks(OrderItemPojo pojo) throws ApiException{
+&nbsp;        //Negative quantity check
+<b class="fc">&nbsp;        if(pojo.getQuantity()&lt;=0){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Please enter positive value of quantity&quot;);</b>
+&nbsp;        }
+&nbsp;        //Negative Selling price check
+<b class="fc">&nbsp;        if(pojo.getSelling_price()&lt;0){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Selling Price cannot be negative&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(inventoryService.getCheck(pojo.getProduct_id()).getQuantity()&lt;pojo.getQuantity()){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Not enough quantity is present in the inventory.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(productService.getCheck(pojo.getProduct_id()).getMrp()&lt;pojo.getSelling_price()){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Selling price cannot be more than MRP.&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
 &nbsp;
 &nbsp;    private OrderItemPojo convert(OrderItemForm form, int productId) throws ApiException {
 <b class="fc">&nbsp;        OrderItemPojo pojo = new OrderItemPojo();</b>
@@ -222,7 +241,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-12 13:27</div>
+    <div style="float:right;">generated on 2023-07-13 13:30</div>
 </div>
 </body>
 </html>

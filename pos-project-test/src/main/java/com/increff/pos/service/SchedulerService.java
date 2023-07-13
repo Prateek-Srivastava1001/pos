@@ -16,7 +16,6 @@ public class SchedulerService {
     @Autowired
     SchedulerDao schedulerDao;
 
-
     @Transactional(rollbackOn = ApiException.class)
     public void add(SchedulerPojo pojo) throws ApiException{
         List<SchedulerPojo> checkerList = schedulerDao.selectByDate(pojo.getDate(), pojo.getDate());
@@ -30,12 +29,9 @@ public class SchedulerService {
             checker.setInvoiced_items_count(pojo.getInvoiced_items_count());
         }
     }
-    @Transactional(rollbackOn = ApiException.class)
     public List<SchedulerPojo> getAll(){
         return schedulerDao.selectAll();
     }
-
-    @Transactional(rollbackOn = ApiException.class)
     public List<SchedulerPojo> getByDate(ReportsForm form) throws ApiException {
         LocalDate startDate = LocalDate.parse(form.getStartDate());
         LocalDate endDate = LocalDate.parse(form.getEndDate());

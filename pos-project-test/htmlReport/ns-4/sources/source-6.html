@@ -56,10 +56,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 </tr>
   <tr>
-    <td class="name">ProductService$$EnhancerBySpringCGLIB$$1db450f2</td>
+    <td class="name">ProductService$$EnhancerBySpringCGLIB$$ca962571</td>
   </tr>
   <tr>
-    <td class="name">ProductService$$EnhancerBySpringCGLIB$$1db450f2$$FastClassBySpringCGLIB$$60c70382</td>
+    <td class="name">ProductService$$EnhancerBySpringCGLIB$$ca962571$$FastClassBySpringCGLIB$$c63342ce</td>
   </tr>
   <tr>
     <td class="name">ProductService$$FastClassBySpringCGLIB$$662934a3</td>
@@ -152,11 +152,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        toUpdate.setMrp(pojo.getMrp());</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    @Transactional
 <b class="fc">&nbsp;    public List&lt;ProductPojo&gt; getAll(){return  dao.selectAll();}</b>
 &nbsp;
 &nbsp;    //READ
-&nbsp;    @Transactional
 &nbsp;    public ProductPojo getCheck(int id) throws ApiException{
 <b class="fc">&nbsp;        ProductPojo p = dao.select(id);</b>
 <b class="fc">&nbsp;        if (p == null) {</b>
@@ -164,7 +162,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 <b class="fc">&nbsp;        return p;</b>
 &nbsp;    }
-&nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public ProductPojo getByBarcode(String barcode) throws ApiException{
 <b class="fc">&nbsp;        ProductPojo pojo = dao.checkBarcode(barcode);</b>
 <b class="fc">&nbsp;        if(pojo==null){</b>
@@ -172,7 +169,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 <b class="fc">&nbsp;        return pojo;</b>
 &nbsp;    }
-&nbsp;    @Transactional
 <b class="fc">&nbsp;    public List&lt;ProductPojo&gt; getByBrand(int id){return  dao.getByBrand(id);}</b>
 &nbsp;}
 </code>
@@ -198,7 +194,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-12 13:27</div>
+    <div style="float:right;">generated on 2023-07-13 13:30</div>
 </div>
 </body>
 </html>

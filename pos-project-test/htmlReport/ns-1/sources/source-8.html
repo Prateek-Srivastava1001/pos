@@ -51,15 +51,15 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (9/9)
+    (6/6)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">UserDao$$EnhancerBySpringCGLIB$$e2dd0be</td>
+    <td class="name">UserDao$$EnhancerBySpringCGLIB$$561b7738</td>
   </tr>
   <tr>
-    <td class="name">UserDao$$EnhancerBySpringCGLIB$$e2dd0be$$FastClassBySpringCGLIB$$7665b2b4</td>
+    <td class="name">UserDao$$EnhancerBySpringCGLIB$$561b7738$$FastClassBySpringCGLIB$$589057a9</td>
   </tr>
   <tr>
     <td class="name">UserDao$$FastClassBySpringCGLIB$$b95ff667</td>
@@ -79,7 +79,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (9/9)
+    (6/6)
   </span>
 </td>
 </tr>
@@ -104,13 +104,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;@Repository
 <b class="fc">&nbsp;public class UserDao extends AbstractDao {</b>
-&nbsp;
-<b class="fc">&nbsp;	private static String delete_id = &quot;delete from UserPojo p where id=:id&quot;;</b>
-<b class="fc">&nbsp;	private static String select_id = &quot;select p from UserPojo p where id=:id&quot;;</b>
 <b class="fc">&nbsp;	private static String select_email = &quot;select p from UserPojo p where email=:email&quot;;</b>
-<b class="fc">&nbsp;	private static String select_all = &quot;select p from UserPojo p&quot;;</b>
 &nbsp;
-&nbsp;	
 &nbsp;	@Transactional
 &nbsp;	public void insert(UserPojo p) {
 <b class="fc">&nbsp;		em().persist(p);</b>
@@ -120,8 +115,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;		query.setParameter(&quot;email&quot;, email);</b>
 <b class="fc">&nbsp;		return getSingle(query);</b>
 &nbsp;	}
-&nbsp;
-&nbsp;
 &nbsp;}
 </code>
 </pre>
@@ -146,7 +139,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-12 13:27</div>
+    <div style="float:right;">generated on 2023-07-13 14:28</div>
 </div>
 </body>
 </html>

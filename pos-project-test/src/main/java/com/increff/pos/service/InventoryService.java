@@ -28,13 +28,11 @@ public class InventoryService {
         toUpdate.setQuantity(pojo.getQuantity());
     }
 
-    @Transactional
     public List<InventoryPojo> getAll() throws ApiException {
         List<InventoryPojo> pojoList =  dao.selectAll();
         return pojoList;
     }
 
-    @Transactional
     public InventoryPojo getCheck(int id) throws ApiException{
         InventoryPojo pojo = dao.select(id);
         if (pojo == null) {

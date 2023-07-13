@@ -21,3 +21,10 @@ body {
 .fas{
     font-size: 4rem;
 }
+.toggle-password {
+  position: relative;
+}
+
+.toggle-password .fa-eye {
+  font-size: 3rem;
+}

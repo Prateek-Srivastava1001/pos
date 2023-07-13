@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > InventoryService</title>
+  <title>Coverage Report > OrderItemPojo</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -18,10 +18,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">com.increff.pos.service</a>
+    <a href="../index.html">com.increff.pos.pojo</a>
 </div>
 
-<h1>Coverage Summary for Class: InventoryService (com.increff.pos.service)</h1>
+<h1>Coverage Summary for Class: OrderItemPojo (com.increff.pos.pojo)</h1>
 
 <table class="coverageStats">
 
@@ -37,32 +37,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">InventoryService</td>
+  <td class="name">OrderItemPojo</td>
 <td class="coverageStat">
   <span class="percent">
     100%
   </span>
   <span class="absValue">
-    (5/5)
+    (7/7)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    91.7%
+    100%
   </span>
   <span class="absValue">
-    (11/12)
+    (7/7)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">InventoryService$$EnhancerBySpringCGLIB$$5dc827cb</td>
-  </tr>
-  <tr>
-    <td class="name">InventoryService$$EnhancerBySpringCGLIB$$5dc827cb$$FastClassBySpringCGLIB$$77cae14b</td>
-  </tr>
-  <tr>
-    <td class="name">InventoryService$$FastClassBySpringCGLIB$$7f418056</td>
+    <td class="name">OrderItemPojo$HibernateProxy$zUcbQSFu</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -71,15 +65,15 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (5/5)
+    (7/7)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    91.7%
+    100%
   </span>
   <span class="absValue">
-    (11/12)
+    (7/7)
   </span>
 </td>
 </tr>
@@ -90,53 +84,25 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.service;
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.pojo;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
 &nbsp;
-&nbsp;import com.increff.pos.dao.InventoryDao;
-&nbsp;import com.increff.pos.model.InventoryData;
-&nbsp;import com.increff.pos.pojo.InventoryPojo;
-&nbsp;import com.increff.pos.pojo.ProductPojo;
-&nbsp;import org.springframework.beans.factory.annotation.Autowired;
-&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import javax.persistence.*;
 &nbsp;
-&nbsp;import java.util.ArrayList;
-&nbsp;import java.util.List;
+&nbsp;@Getter
+<b class="fc">&nbsp;@Setter</b>
+&nbsp;@Entity
+&nbsp;@Table(name=&quot;OrderItem&quot;)
+<b class="fc">&nbsp;public class OrderItemPojo {</b>
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy=GenerationType.IDENTITY)
+<b class="fc">&nbsp;    private int id;</b>
+<b class="fc">&nbsp;    private int order_id;</b>
+<b class="fc">&nbsp;    private int product_id;</b>
+<b class="fc">&nbsp;    private int quantity;</b>
+<b class="fc">&nbsp;    private double selling_price;</b>
 &nbsp;
-&nbsp;import javax.transaction.Transactional;
-&nbsp;
-&nbsp;@Service
-<b class="fc">&nbsp;public class InventoryService {</b>
-&nbsp;    @Autowired
-&nbsp;    InventoryDao dao;
-&nbsp;
-&nbsp;    @Transactional(rollbackOn = ApiException.class)
-&nbsp;    public void add(InventoryPojo pojo) throws ApiException{
-<b class="fc">&nbsp;        if(pojo.getQuantity()&lt;0){</b>
-<b class="nc">&nbsp;            throw new ApiException(&quot;Quantity cannot be negative&quot;);</b>
-&nbsp;        }
-<b class="fc">&nbsp;        dao.insert(pojo);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    @Transactional(rollbackOn  = ApiException.class)
-&nbsp;    public void update(int id, InventoryPojo pojo) throws ApiException{
-<b class="fc">&nbsp;        InventoryPojo toUpdate = getCheck(id);</b>
-<b class="fc">&nbsp;        toUpdate.setQuantity(pojo.getQuantity());</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    @Transactional
-&nbsp;    public List&lt;InventoryPojo&gt; getAll() throws ApiException {
-<b class="fc">&nbsp;        List&lt;InventoryPojo&gt; pojoList =  dao.selectAll();</b>
-<b class="fc">&nbsp;        return pojoList;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    @Transactional
-&nbsp;    public InventoryPojo getCheck(int id) throws ApiException{
-<b class="fc">&nbsp;        InventoryPojo pojo = dao.select(id);</b>
-<b class="fc">&nbsp;        if (pojo == null) {</b>
-<b class="fc">&nbsp;            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</b>
-&nbsp;        }
-<b class="fc">&nbsp;        return pojo;</b>
-&nbsp;    }
 &nbsp;}
 </code>
 </pre>
@@ -161,7 +127,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-12 09:53</div>
+    <div style="float:right;">generated on 2023-07-13 13:21</div>
 </div>
 </body>
 </html>

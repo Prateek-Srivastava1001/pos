@@ -52,6 +52,24 @@ public class ProductDtoTest extends AbstractUnitTest {
                 " TesTNaMe ", 1000);
         productDto.add(productForm);
     }
+    //valid brand but invalid category
+    @Test(expected = ApiException.class)
+    public void testAddingInvalidCategory() throws ApiException{
+        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+        brandDto.add(brandForm);
+        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " otherCaTegoRy ",
+                " TesTNaMe ", 1000);
+        productDto.add(productForm);
+    }
+    //invalid brand but valid category
+    @Test(expected = ApiException.class)
+    public void testAddingInvalidBrand() throws ApiException{
+        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+        brandDto.add(brandForm);
+        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", "invalidBrand", " TestCaTegoRy ",
+                " TesTNaMe ", 1000);
+        productDto.add(productForm);
+    }
     //empty barcode not supported
     @Test(expected = ApiException.class)
     public void testAddingEmptyBarcode() throws ApiException{
@@ -124,7 +142,6 @@ public class ProductDtoTest extends AbstractUnitTest {
                 "testName", -1000);
         productDto.add(productForm);
     }
-
     //GETALL METHOD TESTS...
     @Test
     public void testGetAll() throws ApiException{
