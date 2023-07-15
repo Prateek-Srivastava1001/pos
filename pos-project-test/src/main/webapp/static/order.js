@@ -26,7 +26,7 @@ function displayOrderList(data){
     	table.clear().draw();
     	for(var i in data){
     		var e = data[i];
-    		var buttonHtml = ' <button onclick="displayParticularOrder(' + e.id + ')">View Order</button>'
+    		var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayParticularOrder(' + e.id + ')">View Order</button>'
     		var minute = '00';
     		var hour = '00';
     		var date = '00';
@@ -93,7 +93,15 @@ function downloadInvoice(){
 function init(){
     $('#download-invoice').click(downloadInvoice);
     table = $('#order-table').DataTable(
-                                        {order: [[0, 'desc']]}
+                                        {order: [[0, 'desc']],
+                                        'columnDefs': [ {'targets': [2],'orderable': false },
+                                            {'targets': [0,1,2], "className": "text-center"}],
+                                            searching: false,
+                                            info:false,
+                                            lengthMenu: [
+                                                             [15, 25, 50, -1],
+                                                             [15, 25, 50, 'All']
+                                            ]}
     );
 }
 $(document).ready(getOrderList);

@@ -125,7 +125,15 @@ function init() {
     var today = new Date();
     dateInput.setAttribute("max", today.toISOString().substring(0, 10));
     dateInput2.setAttribute("max", today.toISOString().substring(0, 10));
-    table = $('#brand-report-table').DataTable({'columnDefs': [ {'targets': [1,2,3],'orderable': false }]});
+    table = $('#brand-report-table').DataTable({'columnDefs': [ {'targets': [1,2,3],'orderable': false },
+                                                                {'targets': [0,1,2,3], "className": "text-center"}],
+                                                                 searching: false,
+                                                                 info:false,
+                                                                 lengthMenu: [
+                                                                         [15, 25, 50, -1],
+                                                                         [15, 25, 50, 'All']
+                                                                     ]
+    });
  }
 $(document).ready(getSchedulerList);
 $(document).ready(init);

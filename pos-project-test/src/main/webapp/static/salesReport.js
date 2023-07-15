@@ -147,7 +147,10 @@ function init() {
     var today = new Date();
     dateInput.setAttribute("max", today.toISOString().substring(0, 10));
     dateInput2.setAttribute("max", today.toISOString().substring(0, 10));
-    table = $('#brand-report-table').DataTable({searching: false});
+    table = $('#brand-report-table').DataTable({searching: false,
+                                                'columnDefs': [{'targets': [0,1,2,3], "className": "text-center"}],
+                                                info: false
+    });
  }
 $(document).ready(init);
 

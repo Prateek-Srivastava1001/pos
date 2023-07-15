@@ -31,6 +31,10 @@ function addProduct(event){
 	    warnClick("Please enter a positive value for Quantity");
 	    return;
 	    }
+	if(parseInt(formData[1].value)>1000000000){
+	    warnClick("Quantity cannot be more than 1000000000");
+	    return;
+	}
 	if(formData[2].value==null || formData[2].value==""){
         warnClick("Selling price cannot be empty");
         return;
@@ -169,15 +173,15 @@ var $tbody = $('#order-item-table').find('tbody');
            var e = addedData[i];
            var amount = parseInt(e.quantity) * parseFloat(e.selling_price);
            amount = Math.round(amount * 100) / 100;
-           editButtonHtml = ' <button onclick="displayEditOrderDetail(' + i + ')">Edit</button>';
-           deleteButtonHtml = ' <button onclick="deleteOrder(' + i + ')">Delete</button>';
+           editButtonHtml = ' <button class="btn btn-outline-info" onclick="displayEditOrderDetail(' + i + ')">Edit</button>';
+           deleteButtonHtml = ' <button class="btn btn-outline-danger" onclick="deleteOrder(' + i + ')">Delete</button>';
            var row = '<tr>'
            + '<td>' + e.barcode + '</td>' //barcode
            + '<td>'  + e.quantity + '</td>' //mrp
            + '<td>'  + (Math.round(parseFloat(e.selling_price)*100)/100).toFixed(2) + '</td>' //quantity
            + '<td>Rs '  + amount.toFixed(2) + '</td>' //total
-           + '<td>' + editButtonHtml + '</td>'
-           + '<td>' + deleteButtonHtml + '</td>'
+           + '<td>' + editButtonHtml + '&nbsp;&nbsp;'
+           + ' ' + deleteButtonHtml + '</td>'
            + '</tr>';
             $tbody.append(row)
             sum = sum+amount;

@@ -62,7 +62,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (26/26)
+    (31/31)
   </span>
 </td>
 </tr>
@@ -120,6 +120,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        if(pojo.getQuantity()&lt;0){</b>
 <b class="fc">&nbsp;            throw new ApiException(&quot;Quantity cannot be negative&quot;);</b>
 &nbsp;        }
+<b class="fc">&nbsp;        if(pojo.getQuantity()&gt;1000000000){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Quantity cannot be more than 1000000000&quot;);</b>
+&nbsp;        }
 <b class="fc">&nbsp;        inventoryService.update(id, pojo);</b>
 &nbsp;    }
 &nbsp;    public void editByUpload(InventoryForm form) throws ApiException{
@@ -130,7 +133,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 <b class="fc">&nbsp;        ProductPojo productPojo = productService.getByBarcode(barcode);</b>
 <b class="fc">&nbsp;        int previousQty = inventoryService.getCheck(productPojo.getId()).getQuantity();</b>
-<b class="fc">&nbsp;        pojo.setQuantity(pojo.getQuantity()+previousQty);</b>
+<b class="fc">&nbsp;        int updateQty = pojo.getQuantity()+previousQty;</b>
+<b class="fc">&nbsp;        if(updateQty&gt;1000000000 || updateQty&lt;0)</b>
+&nbsp;        {
+<b class="fc">&nbsp;            throw new ApiException(&quot;Quantity out of bound&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        pojo.setQuantity(updateQty);</b>
 <b class="fc">&nbsp;        inventoryService.update(productPojo.getId(), pojo);</b>
 &nbsp;    }
 &nbsp;}
@@ -157,7 +165,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-13 13:30</div>
+    <div style="float:right;">generated on 2023-07-14 11:33</div>
 </div>
 </body>
 </html>

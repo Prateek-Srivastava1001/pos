@@ -22,6 +22,10 @@ function updateInventory(event){
         dangerClick("Please enter a valid integer value for quantity");
         return;
     }
+    if(parseInt(formData[0].value)>1000000000){
+        dangerClick("Maximum value of quantity can be 1000000000");
+        return;
+    }
 	var json = fromSerializedToJson(formData);
 
 	$.ajax({
@@ -101,7 +105,15 @@ function uploadRows(){
 
 	//Process next row
 	var row = fileData[processCount];
+	console.log(row);
 	processCount++;
+	if(parseInt(row.quantity)>1000000000){
+    	    row.lineNumber=processCount;
+            row.error="quantity cannot be more than 1000000000";
+            errorData.push(row);
+            uploadRows();
+            return;
+    	}
 	var json = JSON.stringify(row);
 	var url = getAdminInventoryUrl();
 	//Make ajax call
@@ -142,7 +154,7 @@ function displayInventoryList(data){
             var buttonHtml = ' <button class="edit_btn" disabled>edit</button>';
         }
         else
-		    var buttonHtml = ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>';
+		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditInventory(' + e.id + ')">edit</button>';
         table.row.add([
                   e.barcode,
                   e.quantity,
@@ -233,7 +245,15 @@ function init(){
         document.getElementById("edit-inventory-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
-    table = $('#inventory-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
+    table = $('#inventory-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false },
+                    {'targets': [0,1,2], "className": "text-center"}],
+                 searching: false,
+                 info:false,
+        lengthMenu: [
+                [15, 25, 50, -1],
+                [15, 25, 50, 'All']
+            ]
+    });
 }
 
 $(document).ready(init);

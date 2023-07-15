@@ -194,7 +194,7 @@ function displayBrandList(data){
         var buttonHtml = ' <button class="edit_btn" onclick="displayEditBrand(' + e.id + ')" disabled>edit</button>'
         }
         else
-		    var buttonHtml = ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>';
+		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditBrand(' + e.id + ')">Edit</button>';
 		var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
 		var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
 		table.row.add([
@@ -279,7 +279,17 @@ function init(){
 //      document.getElementById("upload-brand-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
-    table = $('#brand-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
+    table = $('#brand-table').DataTable({'columnDefs': [
+        {'targets': [2],'orderable': false },
+        {'targets': [0,1,2], "className": "text-center"}
+         ],
+         searching: false,
+         info:false,
+         lengthMenu: [
+                 [10, 25, 50, -1],
+                 [10, 25, 50, 'All']
+             ]
+    });
 }
 $(document).ready(getBrandList);
 $(document).ready(init);

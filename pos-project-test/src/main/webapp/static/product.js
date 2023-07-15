@@ -1,4 +1,5 @@
 var table;
+var brandCategoryData = [];
 function getProductUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/product";
@@ -30,11 +31,15 @@ function addProduct(event){
             return true;
         }
         if(name==null ||name==""){
-            warnClick("MRP cannot be empty");
+            warnClick("Name cannot be empty");
             return true;
         }
        if(mrp==null ||mrp==""){
             warnClick("MRP cannot be empty");
+            return true;
+        }
+        if(parseFloat(mrp)<0){
+            warnClick("MRP cannot be negative");
             return true;
         }
 	var json = toJson($form);
@@ -79,24 +84,28 @@ function updateProduct(event){
     var mrp = formData[4].value;
     console.log(mrp);
     if(barcode==null ||barcode==""){
-           dangerClick("Barcode cannot be empty");
+           warnClick("Barcode cannot be empty");
            return true;
        }
     if(brand==null ||brand==""){
-           dangerClick("Brand cannot be empty");
+           warnClick("Brand cannot be empty");
            return true;
        }
        if(category==null ||category==""){
-           dangerClick("Category cannot be empty");
+           warnClick("Category cannot be empty");
            return true;
        }
        if(name==null ||name==""){
-           dangerClick("MRP cannot be empty");
+           warnClick("MRP cannot be empty");
            return true;
        }
       if(mrp==null ||mrp==""){
-           dangerClick("MRP cannot be empty");
+           warnClick("MRP cannot be empty");
            return true;
+       }
+       if(parseFloat(mrp)<0){
+        warnClick("MRP cannot be negative");
+        return;
        }
 	var json = toJson($form);
 
@@ -224,7 +233,7 @@ function displayProductList(data){
             var buttonHtml = ' <button class="edit_btn" disabled>edit</button>'
         }
         else
-		    var buttonHtml = ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>';
+		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditProduct(' + e.id + ')">edit</button>';
         table.row.add([
                       e.barcode,
                       e.brand,
@@ -279,9 +288,12 @@ function displayUploadData(){
 }
 
 function displayProduct(data){
+    var brandDropdown = $('#editBrand');
+    populateBrandDropdown(brandDropdown);
+    $("#editBrand").val(data.brand).trigger("change");
+    $("#editCategory").val(data.category).trigger("change");
+
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
-	$("#product-edit-form input[name=brand]").val(data.brand);
-	$("#product-edit-form input[name=category]").val(data.category);
 	$("#product-edit-form input[name=name]").val(data.name);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
 	$("#product-edit-form input[name=id]").val(data.id);
@@ -291,6 +303,59 @@ function displayProduct(data){
 function refresh(){
     location.reload(true);
 }
+//Brand - Category combination for dropdown
+function getBrandList(){
+    var url = $("meta[name=baseUrl]").attr("content")+'/api/brand';
+    $.ajax({
+    	   url: url,
+    	   type: 'GET',
+    	   success: function(data) {
+    	   		brandCategoryData = data;
+    	   		var brandDropdown = $('#inputBrand');
+    	   		populateBrandDropdown(brandDropdown);
+    	   },
+    	   error: handleAjaxError
+    	});
+}
+function populateBrandDropdown(brandDropdown){
+    // Clear existing options
+    brandDropdown.empty();
+    // Add an empty option
+    brandDropdown.append($('<option>', {
+        value: '',
+        text: 'Select'
+    }));
+    var distinctBrands = new Set();
+    // Iterate over the brand-category data to collect distinct brands
+    brandCategoryData.forEach(function(item) {
+       distinctBrands.add(item.brand);
+    });
+
+    distinctBrands.forEach(function(brand) {
+            brandDropdown.append($('<option>', {
+                value: brand,
+                text: brand
+            }));
+        });
+}
+function populateCategoryDropdown(selectedBrand, categoryDropdown){
+    categoryDropdown.empty();
+    categoryDropdown.append($('<option>', {
+            value: '',
+            text: 'Select'
+        }));
+    // Filter the brand-category data based on the selected brand
+    var filteredData = brandCategoryData.filter(function(item) {
+        return item.brand === selectedBrand;
+    });
+
+    filteredData.forEach(function(item) {
+            categoryDropdown.append($('<option>', {
+                value: item.category,
+                text: item.category
+            }));
+        });
+}
 //INITIALIZATION CODE
 function init(){
 	$('#add-product').click(addProduct);
@@ -299,6 +364,16 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName);
+    $('#inputBrand').on('change', function() {
+                                               var selectedBrand = $(this).val();
+                                               var categoryDropdown = $('#inputCategory');
+                                               populateCategoryDropdown(selectedBrand, categoryDropdown);
+                                            });
+    $('#editBrand').on('change', function() {
+                                                var selectedBrand = $(this).val();
+                                                var categoryDropdown = $('#editCategory');
+                                                populateCategoryDropdown(selectedBrand, categoryDropdown);
+                                                });
 
     var roleElement = document.getElementById('role');
     var role = roleElement.innerText;
@@ -312,9 +387,20 @@ function init(){
         document.getElementById("edit-product-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
-    table = $('#product-table').DataTable({'columnDefs': [ {'targets': [5],'orderable': false }]});
+    table = $('#product-table').DataTable({'columnDefs': [ {'targets': [5],'orderable': false },
+                {'targets': [0,1,2,3,4,5], "className": "text-center"}],
+             searching: false,
+             info:false,
+             lengthMenu: [
+                     [10, 25, 50, -1],
+                     [10, 25, 50, 'All']
+                 ]
+    });
+    $('.select2').select2();
+
 }
 
 $(document).ready(init);
 $(document).ready(getProductList);
+$(document).ready(getBrandList);
 

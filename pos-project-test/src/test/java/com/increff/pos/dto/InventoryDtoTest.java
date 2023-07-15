@@ -89,6 +89,20 @@ public class InventoryDtoTest extends AbstractUnitTest {
         InventoryForm inventoryForm = FormHelper.createInventory(10, "barcode");
         inventoryDto.edit(1, inventoryForm);
     }
+    // large value of quantity on edit
+    @Test(expected = ApiException.class)
+    public void testLargeQuantityOnEdit() throws ApiException{
+        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+        brandDto.add(brandForm);
+        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                " TesTNaMe ", 1000);
+        productDto.add(productForm);
+        String barcode = "testbarcode";
+        int quantity = 1000000001;
+        int id = productService.getByBarcode(barcode).getId();
+        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+        inventoryDto.edit(id, inventoryForm);
+    }
 
     //EDITBYUPLOAD METHOD TESTS...
     @Test
@@ -119,6 +133,19 @@ public class InventoryDtoTest extends AbstractUnitTest {
         String barcode = "testbarcode";
         int quantity = -10;
         int id = productService.getByBarcode(barcode).getId();
+        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+        inventoryDto.editByUpload(inventoryForm);
+    }
+    // large quantity edit on upload
+    @Test(expected = ApiException.class)
+    public void testLargeQuantityEditByUpload() throws ApiException{
+        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+        brandDto.add(brandForm);
+        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                " TesTNaMe ", 1000);
+        productDto.add(productForm);
+        String barcode = "testbarcode";
+        int quantity = 1000000001;
         InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
         inventoryDto.editByUpload(inventoryForm);
     }
