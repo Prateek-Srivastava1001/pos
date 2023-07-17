@@ -230,7 +230,7 @@ function displayProductList(data){
 		var roleElement = document.getElementById('role');
         var role = roleElement.innerText;
         if(role=="operator"){
-            var buttonHtml = ' <button class="edit_btn" disabled>edit</button>'
+            var buttonHtml = ' <button class="btn btn-outline-danger edit_btn" disabled>Edit</button>'
         }
         else
 		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditProduct(' + e.id + ')">edit</button>';

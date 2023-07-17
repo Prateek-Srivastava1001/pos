@@ -14,29 +14,31 @@
         <div class="col align-self-start">
             <h3>Sales Report</h3>
         </div>
-        <div class="col align-self-end">
-            <button type="button" id="download-report" class="btn btn-dark" disabled="true">Download Report</button>
-        </div>
     </div>
 
     <!-- Top row with form-->
 
     <div class="row">
         <div class="col-12">
-            <form class="form-inline" id="sales-form">
-                <div class="form-group">
-                    <label for="inputSD" class="col-sm-2 col-form-label">From</label>
+            <form class="form-row" id="sales-form">
+                <div class="form-inline form-group col-4" style="width:100%">
+                    <label for="inputSD" class="col-sm-2 col-form-label">Start Date</label>
                     <div class="col-sm-10">
                         <input type="date" id="inputSD" name="startDate" class="form-control" onchange="validateDate(this)">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputED" class="col-sm-2 col-form-label">To</label>
+                <div class="form-inline form-group col-4">
+                    <label for="inputED" class="col-sm-2 col-form-label">End Date</label>
                     <div class="col-sm-10">
                         <input type="date" id="inputED" name="endDate" class="form-control" onchange="validateDate(this)">
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" id="apply-filter">Apply</button>
+                <div class="form-group col-2">
+                    <button type="button" class="btn btn-primary" id="apply-filter" style="width:90%">Apply</button>
+                </div>
+                <div class="form-group col-2">
+                    <button type="button" id="download-report" class="btn btn-dark" disabled="true" style="width:90%">Download Report</button>
+                </div>
             </form>
         </div>
     </div>
@@ -46,23 +48,39 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <form class="form-inline" id="brand-form">
-                <div class="form-group">
+            <form class="form-row" id="brand-form">
+                <div class="form-group col-4">
                     <label for="brand" class="col-sm-2 col-form-label">Brand</label>
                     <div class="col-sm-10">
-                        <input type="text" id="brand" name="brand" class="form-control">
+<!--                        <input type="text" id="brand" name="brand" class="form-control">-->
+                        <select class="form-control select2" name="brand" id="brand" style="width:100%">
+                            <option value="">Select</option>
+                        </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-4">
                     <label for="inputED" class="col-sm-2 col-form-label">Category</label>
                     <div class="col-sm-10">
-                        <input type="text" id="category" name="category" class="form-control">
+<!--                        <input type="text" id="category" name="category" class="form-control">-->
+                        <select class="form-control select2" name="brand" id="category" style="width:100%">
+                            <option value="">Select</option>
+                        </select>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" id="apply-brand-filter" disabled="true">Apply Brand Filter</button>
-                &nbsp;
-                <button type="button" class="btn btn-primary" id="refresh-data" disabled="true">Refresh</button>
             </form>
+            <form class="form-row">
+                <div class="form-group col-4">
+                    <div class="container">
+                        <button type="button" class="btn btn-primary px-1" id="apply-brand-filter" disabled="true" style="width:82%">Apply Brand Filter</button>
+                    </div>
+                </div>
+                <div class="form-group col-4">
+                    <div class="container">
+                        <button type="button" class="btn btn-primary" id="refresh-data" disabled="true" style="width:82%">Refresh</button>
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
     <div class="row">

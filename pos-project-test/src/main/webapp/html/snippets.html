@@ -40,9 +40,9 @@
         <li class="nav-item">
             <a class="nav-link" th:href="@{/ui/order}">Orders</a>
         </li>
-        <li class="nav-item">
-            <div class="dropdown show">
-                <a class="btn btn-warning dropdown-toggle"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <li class="nav-item dropdown">
+
+                <a class="btn btn-outline-info dropdown-toggle"  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Reports
                 </a>
 
@@ -52,7 +52,6 @@
                     <a class="dropdown-item" th:href="@{/ui/reports/brand}">Brand Report</a>
                     <a class="dropdown-item" th:href="@{/ui/reports/inventory}">Inventory Report</a>
                 </div>
-            </div>
         </li>
     </ul>
     

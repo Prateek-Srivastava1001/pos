@@ -191,7 +191,7 @@ function displayBrandList(data){
 		var roleElement = document.getElementById('role');
         var role = roleElement.innerText;
         if(role=="operator"){
-        var buttonHtml = ' <button class="edit_btn" onclick="displayEditBrand(' + e.id + ')" disabled>edit</button>'
+        var buttonHtml = ' <button class="btn btn-outline-danger edit_btn" disabled>Edit</button>'
         }
         else
 		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditBrand(' + e.id + ')">Edit</button>';

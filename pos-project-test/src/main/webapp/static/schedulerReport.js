@@ -132,7 +132,8 @@ function init() {
                                                                  lengthMenu: [
                                                                          [15, 25, 50, -1],
                                                                          [15, 25, 50, 'All']
-                                                                     ]
+                                                                     ],
+                                                                 order: [[0, 'desc']]
     });
  }
 $(document).ready(getSchedulerList);

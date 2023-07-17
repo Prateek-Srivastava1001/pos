@@ -24,6 +24,7 @@ function getSalesList(event) {
     },
     success: function (response) {
         displaySalesReportList(response);
+        successClick("Report generated for given timeframe");
     },
     error: handleAjaxError,
   });
@@ -37,13 +38,16 @@ let filteredData = [];
 
 function displayFilteredReport(){
     var $tbody = $('#brand-report-table').find('tbody');
-    table.clear().draw();
-    var brand = document.forms["brand-form"]["brand"].value;
-    var category = document.forms["brand-form"]["category"].value;
+    var $form = $("#brand-form");
+    var formData = $form.serializeArray();
+//    var brand = document.forms["brand-form"]["brand"].value;
+    var brand = formData[0].value;
+    var category = formData[1].value;
     if(brand == null || brand ==""){
         warnClick("Please fill Brand Data before applying filter");
         return;
     }
+    table.clear().draw();
     brand = brand.toLowerCase().trim();
     category = category.toLowerCase().trim();
     var flag = 0;
@@ -72,6 +76,7 @@ function displayFilteredReport(){
             flag=1;
             }
         }
+
     }
 
     if(flag == 0){
@@ -80,7 +85,7 @@ function displayFilteredReport(){
     else{
         $("#download-report").removeAttr("disabled");
     }
-
+successClick("Filter applied successfully");
 }
 function displaySalesReportList(data){
 	var $tbody = $('#brand-report-table').find('tbody');
@@ -104,6 +109,8 @@ function displaySalesReportList(data){
 	}
 	$("#apply-brand-filter").removeAttr("disabled");
 	$("#refresh-data").removeAttr("disabled");
+	populateBrandDropdown();
+	populateCategoryDropdown(null);
 }
 
 function downloadReport(){
@@ -132,8 +139,50 @@ function validateDate(input) {
   }
 }
 function refreshData(){
-    console.log("inside refresh");
     displaySalesReportList(initialData);
+    successClick("Data refreshed");
+}
+function populateBrandDropdown(){
+    var brandDropdown = $('#brand');
+    // Clear existing options
+    brandDropdown.empty();
+    // Add an empty option
+    brandDropdown.append($('<option>', {
+        value: '',
+        text: 'Select'
+    }));
+    var distinctBrands = new Set();
+
+    // Iterate over the brand-category data to collect distinct brands
+    initialData.forEach(function(item) {
+       distinctBrands.add(item.brand);
+    });
+
+    distinctBrands.forEach(function(brand) {
+            brandDropdown.append($('<option>', {
+                value: brand,
+                text: brand
+            }));
+        });
+}
+function populateCategoryDropdown(selectedBrand){
+    var categoryDropdown = $('#category');
+    categoryDropdown.empty();
+    categoryDropdown.append($('<option>', {
+            value: '',
+            text: 'Select'
+        }));
+    // Filter the brand-category data based on the selected brand
+    var filteredData = initialData.filter(function(item) {
+        return item.brand === selectedBrand;
+    });
+
+    filteredData.forEach(function(item) {
+            categoryDropdown.append($('<option>', {
+                value: item.category,
+                text: item.category
+            }));
+        });
 }
 //INITIALIZATION CODE
 function init() {
@@ -141,7 +190,10 @@ function init() {
    $("#apply-brand-filter").click(displayFilteredReport);
    $("#refresh-data").click(refreshData);
    $("#download-report").click(downloadReport);
-
+   $('#brand').on('change', function() {
+                                               var selectedBrand = $(this).val();
+                                                populateCategoryDropdown(selectedBrand);
+                                             });
     var dateInput = document.getElementById("inputSD");
     var dateInput2 = document.getElementById("inputED");
     var today = new Date();
@@ -151,6 +203,7 @@ function init() {
                                                 'columnDefs': [{'targets': [0,1,2,3], "className": "text-center"}],
                                                 info: false
     });
+    $('.select2').select2();
  }
 $(document).ready(init);
 

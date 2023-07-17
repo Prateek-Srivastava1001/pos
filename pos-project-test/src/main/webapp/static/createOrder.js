@@ -1,4 +1,4 @@
-
+var barcodeMap = new Map();
 function getOrderUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/order";
@@ -218,13 +218,40 @@ function fromSerializedToJson(serialized){
 function refresh(){
     location.reload(true);
 }
+function checkMrp(){
+    var barcode =  document.getElementById("inputBarcode").value;
+    if(barcodeMap.get(barcode))
+        $("#order-item-form input[name=selling_price]").val(barcodeMap.get(barcode));
+    else
+        $("#order-item-form input[name=selling_price]").val(0);
+
+}
+function getProducts(){
+    var url = $("meta[name=baseUrl]").attr("content") + "/api/product";
+    $.ajax({
+    	   url: url,
+    	   type: 'GET',
+    	   success: function(data) {
+    	   		populateBarcodeSet(data);
+    	   },
+    	   error: handleAjaxError
+    	});
+}
+function populateBarcodeSet(data){
+    data.forEach(function(item) {
+           barcodeMap.set(item.barcode, item.mrp);
+        });
+}
 //INITIALIZATION CODE
 function init(){
 	$('#add-product').click(addProduct);
 	$('#upload-data').click(submit);
 	$('#update-order').click(updateOrder);
-}
+	$('#inputBarcode').on('change', checkMrp);
 
+	$("#order-item-form input[name=selling_price]").val(0);
+}
 $(document).ready(init);
+$(document).ready(getProducts);
 
 
