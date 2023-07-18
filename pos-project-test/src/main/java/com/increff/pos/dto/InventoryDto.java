@@ -44,8 +44,8 @@ public class InventoryDto {
         if(pojo.getQuantity()<0){
             throw new ApiException("Quantity cannot be negative");
         }
-        if(pojo.getQuantity()>1000000000){
-            throw new ApiException("Quantity cannot be more than 1000000000");
+        if(pojo.getQuantity()>10000000){
+            throw new ApiException("Quantity cannot be more than 10000000");
         }
         inventoryService.update(id, pojo);
     }
@@ -58,7 +58,7 @@ public class InventoryDto {
         ProductPojo productPojo = productService.getByBarcode(barcode);
         int previousQty = inventoryService.getCheck(productPojo.getId()).getQuantity();
         int updateQty = pojo.getQuantity()+previousQty;
-        if(updateQty>1000000000 || updateQty<0)
+        if(updateQty>10000000 || updateQty<0)
         {
             throw new ApiException("Quantity out of bound");
         }

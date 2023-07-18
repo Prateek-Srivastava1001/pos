@@ -17,7 +17,7 @@ public class ProductService {
     private ProductDao dao;
     @Autowired
     private InventoryService inventoryService;
-
+    private double maxMrp = 1000000000;
     //CREATE
     @Transactional(rollbackOn = ApiException.class)
     public void add(ProductPojo pojo) throws ApiException{
@@ -30,6 +30,9 @@ public class ProductService {
         }
         if(pojo.getMrp()<0){
             throw new ApiException("MRP cannot be negative. This is not how math works...");
+        }
+        if(pojo.getMrp()>maxMrp){
+            throw new ApiException("MRP cannot be more than 1000000000");
         }
         if(dao.checkBarcode(pojo.getBarcode()) != null){
             throw new ApiException("Product Barcode already exists");
@@ -48,6 +51,9 @@ public class ProductService {
         }
         if(pojo.getMrp()<0){
             throw new ApiException("MRP cannot be negative. This is not how math works...");
+        }
+        if(pojo.getMrp()>maxMrp){
+            throw new ApiException("MRP cannot be more than 1000000000");
         }
         ProductPojo checker = dao.checkBarcode(pojo.getBarcode());
         if(checker != null && dao.select(id) != checker){

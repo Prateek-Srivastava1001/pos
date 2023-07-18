@@ -110,7 +110,7 @@ function processData(){
 	var extension = getExtension($('#brandFile').val());
 	console.log(extension);
     if(extension.toLowerCase() != 'tsv'){
-    dangerClick('Please Upload File with extension .tsv only...');
+    dangerClick('Please Upload File with extension .tsv ');
     console.log("INVALID FILE TYPE...");
     return;
     }
@@ -240,6 +240,7 @@ function updateFileName(){
 	var $file = $('#brandFile');
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#brandFileName').html(fileName);
+	document.getElementById("download-errors").disabled = true;
 }
 
 function displayUploadData(){

@@ -142,6 +142,15 @@ public class ProductDtoTest extends AbstractUnitTest {
                 "testName", -1000);
         productDto.add(productForm);
     }
+    // mrp should not be more than 1000000000
+    @Test(expected = ApiException.class)
+    public void testLargeMrp() throws ApiException{
+        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+        brandDto.add(brandForm);
+        ProductForm productForm = FormHelper.createProduct("TeStBarCode", " TesTBrand ", " TestCaTegoRy ",
+                "testName", 1000000001);
+        productDto.add(productForm);
+    }
     //GETALL METHOD TESTS...
     @Test
     public void testGetAll() throws ApiException{
@@ -269,6 +278,21 @@ public class ProductDtoTest extends AbstractUnitTest {
         int id = service.getByBarcode(expectedBarcode).getId();
         ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
                 " newNaMe ", -10);
+        productDto.update(id, updatedForm);
+    }
+    // very high value of mrp on update
+    @Test(expected = ApiException.class)
+    public void testLargeMrpOnUpdate() throws ApiException{
+        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+        brandDto.add(brandForm);
+        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
+                " TesTNaMe ", 1000);
+        productDto.add(productForm);
+
+        String expectedBarcode = "testbarcode";
+        int id = service.getByBarcode(expectedBarcode).getId();
+        ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
+                " newNaMe ", 1000000001);
         productDto.update(id, updatedForm);
     }
     // Existing barcode on update

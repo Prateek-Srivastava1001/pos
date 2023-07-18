@@ -22,8 +22,8 @@ function updateInventory(event){
         dangerClick("Please enter a valid integer value for quantity");
         return;
     }
-    if(parseInt(formData[0].value)>1000000000){
-        dangerClick("Maximum value of quantity can be 1000000000");
+    if(parseInt(formData[0].value)>10000000){
+        dangerClick("Maximum value of quantity can be 10000000");
         return;
     }
 	var json = fromSerializedToJson(formData);
@@ -71,7 +71,7 @@ function processData(){
     	var extension = getExtension($('#inventoryFile').val());
     	console.log(extension);
         if(extension.toLowerCase() != 'tsv'){
-        dangerClick('Please Upload File with extension .tsv only...');
+        dangerClick('Please Upload File with extension .tsv');
         console.log("INVALID FILE TYPE...");
         return;
         }
@@ -107,9 +107,9 @@ function uploadRows(){
 	var row = fileData[processCount];
 	console.log(row);
 	processCount++;
-	if(parseInt(row.quantity)>1000000000){
+	if(parseInt(row.quantity)>10000000){
     	    row.lineNumber=processCount;
-            row.error="quantity cannot be more than 1000000000";
+            row.error="quantity cannot be more than 10000000";
             errorData.push(row);
             uploadRows();
             return;
@@ -198,6 +198,7 @@ function updateFileName(){
 	var $file = $('#inventoryFile');
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#inventoryFileName').html(fileName);
+	document.getElementById("download-errors").disabled = true;
 }
 
 function displayUploadData(){

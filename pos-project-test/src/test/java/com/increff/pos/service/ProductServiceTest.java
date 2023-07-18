@@ -68,6 +68,17 @@ public class ProductServiceTest extends AbstractUnitTest {
 
         productService.add(pojo);
     }
+    // mrp should be less than 1000000001
+    @Test(expected = ApiException.class)
+    public void testLargeMrp() throws ApiException{
+        ProductPojo pojo = new ProductPojo();
+        pojo.setBarcode("barcode");
+        pojo.setBrand_category(1);
+        pojo.setName("name");
+        pojo.setMrp(1000000001);
+
+        productService.add(pojo);
+    }
     // duplicate barcode addition
     @Test(expected = ApiException.class)
     public void testAddDuplicate() throws ApiException{
@@ -275,6 +286,27 @@ public class ProductServiceTest extends AbstractUnitTest {
         newPojo.setBrand_category(2);
         newPojo.setName("newname");
         newPojo.setMrp(-200);
+
+        productService.update(id, newPojo);
+    }
+    // very large mrp on update
+    @Test(expected = ApiException.class)
+    public void testLargeMrpOnUpdate() throws ApiException {
+        ProductPojo pojo = new ProductPojo();
+        pojo.setBarcode("barcode");
+        pojo.setBrand_category(1);
+        pojo.setName("name");
+        pojo.setMrp(1000);
+
+        productService.add(pojo);
+
+        int id = productService.getByBarcode("barcode").getId();
+
+        ProductPojo newPojo = new ProductPojo();
+        newPojo.setBarcode("newbarcode");
+        newPojo.setBrand_category(2);
+        newPojo.setName("newname");
+        newPojo.setMrp(1000000001);
 
         productService.update(id, newPojo);
     }

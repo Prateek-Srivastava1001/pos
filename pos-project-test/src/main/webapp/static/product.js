@@ -42,6 +42,10 @@ function addProduct(event){
             warnClick("MRP cannot be negative");
             return true;
         }
+        if(parseFloat(mrp)>1000000000){
+            warnClick("Mrp cannot be more than 1000000000");
+            return true;
+        }
 	var json = toJson($form);
 	console.log(json);
 	var url = getAdminProductUrl();
@@ -107,6 +111,10 @@ function updateProduct(event){
         warnClick("MRP cannot be negative");
         return;
        }
+       if(parseFloat(mrp)>1000000000){
+        warnClick("Mrp cannot be more than 1000000000");
+        return;
+       }
 	var json = toJson($form);
 
 	$.ajax({
@@ -152,7 +160,7 @@ function processData(){
 	var extension = getExtension($('#productFile').val());
 	console.log(extension);
     if(extension.toLowerCase() != 'tsv'){
-    dangerClick('Please Upload File with extension .tsv only...');
+    dangerClick('Please Upload File with extension .tsv');
     return;
     }
     readFileData(file, readFileDataCallback);
@@ -280,6 +288,7 @@ function updateFileName(){
 	var $file = $('#productFile');
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#productFileName').html(fileName);
+	document.getElementById("download-errors").disabled = true;
 }
 
 function displayUploadData(){

@@ -60,7 +60,7 @@ function displayFilteredReport(){
                               element.brand,
                               element.category,
                               element.quantity,
-                              element.revenue
+                              (Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
                                 ]).draw();
                 filteredData.push(element);
                 flag=1;
@@ -70,7 +70,7 @@ function displayFilteredReport(){
                            element.brand,
                            element.category,
                            element.quantity,
-                           element.revenue
+                           (Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
                             ]).draw();
             filteredData.push(element);
             flag=1;
@@ -98,7 +98,7 @@ function displaySalesReportList(data){
                        e.brand,
                        e.category,
                        e.quantity,
-                       e.revenue
+                       (Math.round(parseFloat(e.revenue)*100)/100).toFixed(2)
                         ]).draw();
 	}
 	if(data.length < 1){

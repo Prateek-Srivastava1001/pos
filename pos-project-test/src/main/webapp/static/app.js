@@ -125,7 +125,7 @@ function writeReportData(arr, name){
 
 //Notify.js
 function dangerClick(alertMessage){
-console.log(alertMessage);
+
   $.notify(alertMessage, { position:"top-center",
                             // whether to hide the notification on click
                               clickToHide: true,
@@ -136,6 +136,7 @@ console.log(alertMessage);
                               showDuration: 400,
                               // hide animation
                               hideAnimation: 'slideUp',
+                              closeOnCrossClick: true,
                               className: 'error'
    });
 }

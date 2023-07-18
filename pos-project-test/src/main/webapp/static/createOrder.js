@@ -94,11 +94,8 @@ function submit(event){
 	        document.getElementById("upload-data").disabled="true";
 	        var baseUrl = $("meta[name=baseUrl]").attr("content");
 	        console.log(response);
-	        var redirectUrl = baseUrl + "/ui/order";
 	   		var invoiceUrl = baseUrl+"/api/invoice/"+parseInt(response);
-	   		window.open(invoiceUrl);
-	   		window.location.href = redirectUrl;
-
+	   		displaySuccessModal(invoiceUrl);
 	   },
 	   error: handleAjaxError
 	});
@@ -242,11 +239,33 @@ function populateBarcodeSet(data){
            barcodeMap.set(item.barcode, item.mrp);
         });
 }
+function displaySuccessModal(invoiceUrl){
+    document.getElementById("invoice-url").innerText=invoiceUrl;
+    jsonData = [];
+    sum=0.0;
+    var $tbody = $('#order-item-table').find('tbody');
+    $tbody.empty();
+    $('#successModal').modal('show');
+}
+function redirectToOrders(){
+    var baseUrl = $("meta[name=baseUrl]").attr("content");
+    var redirectUrl = baseUrl + "/ui/order";
+    window.location.href = redirectUrl;
+}
+function downloadInvoice(){
+    var baseUrl = $("meta[name=baseUrl]").attr("content");
+    var invoiceUrl = document.getElementById("invoice-url").innerText;
+    var redirectUrl = baseUrl + "/ui/order";
+    window.open(invoiceUrl);
+    window.location.href = redirectUrl;
+}
 //INITIALIZATION CODE
 function init(){
 	$('#add-product').click(addProduct);
 	$('#upload-data').click(submit);
 	$('#update-order').click(updateOrder);
+	$('#redirect-to-orders').click(redirectToOrders);
+	$('#download-invoice').click(downloadInvoice);
 	$('#inputBarcode').on('change', checkMrp);
 
 	$("#order-item-form input[name=selling_price]").val(0);

@@ -51,15 +51,15 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (35/35)
+    (40/40)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">ProductService$$EnhancerBySpringCGLIB$$b5040519</td>
+    <td class="name">ProductService$$EnhancerBySpringCGLIB$$468a4e26</td>
   </tr>
   <tr>
-    <td class="name">ProductService$$EnhancerBySpringCGLIB$$b5040519$$FastClassBySpringCGLIB$$374730ba</td>
+    <td class="name">ProductService$$EnhancerBySpringCGLIB$$468a4e26$$FastClassBySpringCGLIB$$d1dac856</td>
   </tr>
   <tr>
     <td class="name">ProductService$$FastClassBySpringCGLIB$$662934a3</td>
@@ -79,7 +79,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (35/35)
+    (40/40)
   </span>
 </td>
 </tr>
@@ -109,7 +109,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private ProductDao dao;
 &nbsp;    @Autowired
 &nbsp;    private InventoryService inventoryService;
-&nbsp;
+<b class="fc">&nbsp;    private double maxMrp = 1000000000;</b>
 &nbsp;    //CREATE
 &nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public void add(ProductPojo pojo) throws ApiException{
@@ -122,6 +122,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 <b class="fc">&nbsp;        if(pojo.getMrp()&lt;0){</b>
 <b class="fc">&nbsp;            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(pojo.getMrp()&gt;maxMrp){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;MRP cannot be more than 1000000000&quot;);</b>
 &nbsp;        }
 <b class="fc">&nbsp;        if(dao.checkBarcode(pojo.getBarcode()) != null){</b>
 <b class="fc">&nbsp;            throw new ApiException(&quot;Product Barcode already exists&quot;);</b>
@@ -140,6 +143,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 <b class="fc">&nbsp;        if(pojo.getMrp()&lt;0){</b>
 <b class="fc">&nbsp;            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(pojo.getMrp()&gt;maxMrp){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;MRP cannot be more than 1000000000&quot;);</b>
 &nbsp;        }
 <b class="fc">&nbsp;        ProductPojo checker = dao.checkBarcode(pojo.getBarcode());</b>
 <b class="fc">&nbsp;        if(checker != null &amp;&amp; dao.select(id) != checker){</b>
@@ -194,7 +200,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-14 11:33</div>
+    <div style="float:right;">generated on 2023-07-18 11:54</div>
 </div>
 </body>
 </html>

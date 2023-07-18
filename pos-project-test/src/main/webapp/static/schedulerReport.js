@@ -80,7 +80,7 @@ function displaySchedulerReportList(data){
                       e.date,
                       e.invoiced_orders_count,
                       e.invoiced_items_count,
-                      e.total_revenue
+                      (Math.round(parseFloat(e.total_revenue)*100)/100).toFixed(2)
                     ]).draw();
 	}
 }

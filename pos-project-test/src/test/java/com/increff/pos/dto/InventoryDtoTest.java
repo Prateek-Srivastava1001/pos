@@ -98,7 +98,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
                 " TesTNaMe ", 1000);
         productDto.add(productForm);
         String barcode = "testbarcode";
-        int quantity = 1000000001;
+        int quantity = 10000001;
         int id = productService.getByBarcode(barcode).getId();
         InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
         inventoryDto.edit(id, inventoryForm);
@@ -145,7 +145,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
                 " TesTNaMe ", 1000);
         productDto.add(productForm);
         String barcode = "testbarcode";
-        int quantity = 1000000001;
+        int quantity = 10000001;
         InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
         inventoryDto.editByUpload(inventoryForm);
     }
