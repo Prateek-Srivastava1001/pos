@@ -244,14 +244,14 @@ function displayProductList(data){
 	var $tbody = $('#product-table').find('tbody');
 	table.clear().draw();
 	var dataRows = [];
-	var maxLength=26;
+	var maxLength=25;
 	for(var i in data){
 		var e = data[i];
 		var roleElement = document.getElementById('role');
         var role = roleElement.innerText;
         var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
         var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
-        var name = (e.name.length>maxLength)?e.name.substring(0,maxLength)+'...':e.name;
+        var name = (e.name.length>27)?e.name.substring(0,27)+'...':e.name;
         if(role=="operator"){
             var buttonHtml = ' <button class="btn btn-outline-danger edit_btn" disabled>Edit</button>'
         }

@@ -1,0 +1,70 @@
+<!doctype html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="baseUrl" th:attr="content=${baseUrl}">
+
+    <script src="https://kit.fontawesome.com/c30beb553f.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/static/index.css}">
+    <link rel="stylesheet" th:href="@{/static/login.css}">
+</head>
+
+<body>
+<div class="landing-page">
+    <header>
+        <div class="container">
+            <a th:href="@{/}" class="logo">
+                <img th:src="@{/static/logo-new.png}" class="d-inline-block align-top" alt="" width="200">
+            </a>
+            <ul class="links">
+                <li><a th:href="@{/site/signup}" role="button">
+                    Sign Up
+                </a></li>
+            </ul>
+        </div>
+    </header>
+</div>
+<div>
+    <!-- orginal by https://codepen.io/soufiane-khalfaoui-hassani -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <div class="login-box">
+        <h2>Login</h2>
+        <form id="login-form">
+            <div class="user-box">
+                <input type="text" name="email" id="email" autocomplete="off" required="true">
+                <label>Email Id</label>
+                <span class="user">
+      <i class="fa-regular fa-user"></i>
+      </span>
+            </div>
+            <div class="user-box">
+                <input type="password" name="password" id="password" required="">
+                <label>Password</label>
+                <span class="eye" onclick="showPass()">
+        <i id="hide1" class="fa-regular fa-eye"></i>
+        <i id="hide2" class="fa-regular fa-eye-slash"></i>
+      </span>
+            </div>
+            <a href="#" id="login">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Submit
+            </a>
+            <div class="text-center mt-4" style="color:#f53131; font-size:18px;">[[${info.getMessage()}]]</div>
+        </form>
+    </div>
+</div>
+<footer th:replace="snippets.html :: name_footer"></footer>
+<script th:src="@{/static/login1.js}"/></script>
+<script th:src="@{/static/email.js}"/></script>
+</body>
+
+</html>

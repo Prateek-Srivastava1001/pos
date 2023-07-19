@@ -15,7 +15,7 @@ public class SiteUiController extends AbstractUiController {
 
 	@RequestMapping(value = "/site/login")
 	public ModelAndView login() {
-		return mav("login.html");
+		return mav("login1.html");
 	}
 	@RequestMapping(value = "/site/signup")
 	public ModelAndView signUp() {
