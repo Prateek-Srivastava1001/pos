@@ -6,6 +6,7 @@ function getSalesReportUrl(){
 
 
 function getSalesList(event) {
+table.row.add(["","Processing...","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
     var dateInput = document.getElementById("inputSD");
     var dateInput2 = document.getElementById("inputED");
     if((!dateInput.value) || (!dateInput2.value) ){
@@ -48,6 +49,7 @@ function displayFilteredReport(){
         return;
     }
     table.clear().draw();
+    var dataRows = [];
     brand = brand.toLowerCase().trim();
     category = category.toLowerCase().trim();
     var flag = 0;
@@ -56,28 +58,29 @@ function displayFilteredReport(){
         var element = initialData[i];
         if(element.brand == brand){
             if(category == null || category == ""){
-                table.row.add([
-                              element.brand,
-                              element.category,
-                              element.quantity,
-                              (Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
-                                ]).draw();
+                dataRows.push([
+                                element.brand,
+                                element.category,
+                                element.quantity,
+                                (Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
+                               ]);
                 filteredData.push(element);
                 flag=1;
             }
             else if(element.category == category){
-            table.row.add([
-                           element.brand,
-                           element.category,
-                           element.quantity,
-                           (Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
-                            ]).draw();
+            dataRows.push([
+                            element.brand,
+                            element.category,
+                            element.quantity,
+                            (Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
+                           ]);
             filteredData.push(element);
             flag=1;
             }
         }
 
     }
+    table.rows.add(dataRows).draw();
 
     if(flag == 0){
         document.getElementById("download-report").disabled = true;
@@ -90,17 +93,19 @@ successClick("Filter applied successfully");
 function displaySalesReportList(data){
 	var $tbody = $('#brand-report-table').find('tbody');
 	table.clear().draw();
+	var dataRows = [];
 	initialData = data;
 	filteredData = data;
 	for(var i in data){
 		var e = data[i];
-        table.row.add([
+        dataRows.push([
                        e.brand,
                        e.category,
                        e.quantity,
                        (Math.round(parseFloat(e.revenue)*100)/100).toFixed(2)
-                        ]).draw();
+                       ])
 	}
+	table.rows.add(dataRows).draw();
 	if(data.length < 1){
 	    document.getElementById("download-report").disabled = true;
 	}

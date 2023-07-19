@@ -28,3 +28,7 @@ body {
 .toggle-password .fa-eye {
   font-size: 3rem;
 }
+
+table.dataTable td {
+    white-space: pre-wrap;
+}

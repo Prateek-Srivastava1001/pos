@@ -126,19 +126,24 @@ function writeReportData(arr, name){
 //Notify.js
 function dangerClick(alertMessage){
 
-  $.notify(alertMessage, { position:"top-center",
-                            // whether to hide the notification on click
-                              clickToHide: true,
-                              // whether to auto-hide the notification
-                              autoHide: false,
-                              showAnimation: 'slideDown',
-                              // show animation duration
-                              showDuration: 400,
-                              // hide animation
-                              hideAnimation: 'slideUp',
-                              closeOnCrossClick: true,
-                              className: 'error'
-   });
+//  $.notify(alertMessage, { position:"top-center",
+//                            // whether to hide the notification on click
+//                              clickToHide: true,
+//                              // whether to auto-hide the notification
+//                              autoHide: false,
+//                              showAnimation: 'slideDown',
+//                              // show animation duration
+//                              showDuration: 400,
+//                              // hide animation
+//                              hideAnimation: 'slideUp',
+//                              closeOnCrossClick: true,
+//                              className: 'error'
+//   });
+   Swal.fire({
+     icon: 'error',
+     title: 'Oops...',
+     text: alertMessage
+   })
 }
 function warnClick(alertMessage){
    $.notify(alertMessage, { position:"top-center",

@@ -23,7 +23,6 @@ function addBrand(event){
         return;
     }
 	var json = toJson($form);
-	console.log(json);
 	var url = getAdminBrandUrl();
 
 	$.ajax({
@@ -85,6 +84,7 @@ function updateBrand(event){
 
 
 function getBrandList(){
+    table.row.add(["","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getBrandUrl();
 	$.ajax({
 	   url: url,
@@ -128,7 +128,16 @@ function readFileDataCallback(results){
 	    dangerClick("Cannot upload a file with more than 5000 lines");
 	    return;
 	}
-	uploadRows();
+    const columnHeaders = Object.keys(fileData[0]);
+    const expectedHeaders = ["brand","category"];
+    const headersMatched = expectedHeaders.every(header => columnHeaders.includes(header));
+    if(headersMatched && columnHeaders.length === expectedHeaders.length){
+        uploadRows();
+    }
+    else{
+        warnClick("Invalid TSV, Headers must include both 'brand' and 'category' only.");
+        return;
+    }
 }
 
 function uploadRows(){
@@ -153,7 +162,6 @@ function uploadRows(){
 
 	var json = JSON.stringify(row);
 	var url = getAdminBrandUrl();
-    console.log(json);
 	//Make ajax call
 	$.ajax({
 	   url: url,
@@ -185,6 +193,7 @@ function displayBrandList(data){
 
 	var $tbody = $('#brand-table').find('tbody');
 	table.clear().draw();
+	var dataRows = [];
 	for(var i in data){
 		var e = data[i];
 		var maxLength = 25;
@@ -197,12 +206,10 @@ function displayBrandList(data){
 		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditBrand(' + e.id + ')">Edit</button>';
 		var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
 		var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
-		table.row.add([
-          brand,
-          category,
-          buttonHtml
-        ]).draw();
+        dataRows.push([brand, category, buttonHtml]);
 	}
+
+	table.rows.add(dataRows).draw();
 }
 
 function displayEditBrand(id){
@@ -241,11 +248,17 @@ function updateFileName(){
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#brandFileName').html(fileName);
 	document.getElementById("download-errors").disabled = true;
+	processCount = 0;
+    	fileData = [];
+    	errorData = [];
+    	//Update counts
+    	updateUploadDialog();
 }
 
 function displayUploadData(){
  	resetUploadDialog();
 	$('#upload-brand-modal').modal('toggle');
+	document.getElementById("download-errors").disabled = true;
 }
 
 function displayBrand(data){
@@ -289,10 +302,12 @@ function init(){
          lengthMenu: [
                  [10, 25, 50, -1],
                  [10, 25, 50, 'All']
-             ]
+             ],
+         deferRender: true
     });
 }
-$(document).ready(getBrandList);
 $(document).ready(init);
+$(document).ready(getBrandList);
+
 
 

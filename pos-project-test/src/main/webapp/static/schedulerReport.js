@@ -10,6 +10,7 @@ function getGenerateReportUrl(){
 }
 
 function getSchedulerList(){
+table.row.add(["","Processing...","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getSchedulerReportUrl();
 	$.ajax({
 	   url: url,
@@ -70,19 +71,16 @@ function displaySchedulerReportList(data){
     filteredData = data;
 	var $tbody = $('#brand-report-table').find('tbody');
 	table.clear().draw();
+	var dataRows = [];
 	for(var i in data){
 	if(data.length > 0){
     	    $("#download-report").removeAttr("disabled");
     	}
 		var e = data[i];
-		console.log(e);
-        table.row.add([
-                      e.date,
-                      e.invoiced_orders_count,
-                      e.invoiced_items_count,
-                      (Math.round(parseFloat(e.total_revenue)*100)/100).toFixed(2)
-                    ]).draw();
+        dataRows.push([e.date, e.invoiced_orders_count, e.invoiced_items_count,
+                        (Math.round(parseFloat(e.total_revenue)*100)/100).toFixed(2)]);
 	}
+	table.rows.add(dataRows).draw();
 }
 
 function resetForm() {
@@ -133,9 +131,11 @@ function init() {
                                                                          [15, 25, 50, -1],
                                                                          [15, 25, 50, 'All']
                                                                      ],
-                                                                 order: [[0, 'desc']]
+                                                                 order: [[0, 'desc']],
+                                                                 deferRender: true
     });
  }
+ $(document).ready(init);
 $(document).ready(getSchedulerList);
-$(document).ready(init);
+
 

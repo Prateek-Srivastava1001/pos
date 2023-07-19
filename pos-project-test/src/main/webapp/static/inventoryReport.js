@@ -6,11 +6,14 @@ function getInventoryReportUrl(){
 
 
 function getInventoryList(){
+    table.row.add(["","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getInventoryReportUrl();
 	$.ajax({
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
+	        console.log("got data");
+
 	   		displayInventoryReportList(data);
 	   },
 	   error: handleAjaxError
@@ -22,6 +25,7 @@ filteredData = []
 function displayInventoryReportList(data){
 	var $tbody = $('#inventory-report-table').find('tbody');
 	table.clear().draw();
+	var dataRows = [];
 	result = data.map(o => {
           let obj = Object.assign({}, o);
           delete obj.revenue;
@@ -30,9 +34,11 @@ function displayInventoryReportList(data){
 	filteredData=result;
 	for(var i in data){
 		var e = data[i];
-		table.row.add([e.brand, e.category, e.quantity]).draw();
+		dataRows.push([e.brand, e.category, e.quantity]);
+//		table.row.add([e.brand, e.category, e.quantity]).draw();
 
 	}
+	table.rows.add(dataRows).draw();
 	if(filteredData.length>0){
 	    $("#download-report").removeAttr("disabled");
 	}
@@ -57,8 +63,10 @@ function init(){
                                                         lengthMenu: [
                                                                      [15, 25, 50, -1],
                                                                       [15, 25, 50, 'All']
-                                                                     ]
+                                                                     ],
+                                                        deferRender: true
             });
 }
-$(document).ready(getInventoryList);
 $(document).ready(init);
+$(document).ready(getInventoryList);
+

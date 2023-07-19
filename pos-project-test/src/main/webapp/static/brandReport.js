@@ -6,6 +6,7 @@ function getBrandReportUrl(){
 
 
 function getBrandList(){
+table.row.add(["Processing...","<i class='fa fa-refresh fa-spin'></i>"]).draw();
 	var url = getBrandReportUrl();
 	$.ajax({
 	   url: url,
@@ -28,11 +29,12 @@ function displayBrandReportList(data){
           return obj;
         });
 	filteredData=result;
+	var dataRows = [];
 	for(var i in data){
 		var e = data[i];
-		table.row.add([e.brand, e.category]).draw();
-
+		dataRows.push([e.brand, e.category]);
 	}
+	table.rows.add(dataRows).draw();
 	if(data.length>0){
 	    $("#download-report").removeAttr("disabled");
 	}
@@ -60,6 +62,6 @@ function init(){
                                                                  ]
         });
 }
-
-$(document).ready(getBrandList);
 $(document).ready(init);
+$(document).ready(getBrandList);
+

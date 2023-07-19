@@ -18,12 +18,17 @@ function updateInventory(event){
 	//Set the values to update
 	var $form = $("#inventory-edit-form");
 	var formData = $form.serializeArray();
+	formData[0].value = +formData[0].value;
 	if(parseFloat(formData[0].value)%1!==0){
-        dangerClick("Please enter a valid integer value for quantity");
+        warnClick("Please enter a valid integer value for quantity");
         return;
     }
     if(parseInt(formData[0].value)>10000000){
-        dangerClick("Maximum value of quantity can be 10000000");
+        warnClick("Maximum value of quantity can be 10000000");
+        return;
+    }
+    if(parseFloat(formData[0].value)<0){
+        warnClick("Quantity cannot be negative");
         return;
     }
 	var json = fromSerializedToJson(formData);
@@ -47,6 +52,7 @@ function updateInventory(event){
 
 
 function getInventoryList(){
+table.row.add(["","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getInventoryUrl();
 	$.ajax({
 	   url: url,
@@ -84,7 +90,16 @@ function readFileDataCallback(results){
     	    dangerClick("Cannot upload a file with more than 5000 lines");
     	    return;
     	}
-	uploadRows();
+	const columnHeaders = Object.keys(fileData[0]);
+    const expectedHeaders = ["barcode","quantity"];
+    const headersMatched = expectedHeaders.every(header => columnHeaders.includes(header));
+    if(headersMatched && columnHeaders.length === expectedHeaders.length){
+        uploadRows();
+    }
+    else{
+        warnClick("Invalid TSV, Headers must include both 'barcode' and 'quantity' only.");
+        return;
+    }
 }
 
 function uploadRows(){
@@ -146,6 +161,7 @@ function downloadErrors(){
 function displayInventoryList(data){
 	var $tbody = $('#inventory-table').find('tbody');
 	table.clear().draw();
+	var dataRows = []
 	for(var i in data){
 		var e = data[i];
 		var roleElement = document.getElementById('role');
@@ -155,12 +171,9 @@ function displayInventoryList(data){
         }
         else
 		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditInventory(' + e.id + ')">edit</button>';
-        table.row.add([
-                  e.barcode,
-                  e.quantity,
-                  buttonHtml
-                ]).draw();
+        dataRows.push([e.barcode,e.quantity, buttonHtml]);
 	}
+	table.rows.add(dataRows).draw();
 }
 
 function displayEditInventory(id){
@@ -253,7 +266,8 @@ function init(){
         lengthMenu: [
                 [15, 25, 50, -1],
                 [15, 25, 50, 'All']
-            ]
+            ],
+            deferRender: true
     });
 }
 

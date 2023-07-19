@@ -136,6 +136,7 @@ function updateProduct(event){
 
 
 function getProductList(){
+table.row.add(["","","<i class='fa fa-refresh fa-spin'></i>","","",""]).draw();
 	var url = getProductUrl();
 	$.ajax({
 	   url: url,
@@ -177,7 +178,16 @@ function readFileDataCallback(results){
 	    dangerClick("Cannot upload a file with more than 5000 lines");
 	    return;
 	}
-	uploadRows();
+	const columnHeaders = Object.keys(fileData[0]);
+    const expectedHeaders = ["barcode","brand","category","name", "mrp"];
+    const headersMatched = expectedHeaders.every(header => columnHeaders.includes(header));
+    if(headersMatched && columnHeaders.length === expectedHeaders.length){
+        uploadRows();
+    }
+    else{
+        warnClick("Invalid TSV, Headers must include 'barcode', 'brand', 'category', 'name' and 'mrp' only.");
+        return;
+    }
 }
 
 function uploadRows(){
@@ -233,24 +243,24 @@ function downloadErrors(){
 function displayProductList(data){
 	var $tbody = $('#product-table').find('tbody');
 	table.clear().draw();
+	var dataRows = [];
+	var maxLength=26;
 	for(var i in data){
 		var e = data[i];
 		var roleElement = document.getElementById('role');
         var role = roleElement.innerText;
+        var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
+        var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
+        var name = (e.name.length>maxLength)?e.name.substring(0,maxLength)+'...':e.name;
         if(role=="operator"){
             var buttonHtml = ' <button class="btn btn-outline-danger edit_btn" disabled>Edit</button>'
         }
         else
 		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditProduct(' + e.id + ')">edit</button>';
-        table.row.add([
-                      e.barcode,
-                      e.brand,
-                      e.category,
-                      e.name,
-                      'Rs '+(Math.round(parseFloat(e.mrp) * 100) / 100).toFixed(2),
-                      buttonHtml
-                     ]).draw();
+
+		dataRows.push([e.barcode,brand,category,name,'Rs '+(Math.round(parseFloat(e.mrp) * 100)/100).toFixed(2),buttonHtml])
 	}
+	table.rows.add(dataRows).draw();
 }
 
 function displayEditProduct(id){
@@ -403,7 +413,8 @@ function init(){
              lengthMenu: [
                      [10, 25, 50, -1],
                      [10, 25, 50, 'All']
-                 ]
+                 ],
+             deferRender: true
     });
     $('.select2').select2();
 

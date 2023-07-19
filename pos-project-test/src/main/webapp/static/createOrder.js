@@ -14,6 +14,7 @@ function addProduct(event){
 	var flag = 0;
 	var idOfDuplicate;
 	formData[0].value = formData[0].value.toLowerCase().trim();
+	formData[1].value = +formData[1].value;
 	//Frontend Validations
 	if(formData[0].value==null ||formData[0].value==""){
 	    warnClick("Barcode cannot be empty");
@@ -68,6 +69,9 @@ function addProduct(event){
     	   		var jsonObject ={barcode: formData[0].value,quantity: parseInt(formData[1].value), selling_price: parseFloat(formData[2].value)}
     	   		jsonData.push(jsonObject);
     	   		updateTable(jsonData);
+    	   		$("#order-item-form input[name=barcode]").val("");
+    	   		$("#order-item-form input[name=quantity]").val("");
+    	   		$("#order-item-form input[name=selling_price]").val("");
     	   },
     	   error: handleAjaxError
     	});
@@ -107,6 +111,7 @@ function updateOrder(){
     	var formData = $form.serializeArray();
     	var idOfDuplicate;
     	formData[0].value = formData[0].value.toLowerCase().trim();
+    	formData[1].value = +formData[1].value;
     	//Frontend Validations
     	if(formData[1].value==null || formData[1].value==""){
                 warnClick("Quantity cannot be empty");
