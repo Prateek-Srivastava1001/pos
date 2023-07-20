@@ -84,6 +84,7 @@ function updateBrand(event){
 
 
 function getBrandList(){
+    table.clear().draw();
     table.row.add(["","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getBrandUrl();
 	$.ajax({

@@ -78,7 +78,7 @@ function displaySchedulerReportList(data){
     	}
 		var e = data[i];
         dataRows.push([e.date, e.invoiced_orders_count, e.invoiced_items_count,
-                        (Math.round(parseFloat(e.total_revenue)*100)/100).toFixed(2)]);
+                        'Rs '+(Math.round(parseFloat(e.total_revenue)*100)/100).toFixed(2)]);
 	}
 	table.rows.add(dataRows).draw();
 }

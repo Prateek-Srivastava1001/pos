@@ -62,7 +62,7 @@ function displayFilteredReport(){
                                 element.brand,
                                 element.category,
                                 element.quantity,
-                                (Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
+                                'Rs '+(Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
                                ]);
                 filteredData.push(element);
                 flag=1;
@@ -72,7 +72,7 @@ function displayFilteredReport(){
                             element.brand,
                             element.category,
                             element.quantity,
-                            (Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
+                            'Rs '+(Math.round(parseFloat(element.revenue)*100)/100).toFixed(2)
                            ]);
             filteredData.push(element);
             flag=1;
@@ -102,7 +102,7 @@ function displaySalesReportList(data){
                        e.brand,
                        e.category,
                        e.quantity,
-                       (Math.round(parseFloat(e.revenue)*100)/100).toFixed(2)
+                       'Rs '+(Math.round(parseFloat(e.revenue)*100)/100).toFixed(2)
                        ])
 	}
 	table.rows.add(dataRows).draw();

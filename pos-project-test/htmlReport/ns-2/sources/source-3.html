@@ -24,12 +24,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 <h1>Coverage Summary for Class: OrderDto (com.increff.pos.dto)</h1>
 
 <table class="coverageStats">
+
 <tr>
   <th class="name">Class</th>
-<th class="coverageStat 
-">
-  Class, %
-</th>
 <th class="coverageStat 
 ">
   Method, %
@@ -41,14 +38,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 </tr>
 <tr>
   <td class="name">OrderDto</td>
-<td class="coverageStat">
-  <span class="percent">
-    100%
-  </span>
-  <span class="absValue">
-    (1/1)
-  </span>
-</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -66,7 +55,34 @@ Current scope:     <a href="../../index.html">all classes</a>
   </span>
 </td>
 </tr>
-
+  <tr>
+    <td class="name">OrderDto$$EnhancerBySpringCGLIB$$de19b6b7</td>
+  </tr>
+  <tr>
+    <td class="name">OrderDto$$EnhancerBySpringCGLIB$$de19b6b7$$FastClassBySpringCGLIB$$17d18467</td>
+  </tr>
+  <tr>
+    <td class="name">OrderDto$$FastClassBySpringCGLIB$$d9134564</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (73/73)
+  </span>
+</td>
+</tr>
 </table>
 
 <br/>
@@ -94,6 +110,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import org.springframework.stereotype.Component;
 &nbsp;import org.springframework.web.client.RestTemplate;
 &nbsp;
+&nbsp;import javax.transaction.Transactional;
 &nbsp;import java.math.BigDecimal;
 &nbsp;import java.math.RoundingMode;
 &nbsp;import java.time.LocalDateTime;
@@ -116,6 +133,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Autowired
 &nbsp;    InventoryService inventoryService;
 <b class="fc">&nbsp;    private int orderId=0;</b>
+&nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public int add(List&lt;OrderItemForm&gt; forms) throws ApiException{
 <b class="fc">&nbsp;        if(forms.size()&lt;1){</b>
 <b class="fc">&nbsp;            throw new ApiException(&quot;Empty Order List Not Supported&quot;);</b>
@@ -127,6 +145,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        addItems(forms);</b>
 <b class="fc">&nbsp;        return orderId;</b>
 &nbsp;    }
+&nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public void addItems(List&lt;OrderItemForm&gt; formList) throws ApiException{
 <b class="fc">&nbsp;        for(OrderItemForm form:formList){</b>
 <b class="fc">&nbsp;            normalize(form);</b>
@@ -241,7 +260,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-18 11:54</div>
+    <div style="float:right;">generated on 2023-07-20 10:21</div>
 </div>
 </body>
 </html>

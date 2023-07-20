@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public class OrderDto {
     @Autowired
     InventoryService inventoryService;
     private int orderId=0;
+    @Transactional(rollbackOn = ApiException.class)
     public int add(List<OrderItemForm> forms) throws ApiException{
         if(forms.size()<1){
             throw new ApiException("Empty Order List Not Supported");
@@ -51,6 +53,7 @@ public class OrderDto {
         addItems(forms);
         return orderId;
     }
+    @Transactional(rollbackOn = ApiException.class)
     public void addItems(List<OrderItemForm> formList) throws ApiException{
         for(OrderItemForm form:formList){
             normalize(form);
