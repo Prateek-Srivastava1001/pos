@@ -78,7 +78,7 @@ function displayOrderItems(data){
         sum = sum+amount;
     }
     sum = Math.round(sum * 100) / 100
-    var totalAmt = '<tr><td></td><td></td><td></td><td>' + '<b> Total Price:  <b></td><td>Rs ' + sum.toFixed(2)  + '</td></tr>';
+    var totalAmt = '<tr style="border-top: 2px solid"><td></td><td></td><td></td><td>' + '<b> Total Price:  <b></td><td>Rs ' + sum.toFixed(2)  + '</td></tr>';
     $tbody.append(totalAmt);
     var helper = '<td><span id="helper" hidden="hidden">'+e.order_id+'</span></td>';
     $tbody.append(helper);
