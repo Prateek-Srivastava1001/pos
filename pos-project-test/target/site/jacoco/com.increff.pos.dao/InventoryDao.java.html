@@ -20,17 +20,17 @@ import org.springframework.stereotype.Repository;
     private EntityManager em;
 
     @Transactional
-<span class="nc" id="L23">    public void insert(InventoryPojo pojo){em.persist(pojo);}</span>
+<span class="fc" id="L23">    public void insert(InventoryPojo pojo){em.persist(pojo);}</span>
 
     public InventoryPojo select(int id){
-<span class="nc" id="L26">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_id, InventoryPojo.class);</span>
-<span class="nc" id="L27">        query.setParameter(&quot;id&quot;, id);</span>
-<span class="nc" id="L28">        return getSingle(query);</span>
+<span class="fc" id="L26">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_id, InventoryPojo.class);</span>
+<span class="fc" id="L27">        query.setParameter(&quot;id&quot;, id);</span>
+<span class="fc" id="L28">        return getSingle(query);</span>
     }
 
     public List&lt;InventoryPojo&gt; selectAll(){
-<span class="nc" id="L32">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_all, InventoryPojo.class);</span>
-<span class="nc" id="L33">        return query.getResultList();</span>
+<span class="fc" id="L32">        TypedQuery&lt;InventoryPojo&gt; query = getQuery(select_all, InventoryPojo.class);</span>
+<span class="fc" id="L33">        return query.getResultList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

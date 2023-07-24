@@ -18,34 +18,24 @@ import com.increff.pos.pojo.UserPojo;
 
 	@Transactional
 	public boolean add(UserPojo p) throws ApiException {
-<span class="nc bnc" id="L21" title="All 4 branches missed.">		if(p.getEmail()==null || p.getEmail() == &quot;&quot;){</span>
-<span class="nc" id="L22">			throw new ApiException(&quot;Email cannot be empty&quot;);</span>
+<span class="pc bpc" id="L21" title="1 of 4 branches missed.">		if(p.getEmail()==null || p.getEmail() == &quot;&quot;){</span>
+<span class="fc" id="L22">			throw new ApiException(&quot;Email cannot be empty&quot;);</span>
 		}
-<span class="nc bnc" id="L24" title="All 4 branches missed.">		if(p.getPassword()==null || p.getPassword() == &quot;&quot;){</span>
-<span class="nc" id="L25">			throw new ApiException(&quot;Password cannot be empty&quot;);</span>
+<span class="pc bpc" id="L24" title="1 of 4 branches missed.">		if(p.getPassword()==null || p.getPassword() == &quot;&quot;){</span>
+<span class="fc" id="L25">			throw new ApiException(&quot;Password cannot be empty&quot;);</span>
 		}
-<span class="nc" id="L27">		UserPojo existing = dao.select(p.getEmail());</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">		if (existing != null) {</span>
-<span class="nc" id="L29">			return false;</span>
+<span class="fc" id="L27">		UserPojo existing = dao.select(p.getEmail());</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		if (existing != null) {</span>
+<span class="fc" id="L29">			return false;</span>
 		}
-<span class="nc" id="L31">		dao.insert(p);</span>
-<span class="nc" id="L32">		return true;</span>
+<span class="fc" id="L31">		dao.insert(p);</span>
+<span class="fc" id="L32">		return true;</span>
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
 	public UserPojo get(String email) throws ApiException {
-<span class="nc" id="L37">		return dao.select(email);</span>
+<span class="fc" id="L36">		return dao.select(email);</span>
 	}
 
-	@Transactional
-	public List&lt;UserPojo&gt; getAll() {
-<span class="nc" id="L42">		return dao.selectAll();</span>
-	}
-
-	@Transactional
-	public void delete(int id) {
-<span class="nc" id="L47">		dao.delete(id);</span>
-<span class="nc" id="L48">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

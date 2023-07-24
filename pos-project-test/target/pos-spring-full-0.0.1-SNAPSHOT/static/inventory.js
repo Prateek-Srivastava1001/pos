@@ -18,8 +18,17 @@ function updateInventory(event){
 	//Set the values to update
 	var $form = $("#inventory-edit-form");
 	var formData = $form.serializeArray();
+	formData[0].value = +formData[0].value;
 	if(parseFloat(formData[0].value)%1!==0){
-        dangerClick("Please enter a valid integer value for quantity");
+        warnClick("Please enter a valid integer value for quantity");
+        return;
+    }
+    if(parseInt(formData[0].value)>10000000){
+        warnClick("Maximum value of quantity can be 10000000");
+        return;
+    }
+    if(parseFloat(formData[0].value)<0){
+        warnClick("Quantity cannot be negative");
         return;
     }
 	var json = fromSerializedToJson(formData);
@@ -43,6 +52,8 @@ function updateInventory(event){
 
 
 function getInventoryList(){
+table.clear().draw();
+table.row.add(["","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getInventoryUrl();
 	$.ajax({
 	   url: url,
@@ -67,7 +78,7 @@ function processData(){
     	var extension = getExtension($('#inventoryFile').val());
     	console.log(extension);
         if(extension.toLowerCase() != 'tsv'){
-        dangerClick('Please Upload File with extension .tsv only...');
+        dangerClick('Please Upload File with extension .tsv');
         console.log("INVALID FILE TYPE...");
         return;
         }
@@ -80,7 +91,17 @@ function readFileDataCallback(results){
     	    dangerClick("Cannot upload a file with more than 5000 lines");
     	    return;
     	}
-	uploadRows();
+	const columnHeaders = Object.keys(fileData[0]);
+    const expectedHeaders = ["barcode","quantity"];
+    const headersMatched = expectedHeaders.every(header => columnHeaders.includes(header));
+    if(headersMatched && columnHeaders.length === expectedHeaders.length){
+        uploadRows();
+
+    }
+    else{
+        warnClick("Invalid TSV, Headers must include both 'barcode' and 'quantity' only.");
+        return;
+    }
 }
 
 function uploadRows(){
@@ -96,12 +117,21 @@ function uploadRows(){
 	    successClick("File upload successful");
 	    }
 	    getInventoryList();
+	    document.getElementById("process-data").disabled=true;
 		return;
 	}
 
 	//Process next row
 	var row = fileData[processCount];
+	console.log(row);
 	processCount++;
+	if(parseInt(row.quantity)>10000000){
+    	    row.lineNumber=processCount;
+            row.error="quantity cannot be more than 10000000";
+            errorData.push(row);
+            uploadRows();
+            return;
+    	}
 	var json = JSON.stringify(row);
 	var url = getAdminInventoryUrl();
 	//Make ajax call
@@ -134,21 +164,19 @@ function downloadErrors(){
 function displayInventoryList(data){
 	var $tbody = $('#inventory-table').find('tbody');
 	table.clear().draw();
+	var dataRows = []
 	for(var i in data){
 		var e = data[i];
 		var roleElement = document.getElementById('role');
         var role = roleElement.innerText;
         if(role=="operator"){
-            var buttonHtml = ' <button class="edit_btn" disabled>edit</button>';
+            var buttonHtml = ' <button class="btn btn-outline-danger edit_btn" disabled>Edit</button>';
         }
         else
-		    var buttonHtml = ' <button onclick="displayEditInventory(' + e.id + ')">edit</button>';
-        table.row.add([
-                  e.barcode,
-                  e.quantity,
-                  buttonHtml
-                ]).draw();
+		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditInventory(' + e.id + ')">edit</button>';
+        dataRows.push([e.barcode,e.quantity, buttonHtml]);
 	}
+	table.rows.add(dataRows).draw();
 }
 
 function displayEditInventory(id){
@@ -174,6 +202,7 @@ function resetUploadDialog(){
 	errorData = [];
 	//Update counts
 	updateUploadDialog();
+	$("#process-data").removeAttr("disabled");
 }
 
 function updateUploadDialog(){
@@ -184,8 +213,15 @@ function updateUploadDialog(){
 
 function updateFileName(){
 	var $file = $('#inventoryFile');
+	$("#process-data").removeAttr("disabled");
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#inventoryFileName').html(fileName);
+	document.getElementById("download-errors").disabled = true;
+    	processCount = 0;
+        	fileData = [];
+        	errorData = [];
+        	//Update counts
+        	updateUploadDialog();
 }
 
 function displayUploadData(){
@@ -233,7 +269,16 @@ function init(){
         document.getElementById("edit-inventory-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
-    table = $('#inventory-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
+    table = $('#inventory-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false },
+                    {'targets': [0,1,2], "className": "text-center"}],
+                 searching: false,
+                 info:false,
+        lengthMenu: [
+                [15, 25, 50, -1],
+                [15, 25, 50, 'All']
+            ],
+            deferRender: true
+    });
 }
 
 $(document).ready(init);

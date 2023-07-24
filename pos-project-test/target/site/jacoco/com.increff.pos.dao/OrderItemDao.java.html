@@ -18,23 +18,18 @@ import org.springframework.stereotype.Repository;
     @PersistenceContext
     private EntityManager em;
     @Transactional
-<span class="nc" id="L21">    public void insert(OrderItemPojo pojo){em.persist(pojo);}</span>
+<span class="fc" id="L21">    public void insert(OrderItemPojo pojo){em.persist(pojo);}</span>
 
-    public OrderItemPojo select(int id){
-<span class="nc" id="L24">        TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_id, OrderItemPojo.class);</span>
-<span class="nc" id="L25">        query.setParameter(&quot;id&quot;,id);</span>
-<span class="nc" id="L26">        return getSingle(query);</span>
-    }
     public List&lt;OrderItemPojo&gt; selectAll(int order_id){
-<span class="nc" id="L29">        TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_all, OrderItemPojo.class);</span>
-<span class="nc" id="L30">        query.setParameter(&quot;order_id&quot;,order_id);</span>
-<span class="nc" id="L31">        return query.getResultList();</span>
+<span class="fc" id="L24">        TypedQuery&lt;OrderItemPojo&gt; query = getQuery(select_all, OrderItemPojo.class);</span>
+<span class="fc" id="L25">        query.setParameter(&quot;order_id&quot;,order_id);</span>
+<span class="fc" id="L26">        return query.getResultList();</span>
     }
     public OrderItemPojo checkDuplicate(int product_id, int order_id){
-<span class="nc" id="L34">        TypedQuery&lt;OrderItemPojo&gt; query = getQuery(check_duplicate, OrderItemPojo.class);</span>
-<span class="nc" id="L35">        query.setParameter(&quot;product_id&quot;,product_id);</span>
-<span class="nc" id="L36">        query.setParameter(&quot;order_id&quot;, order_id);</span>
-<span class="nc" id="L37">        return getSingle(query);</span>
+<span class="fc" id="L29">        TypedQuery&lt;OrderItemPojo&gt; query = getQuery(check_duplicate, OrderItemPojo.class);</span>
+<span class="fc" id="L30">        query.setParameter(&quot;product_id&quot;,product_id);</span>
+<span class="fc" id="L31">        query.setParameter(&quot;order_id&quot;, order_id);</span>
+<span class="fc" id="L32">        return getSingle(query);</span>
     }
 
 }

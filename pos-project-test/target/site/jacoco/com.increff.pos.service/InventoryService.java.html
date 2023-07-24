@@ -19,31 +19,26 @@ import javax.transaction.Transactional;
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(InventoryPojo pojo) throws ApiException{
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        if(pojo.getQuantity()&lt;0){</span>
-<span class="nc" id="L23">            throw new ApiException(&quot;Quantity cannot be negative&quot;);</span>
-        }
-<span class="nc" id="L25">        dao.insert(pojo);</span>
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L22">        dao.insert(pojo);</span>
+<span class="fc" id="L23">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
     public void update(int id, InventoryPojo pojo) throws ApiException{
-<span class="nc" id="L30">        InventoryPojo toUpdate = getCheck(id);</span>
-<span class="nc" id="L31">        toUpdate.setQuantity(pojo.getQuantity());</span>
-<span class="nc" id="L32">    }</span>
+<span class="fc" id="L27">        InventoryPojo toUpdate = getCheck(id);</span>
+<span class="fc" id="L28">        toUpdate.setQuantity(pojo.getQuantity());</span>
+<span class="fc" id="L29">    }</span>
 
-    @Transactional
     public List&lt;InventoryPojo&gt; getAll() throws ApiException {
-<span class="nc" id="L36">        List&lt;InventoryPojo&gt; pojoList =  dao.selectAll();</span>
-<span class="nc" id="L37">        return pojoList;</span>
+<span class="fc" id="L32">        List&lt;InventoryPojo&gt; pojoList =  dao.selectAll();</span>
+<span class="fc" id="L33">        return pojoList;</span>
     }
 
-    @Transactional
     public InventoryPojo getCheck(int id) throws ApiException{
-<span class="nc" id="L42">        InventoryPojo pojo = dao.select(id);</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (pojo == null) {</span>
-<span class="nc" id="L44">            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</span>
+<span class="fc" id="L37">        InventoryPojo pojo = dao.select(id);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (pojo == null) {</span>
+<span class="fc" id="L39">            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</span>
         }
-<span class="nc" id="L46">        return pojo;</span>
+<span class="fc" id="L41">        return pojo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

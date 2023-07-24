@@ -39,86 +39,86 @@ import java.util.Map;
     OrderItemService orderItemService;
 
     public List&lt;SchedulerPojo&gt; getScheduledData(){
-<span class="nc" id="L42">        return schedulerService.getAll();</span>
+<span class="fc" id="L42">        return schedulerService.getAll();</span>
     }
     public void generateDailyReport() throws ApiException {
-<span class="nc" id="L45">        scheduler.createReport();</span>
-<span class="nc" id="L46">    }</span>
+<span class="fc" id="L45">        scheduler.createReport();</span>
+<span class="fc" id="L46">    }</span>
     public List&lt;SchedulerPojo&gt; getByDate(ReportsForm form) throws ApiException {
-<span class="nc" id="L48">        return schedulerService.getByDate(form);</span>
+<span class="fc" id="L48">        return schedulerService.getByDate(form);</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;ReportsData&gt; getSalesReport(ReportsForm dates) throws ApiException{
-<span class="nc" id="L53">        String startDate = dates.getStartDate() + &quot; 00:00:00&quot;;</span>
-<span class="nc" id="L54">        String endDate = dates.getEndDate() + &quot; 23:59:59&quot;;</span>
-<span class="nc" id="L55">        List&lt;ReportsData&gt; salesReport= new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L56">        HashMap&lt;Integer,ReportsData&gt; map = new HashMap&lt;Integer, ReportsData&gt;();//HashMap&lt;Brand_id, ReportsData&gt;</span>
-<span class="nc" id="L57">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span>
-<span class="nc" id="L58">        LocalDateTime sDate = LocalDateTime.parse(startDate,formatter);</span>
-<span class="nc" id="L59">        LocalDateTime eDate = LocalDateTime.parse(endDate, formatter);</span>
-<span class="nc" id="L60">        isValidDateTimeRange(sDate, eDate);</span>
-<span class="nc" id="L61">        List&lt;OrderPojo&gt; orderList = orderService.getByDate(sDate, eDate);</span>
+<span class="fc" id="L53">        String startDate = dates.getStartDate() + &quot; 00:00:00&quot;;</span>
+<span class="fc" id="L54">        String endDate = dates.getEndDate() + &quot; 23:59:59&quot;;</span>
+<span class="fc" id="L55">        List&lt;ReportsData&gt; salesReport= new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L56">        HashMap&lt;Integer,ReportsData&gt; map = new HashMap&lt;Integer, ReportsData&gt;();//HashMap&lt;Brand_id, ReportsData&gt;</span>
+<span class="fc" id="L57">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span>
+<span class="fc" id="L58">        LocalDateTime sDate = LocalDateTime.parse(startDate,formatter);</span>
+<span class="fc" id="L59">        LocalDateTime eDate = LocalDateTime.parse(endDate, formatter);</span>
+<span class="fc" id="L60">        isValidDateTimeRange(sDate, eDate);</span>
+<span class="fc" id="L61">        List&lt;OrderPojo&gt; orderList = orderService.getByDate(sDate, eDate);</span>
 
         //Iterating through each order
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        for(OrderPojo order : orderList){</span>
-<span class="nc" id="L65">            List&lt;OrderItemData&gt; orderItemList = orderItemService.getAll(order.getId());</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for(OrderPojo order : orderList){</span>
+<span class="fc" id="L65">            List&lt;OrderItemData&gt; orderItemList = orderItemService.getAll(order.getId());</span>
             //Iterating through each orderItem
-<span class="nc bnc" id="L67" title="All 2 branches missed.">            for(OrderItemData orderItem : orderItemList){</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            for(OrderItemData orderItem : orderItemList){</span>
                 //we will bet brandCategory id from product pojo
-<span class="nc" id="L69">                int brandId = productService.getCheck(orderItem.getProduct_id()).getBrand_category();</span>
+<span class="fc" id="L69">                int brandId = productService.getCheck(orderItem.getProduct_id()).getBrand_category();</span>
                 //check in map, if not present, create
-<span class="nc" id="L71">                DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">                if (!map.containsKey(brandId)) {</span>
-<span class="nc" id="L73">                    BrandPojo brandPojo = brandService.getCheck(brandId);</span>
-<span class="nc" id="L74">                    ReportsData reportsData = new ReportsData();</span>
-<span class="nc" id="L75">                    reportsData.setBrand(brandPojo.getBrand());</span>
-<span class="nc" id="L76">                    reportsData.setCategory(brandPojo.getCategory());</span>
-<span class="nc" id="L77">                    map.put(brandId, reportsData);</span>
+<span class="fc" id="L71">                DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">                if (!map.containsKey(brandId)) {</span>
+<span class="fc" id="L73">                    BrandPojo brandPojo = brandService.getCheck(brandId);</span>
+<span class="fc" id="L74">                    ReportsData reportsData = new ReportsData();</span>
+<span class="fc" id="L75">                    reportsData.setBrand(brandPojo.getBrand());</span>
+<span class="fc" id="L76">                    reportsData.setCategory(brandPojo.getCategory());</span>
+<span class="fc" id="L77">                    map.put(brandId, reportsData);</span>
                 }
                 // Update the values in reportsData for particular brandId
-<span class="nc" id="L80">                ReportsData reportsData = map.get(brandId);</span>
+<span class="fc" id="L80">                ReportsData reportsData = map.get(brandId);</span>
                 //changing quantity
-<span class="nc" id="L82">                int quantity = reportsData.getQuantity() + orderItem.getQuantity();</span>
-<span class="nc" id="L83">                reportsData.setQuantity(quantity);</span>
+<span class="fc" id="L82">                int quantity = reportsData.getQuantity() + orderItem.getQuantity();</span>
+<span class="fc" id="L83">                reportsData.setQuantity(quantity);</span>
                 //changing revenue
-<span class="nc" id="L85">                double revenue = reportsData.getRevenue() + (orderItem.getQuantity()*orderItem.getSelling_price());</span>
-<span class="nc" id="L86">                reportsData.setRevenue(Double.parseDouble(df.format(revenue)));</span>
+<span class="fc" id="L85">                double revenue = reportsData.getRevenue() + (orderItem.getQuantity()*orderItem.getSelling_price());</span>
+<span class="fc" id="L86">                reportsData.setRevenue(Double.parseDouble(df.format(revenue)));</span>
                 //putting updated values in map
-<span class="nc" id="L88">                map.put(brandId, reportsData);</span>
-<span class="nc" id="L89">            }</span>
-<span class="nc" id="L90">        }</span>
+<span class="fc" id="L88">                map.put(brandId, reportsData);</span>
+<span class="fc" id="L89">            }</span>
+<span class="fc" id="L90">        }</span>
         // converting data in map to List&lt;ReportsData&gt;
-<span class="nc bnc" id="L92" title="All 2 branches missed.">        for(Map.Entry&lt;Integer, ReportsData&gt; entry : map.entrySet()){</span>
-<span class="nc" id="L93">            ReportsData finalReport = entry.getValue();</span>
-<span class="nc" id="L94">            salesReport.add(finalReport);</span>
-<span class="nc" id="L95">        }</span>
-<span class="nc" id="L96">        return salesReport;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        for(Map.Entry&lt;Integer, ReportsData&gt; entry : map.entrySet()){</span>
+<span class="fc" id="L93">            ReportsData finalReport = entry.getValue();</span>
+<span class="fc" id="L94">            salesReport.add(finalReport);</span>
+<span class="fc" id="L95">        }</span>
+<span class="fc" id="L96">        return salesReport;</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;ReportsData&gt; getInventoryReport() throws ApiException{
-<span class="nc" id="L101">        List&lt;ReportsData&gt; inventoryReport = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L102">        List&lt;BrandPojo&gt; brandList = brandService.getAll();</span>
-<span class="nc bnc" id="L103" title="All 2 branches missed.">        for(BrandPojo brand: brandList){</span>
-<span class="nc" id="L104">            int quantity = 0;</span>
-<span class="nc" id="L105">            List&lt;ProductPojo&gt; products = productService.getByBrand(brand.getId());</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">            for(ProductPojo product: products){</span>
-<span class="nc" id="L107">                quantity += inventoryService.getCheck(product.getId()).getQuantity();</span>
-<span class="nc" id="L108">            }</span>
-<span class="nc" id="L109">            ReportsData data = new ReportsData();</span>
-<span class="nc" id="L110">            data.setQuantity(quantity);</span>
-<span class="nc" id="L111">            data.setBrand(brand.getBrand());</span>
-<span class="nc" id="L112">            data.setCategory(brand.getCategory());</span>
-<span class="nc" id="L113">            inventoryReport.add(data);</span>
-<span class="nc" id="L114">        }</span>
-<span class="nc" id="L115">        return inventoryReport;</span>
+<span class="fc" id="L101">        List&lt;ReportsData&gt; inventoryReport = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L102">        List&lt;BrandPojo&gt; brandList = brandService.getAll();</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for(BrandPojo brand: brandList){</span>
+<span class="fc" id="L104">            int quantity = 0;</span>
+<span class="fc" id="L105">            List&lt;ProductPojo&gt; products = productService.getByBrand(brand.getId());</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            for(ProductPojo product: products){</span>
+<span class="fc" id="L107">                quantity += inventoryService.getCheck(product.getId()).getQuantity();</span>
+<span class="fc" id="L108">            }</span>
+<span class="fc" id="L109">            ReportsData data = new ReportsData();</span>
+<span class="fc" id="L110">            data.setQuantity(quantity);</span>
+<span class="fc" id="L111">            data.setBrand(brand.getBrand());</span>
+<span class="fc" id="L112">            data.setCategory(brand.getCategory());</span>
+<span class="fc" id="L113">            inventoryReport.add(data);</span>
+<span class="fc" id="L114">        }</span>
+<span class="fc" id="L115">        return inventoryReport;</span>
     }
 
     private void isValidDateTimeRange(LocalDateTime start, LocalDateTime end) throws ApiException{
-<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (start.isAfter(end)) {</span>
-<span class="nc" id="L120">            throw new ApiException(&quot;Start date cannot be after end date&quot;);</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (start.isAfter(end)) {</span>
+<span class="fc" id="L120">            throw new ApiException(&quot;Start date cannot be after end date&quot;);</span>
         }
-<span class="nc" id="L122">    }</span>
+<span class="fc" id="L122">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -11,6 +11,7 @@ function getInvoiceUrl(){
 
 //UI DISPLAY METHODS
 function getOrderList(){
+table.row.add(["","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getOrderUrl();
 	$.ajax({
 	   url: url,
@@ -24,9 +25,10 @@ function getOrderList(){
 function displayOrderList(data){
     var $tbody = $('#order-table').find('tbody');
     	table.clear().draw();
+    	var dataRows = [];
     	for(var i in data){
     		var e = data[i];
-    		var buttonHtml = ' <button onclick="displayParticularOrder(' + e.id + ')">View Order</button>'
+    		var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayParticularOrder(' + e.id + ')">View Order</button>'
     		var minute = '00';
     		var hour = '00';
     		var date = '00';
@@ -36,12 +38,9 @@ function displayOrderList(data){
     		(parseInt(e.date_time[2])<10)?date = '0'+e.date_time[2] : date = e.date_time[2];
     		(parseInt(e.date_time[1])<10)?month='0'+e.date_time[1] : month=e.date_time[1];
     		var formattedDate =date+'-'+month+'-'+e.date_time[0]+',  '+ hour+':'+minute;
-            table.row.add([
-                          e.id,
-                          formattedDate,
-                          buttonHtml
-                        ]).draw();
+    		dataRows.push([e.id, formattedDate, buttonHtml]);
     	}
+    	table.rows.add(dataRows).draw();
 }
 
 
@@ -61,14 +60,16 @@ function displayParticularOrder(id){
 function displayOrderItems(data){
     var $tbody = $('#order-view').find('tbody');
     $tbody.empty();
+    var maxLength=25;
     let sum = 0;
     for(var i in data){
         var e = data[i];
         var amount = parseInt(e.quantity) * parseFloat(e.selling_price);
         amount = Math.round(amount * 100) / 100
+        var name = (e.name.length>maxLength)?e.name.substring(0,maxLength)+'...':e.name;
         var row = '<tr>'
         + '<td>' + e.barcode + '</td>'
-        + '<td>' + e.name + '</td>'
+        + '<td>' + name + '</td>'
         + '<td>' + e.quantity + '</td>'
         + '<td>Rs ' + (Math.round(parseFloat(e.selling_price)*100)/100).toFixed(2) + '</td>'
         + '<td>Rs ' + amount.toFixed(2) + '</td>'
@@ -77,7 +78,7 @@ function displayOrderItems(data){
         sum = sum+amount;
     }
     sum = Math.round(sum * 100) / 100
-    var totalAmt = '<tr><td>' + ' Total Price:  </td><td>Rs ' + sum.toFixed(2)  + '</td></tr>';
+    var totalAmt = '<tr style="border-top: 2px solid"><td></td><td></td><td></td><td>' + '<b> Total Price:  <b></td><td>Rs ' + sum.toFixed(2)  + '</td></tr>';
     $tbody.append(totalAmt);
     var helper = '<td><span id="helper" hidden="hidden">'+e.order_id+'</span></td>';
     $tbody.append(helper);
@@ -93,11 +94,21 @@ function downloadInvoice(){
 function init(){
     $('#download-invoice').click(downloadInvoice);
     table = $('#order-table').DataTable(
-                                        {order: [[0, 'desc']]}
+                                        {order: [[0, 'desc']],
+                                        'columnDefs': [ {'targets': [2],'orderable': false },
+                                            {'targets': [0,1,2], "className": "text-center"}],
+                                            searching: false,
+                                            info:false,
+                                            lengthMenu: [
+                                                             [15, 25, 50, -1],
+                                                             [15, 25, 50, 'All']
+                                            ],
+                                        deferRender: true}
     );
 }
-$(document).ready(getOrderList);
 $(document).ready(init);
+$(document).ready(getOrderList);
+
 
 
 

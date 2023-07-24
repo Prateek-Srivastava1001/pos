@@ -21,26 +21,26 @@ import org.springframework.stereotype.Repository;
 
     @Transactional
     public OrderPojo insert(OrderPojo pojo){
-<span class="nc" id="L24">        em.persist(pojo);</span>
-<span class="nc" id="L25">        return pojo;</span>
+<span class="fc" id="L24">        em.persist(pojo);</span>
+<span class="fc" id="L25">        return pojo;</span>
     }
 
     public OrderPojo select(int id){
-<span class="nc" id="L29">        TypedQuery&lt;OrderPojo&gt; query = getQuery(select_id, OrderPojo.class);</span>
-<span class="nc" id="L30">        query.setParameter(&quot;id&quot;, id);</span>
-<span class="nc" id="L31">        return getSingle(query);</span>
+<span class="fc" id="L29">        TypedQuery&lt;OrderPojo&gt; query = getQuery(select_id, OrderPojo.class);</span>
+<span class="fc" id="L30">        query.setParameter(&quot;id&quot;, id);</span>
+<span class="fc" id="L31">        return getSingle(query);</span>
     }
 
     public List&lt;OrderPojo&gt; getByDate(LocalDateTime start_date, LocalDateTime end_date){
-<span class="nc" id="L35">        TypedQuery&lt;OrderPojo&gt; query = getQuery(select_date, OrderPojo.class);</span>
-<span class="nc" id="L36">        query.setParameter(&quot;start_date&quot;,start_date);</span>
-<span class="nc" id="L37">        query.setParameter(&quot;end_date&quot;,end_date);</span>
-<span class="nc" id="L38">        return query.getResultList();</span>
+<span class="fc" id="L35">        TypedQuery&lt;OrderPojo&gt; query = getQuery(select_date, OrderPojo.class);</span>
+<span class="fc" id="L36">        query.setParameter(&quot;start_date&quot;,start_date);</span>
+<span class="fc" id="L37">        query.setParameter(&quot;end_date&quot;,end_date);</span>
+<span class="fc" id="L38">        return query.getResultList();</span>
     }
 
     public List&lt;OrderPojo&gt; selectAll(){
-<span class="nc" id="L42">        TypedQuery&lt;OrderPojo&gt; query = getQuery(select_all, OrderPojo.class);</span>
-<span class="nc" id="L43">        return query.getResultList();</span>
+<span class="fc" id="L42">        TypedQuery&lt;OrderPojo&gt; query = getQuery(select_all, OrderPojo.class);</span>
+<span class="fc" id="L43">        return query.getResultList();</span>
     }
 
 

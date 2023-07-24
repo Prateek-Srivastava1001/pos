@@ -1,4 +1,2 @@
-barcode	brand_category	name	mrp
-aaaaaaaaa	1	Banana	50
-aaaaaaaab	2	Apple	501
-aaaaaaaac	1	Mango	50
+barcode	brand	category	name	mrp
+a	apple	laptops	new lappy	40000

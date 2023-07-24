@@ -10,6 +10,7 @@ function getGenerateReportUrl(){
 }
 
 function getSchedulerList(){
+table.clear().draw();
 table.row.add(["","Processing...","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getSchedulerReportUrl();
 	$.ajax({

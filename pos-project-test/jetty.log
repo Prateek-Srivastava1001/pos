@@ -3705,3 +3705,30 @@ Caused by: java.lang.ClassNotFoundException: com.increff.pos.dto.OrderDto
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
 	... 48 more
 2023-07-20 10:22:48 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 11:09:01 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 11:36:21 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 11:38:28 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 11:40:08 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 11:50:18 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 11:59:27 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 12:11:47 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 13:12:27 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 15:29:41 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 15:37:05 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 15:41:25 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:05:23 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:09:04 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:15:24 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:19:08 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:20:52 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:28:15 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:30:44 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:32:55 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:38:12 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:40:44 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:44:06 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:49:55 INFO  SecurityConfig:33 - Configuration complete
+2023-07-20 16:52:14 INFO  SecurityConfig:33 - Configuration complete
+2023-07-21 11:37:00 INFO  SecurityConfig:33 - Configuration complete
+2023-07-21 11:41:33 INFO  SecurityConfig:33 - Configuration complete
+2023-07-24 09:06:13 INFO  SecurityConfig:33 - Configuration complete

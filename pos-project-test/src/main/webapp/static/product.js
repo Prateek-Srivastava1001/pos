@@ -136,6 +136,7 @@ function updateProduct(event){
 
 
 function getProductList(){
+table.clear().draw();
 table.row.add(["","","<i class='fa fa-refresh fa-spin'></i>","","",""]).draw();
 	var url = getProductUrl();
 	$.ajax({
@@ -203,6 +204,7 @@ function uploadRows(){
     	successClick("File upload successful");
     	}
     	getProductList();
+    	document.getElementById("process-data").disabled=true;
 		return;
 	}
 
@@ -280,6 +282,7 @@ function resetUploadDialog(){
 	var $file = $('#productFile');
 	$file.val('');
 	$('#productFileName').html("Choose File");
+	$("#process-data").removeAttr("disabled");
 	//Reset various counts
 	processCount = 0;
 	fileData = [];
@@ -297,8 +300,14 @@ function updateUploadDialog(){
 function updateFileName(){
 	var $file = $('#productFile');
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
+	$("#process-data").removeAttr("disabled");
 	$('#productFileName').html(fileName);
 	document.getElementById("download-errors").disabled = true;
+    	processCount = 0;
+        	fileData = [];
+        	errorData = [];
+        	//Update counts
+        	updateUploadDialog();
 }
 
 function displayUploadData(){

@@ -6,6 +6,7 @@ function getSalesReportUrl(){
 
 
 function getSalesList(event) {
+table.clear().draw();
 table.row.add(["","Processing...","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
     var dateInput = document.getElementById("inputSD");
     var dateInput2 = document.getElementById("inputED");

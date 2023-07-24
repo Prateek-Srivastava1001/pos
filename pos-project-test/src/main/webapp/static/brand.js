@@ -154,6 +154,7 @@ function uploadRows(){
     	successClick("File upload Successful")
     	}
     	getBrandList();
+    	document.getElementById("process-data").disabled=true;
 		return;
 	}
 
@@ -230,6 +231,7 @@ function resetUploadDialog(){
 	var $file = $('#brandFile');
 	$file.val('');
 	$('#brandFileName').html("Choose File");
+	$("#process-data").removeAttr("disabled");
 	//Reset various counts
 	processCount = 0;
 	fileData = [];
@@ -248,6 +250,7 @@ function updateFileName(){
 	var $file = $('#brandFile');
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#brandFileName').html(fileName);
+	$("#process-data").removeAttr("disabled");
 	document.getElementById("download-errors").disabled = true;
 	processCount = 0;
     	fileData = [];

@@ -20,26 +20,26 @@ import org.springframework.stereotype.Repository;
     private EntityManager em;
 
     @Transactional
-<span class="nc" id="L23">    public void insert(ProductPojo pojo){em.persist(pojo);}</span>
+<span class="fc" id="L23">    public void insert(ProductPojo pojo){em.persist(pojo);}</span>
 
     public ProductPojo select(int id){
-<span class="nc" id="L26">        TypedQuery&lt;ProductPojo&gt; query = getQuery(select_id, ProductPojo.class);</span>
-<span class="nc" id="L27">        query.setParameter(&quot;id&quot;, id);</span>
-<span class="nc" id="L28">        return getSingle(query);</span>
+<span class="fc" id="L26">        TypedQuery&lt;ProductPojo&gt; query = getQuery(select_id, ProductPojo.class);</span>
+<span class="fc" id="L27">        query.setParameter(&quot;id&quot;, id);</span>
+<span class="fc" id="L28">        return getSingle(query);</span>
     }
     public List&lt;ProductPojo&gt; selectAll(){
-<span class="nc" id="L31">        TypedQuery&lt;ProductPojo&gt; query = getQuery(select_all, ProductPojo.class);</span>
-<span class="nc" id="L32">        return query.getResultList();</span>
+<span class="fc" id="L31">        TypedQuery&lt;ProductPojo&gt; query = getQuery(select_all, ProductPojo.class);</span>
+<span class="fc" id="L32">        return query.getResultList();</span>
     }
     public ProductPojo checkBarcode(String barcode){
-<span class="nc" id="L35">        TypedQuery&lt;ProductPojo&gt; query = getQuery(duplicate_check, ProductPojo.class);</span>
-<span class="nc" id="L36">        query.setParameter(&quot;barcode&quot;, barcode);</span>
-<span class="nc" id="L37">        return getSingle(query);</span>
+<span class="fc" id="L35">        TypedQuery&lt;ProductPojo&gt; query = getQuery(duplicate_check, ProductPojo.class);</span>
+<span class="fc" id="L36">        query.setParameter(&quot;barcode&quot;, barcode);</span>
+<span class="fc" id="L37">        return getSingle(query);</span>
     }
     public List&lt;ProductPojo&gt; getByBrand(int brand_category){
-<span class="nc" id="L40">        TypedQuery&lt;ProductPojo&gt; query = getQuery(get_by_brand, ProductPojo.class);</span>
-<span class="nc" id="L41">        query.setParameter(&quot;brand_category&quot;, brand_category);</span>
-<span class="nc" id="L42">        return query.getResultList();</span>
+<span class="fc" id="L40">        TypedQuery&lt;ProductPojo&gt; query = getQuery(get_by_brand, ProductPojo.class);</span>
+<span class="fc" id="L41">        query.setParameter(&quot;brand_category&quot;, brand_category);</span>
+<span class="fc" id="L42">        return query.getResultList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

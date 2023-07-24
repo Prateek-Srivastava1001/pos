@@ -8,9 +8,12 @@
 
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
 
-<div class="container">
-
+<div class="container mt-2">
+<div class="row">
+    <div class="col-12">
     <h3>Brand</h3>
+    </div>
+</div>
 
     <!-- Top row with form-->
     <div class="row">
@@ -23,15 +26,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+                    <label for="inputCategory" class="col-sm-2 col-form-label px-2">Category</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="category" id="inputCategory" placeholder="enter category">
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" id="add-brand">Add</button>
+                <button type="button" class="btn btn-success col-2 px-2" id="add-brand">Add</button>
                 &nbsp;
                 &nbsp;
-                <button type="button" class="btn btn-primary" id="upload-data">Upload</button>
+                <button type="button" class="btn btn-primary col-2 px-2" id="upload-data">Upload</button>
             </form>
         </div>
     </div>
@@ -111,7 +114,7 @@
 
                 <div class="modal-body">
                     <div class="brand-file">
-                        <input type="file" class="custom-file-input" id="brandFile">
+                        <input type="file" class="custom-file-input" accept=".tsv" id="brandFile">
                         <label class="custom-file-label" for="brandFile" id="brandFileName">Choose file</label>
                     </div>
                     <br>

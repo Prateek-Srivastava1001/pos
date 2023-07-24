@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.increff.pos.dto.UserDto;
+import com.increff.pos.util.ConverterUtil;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,25 +31,39 @@ import com.increff.pos.util.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-<span class="fc" id="L33">public class LoginController {</span>
+<span class="fc" id="L34">public class LoginController {</span>
 	@Autowired
 	UserDto dto;
+	@Autowired
+	ConverterUtil util;
 
 	@ApiOperation(value = &quot;Logs in a user&quot;)
 	@RequestMapping(path = &quot;/session/login&quot;, method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
-<span class="nc" id="L40">		return dto.login(req, f);</span>
+		// Create authentication object
+<span class="nc" id="L44">		Authentication authentication = dto.login(f);</span>
+		// Create new session
+<span class="nc" id="L46">		HttpSession session = req.getSession(true);</span>
+		// Attach Spring SecurityContext to this new session
+<span class="nc" id="L48">		SecurityUtil.createContext(session);</span>
+		// Attach Authentication object to the Security Context
+<span class="nc" id="L50">		SecurityUtil.setAuthentication(authentication);</span>
+
+<span class="nc" id="L52">		return new ModelAndView(&quot;redirect:/ui/home&quot;);</span>
 	}
 
 	@ApiOperation(value = &quot;Sign Up a new user&quot;)
 	@RequestMapping(path = &quot;/session/signup&quot;, method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView signup(HttpServletRequest req, LoginForm form) throws ApiException{
-<span class="nc" id="L46">		return dto.signup(req, form);</span>
+<span class="nc" id="L58">		dto.signup(form);</span>
+<span class="nc" id="L59">		ModelAndView mav = login(req, form);</span>
+<span class="nc" id="L60">		return mav;</span>
 	}
 
 	@RequestMapping(path = &quot;/session/logout&quot;, method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-<span class="nc" id="L51">		return dto.logout(request, response);</span>
+<span class="nc" id="L65">		request.getSession().invalidate();</span>
+<span class="nc" id="L66">		return new ModelAndView(&quot;redirect:/site/login&quot;);</span>
 	}
 
 }

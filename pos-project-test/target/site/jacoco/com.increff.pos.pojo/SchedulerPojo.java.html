@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
-<span class="nc" id="L12">@Setter</span>
+<span class="pc" id="L12">@Setter</span>
 @Entity
 @Table(name=&quot;DailyReport&quot;)
 <span class="fc" id="L15">public class SchedulerPojo {</span>
@@ -18,9 +18,9 @@ import java.time.LocalDate;
 <span class="nc" id="L18">    private int id;</span>
 
     @JsonFormat(pattern = &quot;dd-MM-yyyy&quot;)
-<span class="nc" id="L21">    private LocalDate date;</span>
-<span class="nc" id="L22">    private int invoiced_orders_count;</span>
-<span class="nc" id="L23">    private int invoiced_items_count;</span>
-<span class="nc" id="L24">    private double total_revenue;</span>
+<span class="fc" id="L21">    private LocalDate date;</span>
+<span class="fc" id="L22">    private int invoiced_orders_count;</span>
+<span class="fc" id="L23">    private int invoiced_items_count;</span>
+<span class="fc" id="L24">    private double total_revenue;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

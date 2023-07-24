@@ -7,7 +7,6 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
 import com.increff.pos.util.ConverterUtil;
 import com.increff.pos.util.NormalizeUtil;
-import com.increff.pos.util.StringUtil;
 import com.increff.pos.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-<span class="fc" id="L19">public class BrandDto {</span>
+<span class="fc" id="L18">public class BrandDto {</span>
     @Autowired
     private BrandService service;
     private ConverterUtil converterUtil;
@@ -24,31 +23,31 @@ import java.util.List;
     private ValidateUtil validateUtil;
 
     public void add(BrandForm form) throws ApiException {
-<span class="fc" id="L27">        BrandPojo pojo = converterUtil.convert(form);</span>
-<span class="fc" id="L28">        normalizeUtil.normalize(pojo);</span>
-<span class="fc" id="L29">        validateUtil.checkValid(pojo);</span>
-<span class="fc" id="L30">        service.add(pojo);</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L26">        BrandPojo pojo = converterUtil.convert(form);</span>
+<span class="fc" id="L27">        normalizeUtil.normalize(pojo);</span>
+<span class="fc" id="L28">        validateUtil.checkValid(pojo);</span>
+<span class="fc" id="L29">        service.add(pojo);</span>
+<span class="fc" id="L30">    }</span>
 
     public BrandData get(int id) throws ApiException{
-<span class="fc" id="L34">        BrandPojo pojo = service.getCheck(id);</span>
-<span class="fc" id="L35">        return converterUtil.convert(pojo);</span>
+<span class="fc" id="L33">        BrandPojo pojo = service.getCheck(id);</span>
+<span class="fc" id="L34">        return converterUtil.convert(pojo);</span>
     }
 
     public List&lt;BrandData&gt; getAll(){
-<span class="fc" id="L39">        List&lt;BrandPojo&gt; list = service.getAll();</span>
-<span class="fc" id="L40">        List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</span>
-<span class="fc bfc" id="L41" title="All 2 branches covered.">        for(BrandPojo p: list){</span>
-<span class="fc" id="L42">            list2.add(converterUtil.convert(p));</span>
-<span class="fc" id="L43">        }</span>
-<span class="fc" id="L44">        return list2;</span>
+<span class="fc" id="L38">        List&lt;BrandPojo&gt; list = service.getAll();</span>
+<span class="fc" id="L39">        List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for(BrandPojo p: list){</span>
+<span class="fc" id="L41">            list2.add(converterUtil.convert(p));</span>
+<span class="fc" id="L42">        }</span>
+<span class="fc" id="L43">        return list2;</span>
     }
 
     public void update(int id, BrandForm form) throws ApiException{
-<span class="fc" id="L48">        BrandPojo pojo = converterUtil.convert(form);</span>
-<span class="fc" id="L49">        normalizeUtil.normalize(pojo);</span>
-<span class="fc" id="L50">        validateUtil.checkValid(pojo);</span>
-<span class="fc" id="L51">        service.update(id, pojo);</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L47">        BrandPojo pojo = converterUtil.convert(form);</span>
+<span class="fc" id="L48">        normalizeUtil.normalize(pojo);</span>
+<span class="fc" id="L49">        validateUtil.checkValid(pojo);</span>
+<span class="fc" id="L50">        service.update(id, pojo);</span>
+<span class="fc" id="L51">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

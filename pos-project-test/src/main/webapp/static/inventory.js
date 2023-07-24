@@ -23,7 +23,7 @@ function updateInventory(event){
         warnClick("Please enter a valid integer value for quantity");
         return;
     }
-    if(parseInt(formData[0].value)>10000000){
+    if(parseFloat(formData[0].value)>10000000){
         warnClick("Maximum value of quantity can be 10000000");
         return;
     }
@@ -52,6 +52,7 @@ function updateInventory(event){
 
 
 function getInventoryList(){
+table.clear().draw();
 table.row.add(["","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getInventoryUrl();
 	$.ajax({
@@ -95,6 +96,7 @@ function readFileDataCallback(results){
     const headersMatched = expectedHeaders.every(header => columnHeaders.includes(header));
     if(headersMatched && columnHeaders.length === expectedHeaders.length){
         uploadRows();
+
     }
     else{
         warnClick("Invalid TSV, Headers must include both 'barcode' and 'quantity' only.");
@@ -115,6 +117,7 @@ function uploadRows(){
 	    successClick("File upload successful");
 	    }
 	    getInventoryList();
+	    document.getElementById("process-data").disabled=true;
 		return;
 	}
 
@@ -122,7 +125,7 @@ function uploadRows(){
 	var row = fileData[processCount];
 	console.log(row);
 	processCount++;
-	if(parseInt(row.quantity)>10000000){
+	if(parseFloat(row.quantity)>10000000){
     	    row.lineNumber=processCount;
             row.error="quantity cannot be more than 10000000";
             errorData.push(row);
@@ -199,6 +202,7 @@ function resetUploadDialog(){
 	errorData = [];
 	//Update counts
 	updateUploadDialog();
+	$("#process-data").removeAttr("disabled");
 }
 
 function updateUploadDialog(){
@@ -209,9 +213,15 @@ function updateUploadDialog(){
 
 function updateFileName(){
 	var $file = $('#inventoryFile');
+	$("#process-data").removeAttr("disabled");
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#inventoryFileName').html(fileName);
 	document.getElementById("download-errors").disabled = true;
+    	processCount = 0;
+        	fileData = [];
+        	errorData = [];
+        	//Update counts
+        	updateUploadDialog();
 }
 
 function displayUploadData(){

@@ -12,44 +12,16 @@ import com.increff.pos.pojo.UserPojo;
 
 @Repository
 <span class="fc" id="L14">public class UserDao extends AbstractDao {</span>
+<span class="fc" id="L15">	private static String select_email = &quot;select p from UserPojo p where email=:email&quot;;</span>
 
-<span class="fc" id="L16">	private static String delete_id = &quot;delete from UserPojo p where id=:id&quot;;</span>
-<span class="fc" id="L17">	private static String select_id = &quot;select p from UserPojo p where id=:id&quot;;</span>
-<span class="fc" id="L18">	private static String select_email = &quot;select p from UserPojo p where email=:email&quot;;</span>
-<span class="fc" id="L19">	private static String select_all = &quot;select p from UserPojo p&quot;;</span>
-
-	
 	@Transactional
 	public void insert(UserPojo p) {
-<span class="nc" id="L24">		em().persist(p);</span>
-<span class="nc" id="L25">	}</span>
-
-	public int delete(int id) {
-<span class="nc" id="L28">		Query query = em().createQuery(delete_id);</span>
-<span class="nc" id="L29">		query.setParameter(&quot;id&quot;, id);</span>
-<span class="nc" id="L30">		return query.executeUpdate();</span>
-	}
-
-	public UserPojo select(int id) {
-<span class="nc" id="L34">		TypedQuery&lt;UserPojo&gt; query = getQuery(select_id, UserPojo.class);</span>
-<span class="nc" id="L35">		query.setParameter(&quot;id&quot;, id);</span>
-<span class="nc" id="L36">		return getSingle(query);</span>
-	}
-
+<span class="fc" id="L19">		em().persist(p);</span>
+<span class="fc" id="L20">	}</span>
 	public UserPojo select(String email) {
-<span class="nc" id="L40">		TypedQuery&lt;UserPojo&gt; query = getQuery(select_email, UserPojo.class);</span>
-<span class="nc" id="L41">		query.setParameter(&quot;email&quot;, email);</span>
-<span class="nc" id="L42">		return getSingle(query);</span>
+<span class="fc" id="L22">		TypedQuery&lt;UserPojo&gt; query = getQuery(select_email, UserPojo.class);</span>
+<span class="fc" id="L23">		query.setParameter(&quot;email&quot;, email);</span>
+<span class="fc" id="L24">		return getSingle(query);</span>
 	}
-
-	public List&lt;UserPojo&gt; selectAll() {
-<span class="nc" id="L46">		TypedQuery&lt;UserPojo&gt; query = getQuery(select_all, UserPojo.class);</span>
-<span class="nc" id="L47">		return query.getResultList();</span>
-	}
-
-	public void update(UserPojo p) {
-<span class="nc" id="L51">	}</span>
-
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
-<span class="nc" id="L15">public class ValidateUtil {</span>
+@Component
+<span class="fc" id="L15">public class ValidateUtil {</span>
     public static &lt;T&gt; Set&lt;ConstraintViolation&lt;T&gt;&gt; validate(T form) {
 <span class="fc" id="L17">        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();</span>
 <span class="fc" id="L18">        Validator validator = factory.getValidator();</span>

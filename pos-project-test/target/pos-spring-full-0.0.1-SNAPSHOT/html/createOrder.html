@@ -8,7 +8,7 @@
 
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
 
-<div class="container">
+<div class="container mt-2">
 
     <h3>Create Order</h3>
 
@@ -34,7 +34,7 @@
                         <input type="number" class="form-control" name="selling_price" id="inputSellingPrice" placeholder="enter selling price" required />
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary col-3 px-2" id="add-product">Add</button>
+                <button type="button" class="btn btn-success col-3 px-2" id="add-product">Add</button>
                 &nbsp;
                 <button type="button" class="btn btn-primary col-3 px-2" id="upload-data">Submit</button>
             </form>
@@ -57,6 +57,7 @@
                     <th scope="col">Quantity</th>
                     <th scope="col">Selling Price</th>
                     <th scope="col">Total Amount</th>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -102,6 +103,28 @@
         </div>
     </div>
 
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="text-center">
+                            <img th:src="@{/static/success.png}" class="d-inline-block align-top" alt="" width="150">
+                        </div>
+                        <div class="text-center">
+                            <h1 style="color:green">Order Placed Successfully</h1>
+                        </div>
+                    </div>
+                    <span id="invoice-url" hidden="hidden"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-info" id="redirect-to-orders">Go To Orders</button>
+                    <button type="button" class="btn btn-outline-success" id="download-invoice">Download Invoice</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div> <!-- Container end-->
 

@@ -23,7 +23,6 @@ function addBrand(event){
         return;
     }
 	var json = toJson($form);
-	console.log(json);
 	var url = getAdminBrandUrl();
 
 	$.ajax({
@@ -85,6 +84,8 @@ function updateBrand(event){
 
 
 function getBrandList(){
+    table.clear().draw();
+    table.row.add(["","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getBrandUrl();
 	$.ajax({
 	   url: url,
@@ -110,7 +111,7 @@ function processData(){
 	var extension = getExtension($('#brandFile').val());
 	console.log(extension);
     if(extension.toLowerCase() != 'tsv'){
-    dangerClick('Please Upload File with extension .tsv only...');
+    dangerClick('Please Upload File with extension .tsv ');
     console.log("INVALID FILE TYPE...");
     return;
     }
@@ -128,7 +129,16 @@ function readFileDataCallback(results){
 	    dangerClick("Cannot upload a file with more than 5000 lines");
 	    return;
 	}
-	uploadRows();
+    const columnHeaders = Object.keys(fileData[0]);
+    const expectedHeaders = ["brand","category"];
+    const headersMatched = expectedHeaders.every(header => columnHeaders.includes(header));
+    if(headersMatched && columnHeaders.length === expectedHeaders.length){
+        uploadRows();
+    }
+    else{
+        warnClick("Invalid TSV, Headers must include both 'brand' and 'category' only.");
+        return;
+    }
 }
 
 function uploadRows(){
@@ -144,6 +154,7 @@ function uploadRows(){
     	successClick("File upload Successful")
     	}
     	getBrandList();
+    	document.getElementById("process-data").disabled=true;
 		return;
 	}
 
@@ -153,7 +164,6 @@ function uploadRows(){
 
 	var json = JSON.stringify(row);
 	var url = getAdminBrandUrl();
-    console.log(json);
 	//Make ajax call
 	$.ajax({
 	   url: url,
@@ -185,24 +195,23 @@ function displayBrandList(data){
 
 	var $tbody = $('#brand-table').find('tbody');
 	table.clear().draw();
+	var dataRows = [];
 	for(var i in data){
 		var e = data[i];
 		var maxLength = 25;
 		var roleElement = document.getElementById('role');
         var role = roleElement.innerText;
         if(role=="operator"){
-        var buttonHtml = ' <button class="edit_btn" onclick="displayEditBrand(' + e.id + ')" disabled>edit</button>'
+        var buttonHtml = ' <button class="btn btn-outline-danger edit_btn" disabled>Edit</button>'
         }
         else
-		    var buttonHtml = ' <button onclick="displayEditBrand(' + e.id + ')">edit</button>';
+		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditBrand(' + e.id + ')">Edit</button>';
 		var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
 		var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
-		table.row.add([
-          brand,
-          category,
-          buttonHtml
-        ]).draw();
+        dataRows.push([brand, category, buttonHtml]);
 	}
+
+	table.rows.add(dataRows).draw();
 }
 
 function displayEditBrand(id){
@@ -222,6 +231,7 @@ function resetUploadDialog(){
 	var $file = $('#brandFile');
 	$file.val('');
 	$('#brandFileName').html("Choose File");
+	$("#process-data").removeAttr("disabled");
 	//Reset various counts
 	processCount = 0;
 	fileData = [];
@@ -240,11 +250,19 @@ function updateFileName(){
 	var $file = $('#brandFile');
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
 	$('#brandFileName').html(fileName);
+	$("#process-data").removeAttr("disabled");
+	document.getElementById("download-errors").disabled = true;
+	processCount = 0;
+    	fileData = [];
+    	errorData = [];
+    	//Update counts
+    	updateUploadDialog();
 }
 
 function displayUploadData(){
  	resetUploadDialog();
 	$('#upload-brand-modal').modal('toggle');
+	document.getElementById("download-errors").disabled = true;
 }
 
 function displayBrand(data){
@@ -279,9 +297,21 @@ function init(){
 //      document.getElementById("upload-brand-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
-    table = $('#brand-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false }]});
+    table = $('#brand-table').DataTable({'columnDefs': [
+        {'targets': [2],'orderable': false },
+        {'targets': [0,1,2], "className": "text-center"}
+         ],
+         searching: false,
+         info:false,
+         lengthMenu: [
+                 [10, 25, 50, -1],
+                 [10, 25, 50, 'All']
+             ],
+         deferRender: true
+    });
 }
-$(document).ready(getBrandList);
 $(document).ready(init);
+$(document).ready(getBrandList);
+
 
 

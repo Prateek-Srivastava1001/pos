@@ -16,37 +16,33 @@ import com.increff.pos.util.StringUtil;
     @Autowired
     SchedulerDao schedulerDao;
 
-
     @Transactional(rollbackOn = ApiException.class)
     public void add(SchedulerPojo pojo) throws ApiException{
-<span class="nc" id="L22">        List&lt;SchedulerPojo&gt; checkerList = schedulerDao.selectByDate(pojo.getDate(), pojo.getDate());</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">        if(checkerList.size() == 0) {</span>
-<span class="nc" id="L24">            schedulerDao.insert(pojo);</span>
+<span class="fc" id="L21">        List&lt;SchedulerPojo&gt; checkerList = schedulerDao.selectByDate(pojo.getDate(), pojo.getDate());</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if(checkerList.size() == 0) {</span>
+<span class="fc" id="L23">            schedulerDao.insert(pojo);</span>
         }
         else{
-<span class="nc" id="L27">            SchedulerPojo checker = checkerList.get(0);</span>
-<span class="nc" id="L28">            checker.setTotal_revenue(pojo.getTotal_revenue());</span>
-<span class="nc" id="L29">            checker.setInvoiced_orders_count(pojo.getInvoiced_orders_count());</span>
-<span class="nc" id="L30">            checker.setInvoiced_items_count(pojo.getInvoiced_items_count());</span>
+<span class="fc" id="L26">            SchedulerPojo checker = checkerList.get(0);</span>
+<span class="fc" id="L27">            checker.setTotal_revenue(pojo.getTotal_revenue());</span>
+<span class="fc" id="L28">            checker.setInvoiced_orders_count(pojo.getInvoiced_orders_count());</span>
+<span class="fc" id="L29">            checker.setInvoiced_items_count(pojo.getInvoiced_items_count());</span>
         }
-<span class="nc" id="L32">    }</span>
-    @Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L31">    }</span>
     public List&lt;SchedulerPojo&gt; getAll(){
-<span class="nc" id="L35">        return schedulerDao.selectAll();</span>
+<span class="fc" id="L33">        return schedulerDao.selectAll();</span>
     }
-
-    @Transactional(rollbackOn = ApiException.class)
     public List&lt;SchedulerPojo&gt; getByDate(ReportsForm form) throws ApiException {
-<span class="nc" id="L40">        LocalDate startDate = LocalDate.parse(form.getStartDate());</span>
-<span class="nc" id="L41">        LocalDate endDate = LocalDate.parse(form.getEndDate());</span>
-<span class="nc" id="L42">        isValidDateRange(startDate,endDate);</span>
-<span class="nc" id="L43">        return schedulerDao.selectByDate(startDate,endDate);</span>
+<span class="fc" id="L36">        LocalDate startDate = LocalDate.parse(form.getStartDate());</span>
+<span class="fc" id="L37">        LocalDate endDate = LocalDate.parse(form.getEndDate());</span>
+<span class="fc" id="L38">        isValidDateRange(startDate,endDate);</span>
+<span class="fc" id="L39">        return schedulerDao.selectByDate(startDate,endDate);</span>
     }
 
     public static void isValidDateRange(LocalDate start, LocalDate end) throws ApiException {
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (start.isAfter(end)) {</span>
-<span class="nc" id="L48">            throw new ApiException(&quot;Start date cannot be after end date&quot;);</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (start.isAfter(end)) {</span>
+<span class="fc" id="L44">            throw new ApiException(&quot;Start date cannot be after end date&quot;);</span>
         }
-<span class="nc" id="L50">    }</span>
+<span class="fc" id="L46">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

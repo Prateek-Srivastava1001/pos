@@ -24,10 +24,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 <span class="fc" id="L24">				.antMatchers(&quot;/api/**&quot;)//</span>
 <span class="fc" id="L25">				.antMatchers(&quot;/ui/**&quot;)//</span>
 <span class="fc" id="L26">				.and().authorizeRequests()//</span>
-<span class="fc" id="L27">				.antMatchers(&quot;/api/admin/**&quot;).hasAnyAuthority(&quot;admin&quot;, &quot;supervisor&quot;)//</span>
-<span class="fc" id="L28">				.antMatchers(&quot;/api/**&quot;).hasAnyAuthority(&quot;admin&quot;, &quot;operator&quot;, &quot;supervisor&quot;)//</span>
-<span class="fc" id="L29">				.antMatchers(&quot;/ui/admin/**&quot;).hasAnyAuthority(&quot;admin&quot;, &quot;supervisor&quot;)//</span>
-<span class="fc" id="L30">				.antMatchers(&quot;/ui/**&quot;).hasAnyAuthority(&quot;admin&quot;, &quot;operator&quot;, &quot;supervisor&quot;)//</span>
+<span class="fc" id="L27">				.antMatchers(&quot;/api/admin/**&quot;).hasAnyAuthority(&quot;supervisor&quot;)//</span>
+<span class="fc" id="L28">				.antMatchers(&quot;/api/**&quot;).hasAnyAuthority(&quot;operator&quot;, &quot;supervisor&quot;)//</span>
+<span class="fc" id="L29">				.antMatchers(&quot;/ui/admin/**&quot;).hasAnyAuthority(&quot;supervisor&quot;)//</span>
+<span class="fc" id="L30">				.antMatchers(&quot;/ui/**&quot;).hasAnyAuthority(&quot;operator&quot;, &quot;supervisor&quot;)//</span>
 				// Ignore CSRF and CORS
 <span class="fc" id="L32">				.and().csrf().disable().cors().disable();</span>
 <span class="fc" id="L33">		logger.info(&quot;Configuration complete&quot;);</span>

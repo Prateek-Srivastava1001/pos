@@ -28,74 +28,75 @@ import java.util.ArrayList;
 <span class="fc" id="L28">        return pojo;</span>
     }
     public static ProductData convert(ProductPojo pojo, BrandPojo brandPojo){
-<span class="nc" id="L31">        ProductData data = new ProductData();</span>
-<span class="nc" id="L32">        data.setId(pojo.getId());</span>
-<span class="nc" id="L33">        data.setBarcode(pojo.getBarcode());</span>
-<span class="nc" id="L34">        data.setBrand(brandPojo.getBrand());</span>
-<span class="nc" id="L35">        data.setCategory(brandPojo.getCategory());</span>
-<span class="nc" id="L36">        data.setName(pojo.getName());</span>
-<span class="nc" id="L37">        data.setMrp(pojo.getMrp());</span>
-<span class="nc" id="L38">        return  data;</span>
+<span class="fc" id="L31">        ProductData data = new ProductData();</span>
+<span class="fc" id="L32">        data.setId(pojo.getId());</span>
+<span class="fc" id="L33">        data.setBarcode(pojo.getBarcode());</span>
+<span class="fc" id="L34">        data.setBrand(brandPojo.getBrand());</span>
+<span class="fc" id="L35">        data.setCategory(brandPojo.getCategory());</span>
+<span class="fc" id="L36">        data.setName(pojo.getName());</span>
+<span class="fc" id="L37">        data.setMrp(pojo.getMrp());</span>
+<span class="fc" id="L38">        return  data;</span>
     }
     public static ProductPojo convert(ProductForm form, BrandPojo brandPojo){
-<span class="nc" id="L41">        ProductPojo pojo = new ProductPojo();</span>
-<span class="nc" id="L42">        pojo.setBarcode(form.getBarcode());</span>
-<span class="nc" id="L43">        pojo.setBrand_category(brandPojo.getId());</span>
-<span class="nc" id="L44">        pojo.setName(form.getName());</span>
-<span class="nc" id="L45">        BigDecimal roundedValue = BigDecimal.valueOf(form.getMrp()).setScale(2, RoundingMode.HALF_UP);</span>
-<span class="nc" id="L46">        double mrp = roundedValue.doubleValue();</span>
-<span class="nc" id="L47">        pojo.setMrp(mrp);</span>
-<span class="nc" id="L48">        return pojo;</span>
+<span class="fc" id="L41">        ProductPojo pojo = new ProductPojo();</span>
+<span class="fc" id="L42">        pojo.setBarcode(form.getBarcode());</span>
+<span class="fc" id="L43">        pojo.setBrand_category(brandPojo.getId());</span>
+<span class="fc" id="L44">        pojo.setName(form.getName());</span>
+<span class="fc" id="L45">        BigDecimal roundedValue = BigDecimal.valueOf(form.getMrp()).setScale(2, RoundingMode.HALF_UP);</span>
+<span class="fc" id="L46">        double mrp = roundedValue.doubleValue();</span>
+<span class="fc" id="L47">        pojo.setMrp(mrp);</span>
+<span class="fc" id="L48">        return pojo;</span>
     }
 
     public static InventoryData convert(InventoryPojo pojo){
-<span class="nc" id="L52">        InventoryData data = new InventoryData();</span>
-<span class="nc" id="L53">        data.setId(pojo.getId());</span>
-<span class="nc" id="L54">        data.setQuantity(pojo.getQuantity());</span>
-<span class="nc" id="L55">        return data;</span>
+<span class="fc" id="L52">        InventoryData data = new InventoryData();</span>
+<span class="fc" id="L53">        data.setId(pojo.getId());</span>
+<span class="fc" id="L54">        data.setQuantity(pojo.getQuantity());</span>
+<span class="fc" id="L55">        return data;</span>
     }
     public static InventoryPojo convert(InventoryForm form){
-<span class="nc" id="L58">        InventoryPojo pojo = new InventoryPojo();</span>
-<span class="nc" id="L59">        pojo.setQuantity(form.getQuantity());</span>
-<span class="nc" id="L60">        return pojo;</span>
+<span class="fc" id="L58">        InventoryPojo pojo = new InventoryPojo();</span>
+<span class="fc" id="L59">        pojo.setQuantity(form.getQuantity());</span>
+<span class="fc" id="L60">        return pojo;</span>
     }
 
 
     public static Authentication convert(UserPojo p) {
         // Create principal
-<span class="nc" id="L66">        UserPrincipal principal = new UserPrincipal();</span>
-<span class="nc" id="L67">        principal.setEmail(p.getEmail());</span>
-<span class="nc" id="L68">        principal.setId(p.getId());</span>
+<span class="fc" id="L66">        UserPrincipal principal = new UserPrincipal();</span>
+<span class="fc" id="L67">        principal.setEmail(p.getEmail());</span>
+<span class="fc" id="L68">        principal.setId(p.getId());</span>
 
         // Create Authorities
-<span class="nc" id="L71">        ArrayList&lt;SimpleGrantedAuthority&gt; authorities = new ArrayList&lt;SimpleGrantedAuthority&gt;();</span>
-<span class="nc" id="L72">        authorities.add(new SimpleGrantedAuthority(p.getRole()));</span>
+<span class="fc" id="L71">        ArrayList&lt;SimpleGrantedAuthority&gt; authorities = new ArrayList&lt;SimpleGrantedAuthority&gt;();</span>
+<span class="fc" id="L72">        authorities.add(new SimpleGrantedAuthority(p.getRole()));</span>
         // you can add more roles if required
 
         // Create Authentication
-<span class="nc" id="L76">        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,</span>
+<span class="fc" id="L76">        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,</span>
                 authorities);
-<span class="nc" id="L78">        return token;</span>
+<span class="fc" id="L78">        return token;</span>
     }
 
     public static UserPojo convert(LoginForm form, String[] array){
-<span class="nc" id="L82">        int flag=0;</span>
-<span class="nc" id="L83">        UserPojo pojo = new UserPojo();</span>
-<span class="nc" id="L84">        pojo.setEmail(form.getEmail());</span>
-<span class="nc" id="L85">        pojo.setPassword(form.getPassword());</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        for(String supervisor: array){</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">            if(supervisor.equals(pojo.getEmail()))</span>
-<span class="nc" id="L88">                flag=1;</span>
+<span class="fc" id="L82">        int flag=0;</span>
+<span class="fc" id="L83">        UserPojo pojo = new UserPojo();</span>
+<span class="fc" id="L84">        pojo.setEmail(form.getEmail());</span>
+<span class="fc" id="L85">        pojo.setPassword(form.getPassword());</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        for(String supervisor: array){</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">            if(supervisor.equals(pojo.getEmail())) {</span>
+<span class="fc" id="L88">                flag = 1;</span>
+            }
         }
-<span class="nc bnc" id="L90" title="All 2 branches missed.">        if(flag==1){</span>
-<span class="nc" id="L91">            pojo.setRole(&quot;supervisor&quot;);</span>
-<span class="nc" id="L92">            System.out.println(&quot;Supervisor role assigned&quot;);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if(flag==1){</span>
+<span class="fc" id="L92">            pojo.setRole(&quot;supervisor&quot;);</span>
+<span class="fc" id="L93">            System.out.println(&quot;Supervisor role assigned&quot;);</span>
         }
         else{
-<span class="nc" id="L95">            pojo.setRole(&quot;operator&quot;);</span>
-<span class="nc" id="L96">            System.out.println(&quot;operator role assigned&quot;);</span>
+<span class="fc" id="L96">            pojo.setRole(&quot;operator&quot;);</span>
+<span class="fc" id="L97">            System.out.println(&quot;operator role assigned&quot;);</span>
         }
-<span class="nc" id="L98">        return pojo;</span>
+<span class="fc" id="L99">        return pojo;</span>
     }
 
 

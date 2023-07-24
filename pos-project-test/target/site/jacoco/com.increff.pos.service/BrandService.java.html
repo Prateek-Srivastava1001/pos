@@ -22,11 +22,11 @@ import com.increff.pos.util.StringUtil;
     //CREATE
     @Transactional(rollbackOn = ApiException.class)
     public void add(BrandPojo p) throws ApiException{
-<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if(StringUtil.isEmpty(p.getBrand())) {</span>
-<span class="nc" id="L26">            throw new ApiException(&quot;Brand cannot be empty&quot;);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if(StringUtil.isEmpty(p.getBrand())) {</span>
+<span class="fc" id="L26">            throw new ApiException(&quot;Brand cannot be empty&quot;);</span>
         }
-<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        if(StringUtil.isEmpty(p.getCategory())) {</span>
-<span class="nc" id="L29">            throw new ApiException(&quot;Category cannot be empty&quot;);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if(StringUtil.isEmpty(p.getCategory())) {</span>
+<span class="fc" id="L29">            throw new ApiException(&quot;Category cannot be empty&quot;);</span>
         }
         //Brand - Category combination should be unique
 <span class="fc bfc" id="L32" title="All 2 branches covered.">        if(dao.checkForCombination(p.getBrand(),p.getCategory()) != null){</span>
@@ -38,42 +38,39 @@ import com.increff.pos.util.StringUtil;
     //UPDATE
     @Transactional(rollbackOn  = ApiException.class)
     public void update(int id, BrandPojo pojo) throws ApiException{
-<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if(StringUtil.isEmpty(pojo.getBrand())) {</span>
-<span class="nc" id="L42">            throw new ApiException(&quot;Brand cannot be empty&quot;);</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if(StringUtil.isEmpty(pojo.getBrand())) {</span>
+<span class="fc" id="L42">            throw new ApiException(&quot;Brand cannot be empty&quot;);</span>
         }
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if(StringUtil.isEmpty(pojo.getCategory())) {</span>
-<span class="nc" id="L45">            throw new ApiException(&quot;Category cannot be empty&quot;);</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if(StringUtil.isEmpty(pojo.getCategory())) {</span>
+<span class="fc" id="L45">            throw new ApiException(&quot;Category cannot be empty&quot;);</span>
         }
 <span class="fc" id="L47">        BrandPojo toUpdate = getCheck(id);</span>
 <span class="fc" id="L48">        BrandPojo checker = dao.checkForCombination(pojo.getBrand(),pojo.getCategory());</span>
-<span class="pc bpc" id="L49" title="3 of 4 branches missed.">        if(checker != null &amp;&amp; dao.select(id) != checker){</span>
-<span class="nc" id="L50">            throw new ApiException(&quot;Brand - Category combination already exists&quot;);</span>
+<span class="pc bpc" id="L49" title="1 of 4 branches missed.">        if(checker != null &amp;&amp; dao.select(id) != checker){</span>
+<span class="fc" id="L50">            throw new ApiException(&quot;Brand - Category combination already exists&quot;);</span>
         }
 <span class="fc" id="L52">        toUpdate.setCategory(pojo.getCategory());</span>
 <span class="fc" id="L53">        toUpdate.setBrand(pojo.getBrand());</span>
 <span class="fc" id="L54">    }</span>
 
     //Gets all brand data from BrandPojo
-    @Transactional
-<span class="fc" id="L58">    public List&lt;BrandPojo&gt; getAll(){return dao.selectAll();}</span>
+<span class="fc" id="L57">    public List&lt;BrandPojo&gt; getAll(){return dao.selectAll();}</span>
 
     //Check if given id exists in Database
-    @Transactional
     public BrandPojo getCheck(int id) throws ApiException {
-<span class="fc" id="L63">        BrandPojo p = dao.select(id);</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (p == null) {</span>
-<span class="fc" id="L65">            throw new ApiException(&quot;Brand-Category with given id does not exist id: &quot; + id);</span>
+<span class="fc" id="L61">        BrandPojo p = dao.select(id);</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (p == null) {</span>
+<span class="fc" id="L63">            throw new ApiException(&quot;Brand-Category with given id does not exist id: &quot; + id);</span>
         }
-<span class="fc" id="L67">        return p;</span>
+<span class="fc" id="L65">        return p;</span>
     }
 
-    @Transactional
     public BrandPojo combinationChecker(String brand, String category) throws ApiException{
-<span class="fc" id="L72">        BrandPojo pojo = dao.checkForCombination(brand, category);</span>
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if(pojo == null){</span>
-<span class="nc" id="L74">            throw new ApiException(&quot;Brand-Category combination not found&quot;);</span>
+<span class="fc" id="L69">        BrandPojo pojo = dao.checkForCombination(brand, category);</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if(pojo == null){</span>
+<span class="fc" id="L71">            throw new ApiException(&quot;Brand-Category combination not found&quot;);</span>
         }
-<span class="fc" id="L76">        return pojo;</span>
+<span class="fc" id="L73">        return pojo;</span>
     }
 
 }

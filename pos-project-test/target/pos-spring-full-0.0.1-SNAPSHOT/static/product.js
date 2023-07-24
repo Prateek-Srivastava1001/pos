@@ -1,4 +1,5 @@
 var table;
+var brandCategoryData = [];
 function getProductUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/product";
@@ -30,11 +31,19 @@ function addProduct(event){
             return true;
         }
         if(name==null ||name==""){
-            warnClick("MRP cannot be empty");
+            warnClick("Name cannot be empty");
             return true;
         }
        if(mrp==null ||mrp==""){
             warnClick("MRP cannot be empty");
+            return true;
+        }
+        if(parseFloat(mrp)<0){
+            warnClick("MRP cannot be negative");
+            return true;
+        }
+        if(parseFloat(mrp)>1000000000){
+            warnClick("Mrp cannot be more than 1000000000");
             return true;
         }
 	var json = toJson($form);
@@ -79,24 +88,32 @@ function updateProduct(event){
     var mrp = formData[4].value;
     console.log(mrp);
     if(barcode==null ||barcode==""){
-           dangerClick("Barcode cannot be empty");
+           warnClick("Barcode cannot be empty");
            return true;
        }
     if(brand==null ||brand==""){
-           dangerClick("Brand cannot be empty");
+           warnClick("Brand cannot be empty");
            return true;
        }
        if(category==null ||category==""){
-           dangerClick("Category cannot be empty");
+           warnClick("Category cannot be empty");
            return true;
        }
        if(name==null ||name==""){
-           dangerClick("MRP cannot be empty");
+           warnClick("MRP cannot be empty");
            return true;
        }
       if(mrp==null ||mrp==""){
-           dangerClick("MRP cannot be empty");
+           warnClick("MRP cannot be empty");
            return true;
+       }
+       if(parseFloat(mrp)<0){
+        warnClick("MRP cannot be negative");
+        return;
+       }
+       if(parseFloat(mrp)>1000000000){
+        warnClick("Mrp cannot be more than 1000000000");
+        return;
        }
 	var json = toJson($form);
 
@@ -119,6 +136,8 @@ function updateProduct(event){
 
 
 function getProductList(){
+table.clear().draw();
+table.row.add(["","","<i class='fa fa-refresh fa-spin'></i>","","",""]).draw();
 	var url = getProductUrl();
 	$.ajax({
 	   url: url,
@@ -143,7 +162,7 @@ function processData(){
 	var extension = getExtension($('#productFile').val());
 	console.log(extension);
     if(extension.toLowerCase() != 'tsv'){
-    dangerClick('Please Upload File with extension .tsv only...');
+    dangerClick('Please Upload File with extension .tsv');
     return;
     }
     readFileData(file, readFileDataCallback);
@@ -160,7 +179,16 @@ function readFileDataCallback(results){
 	    dangerClick("Cannot upload a file with more than 5000 lines");
 	    return;
 	}
-	uploadRows();
+	const columnHeaders = Object.keys(fileData[0]);
+    const expectedHeaders = ["barcode","brand","category","name", "mrp"];
+    const headersMatched = expectedHeaders.every(header => columnHeaders.includes(header));
+    if(headersMatched && columnHeaders.length === expectedHeaders.length){
+        uploadRows();
+    }
+    else{
+        warnClick("Invalid TSV, Headers must include 'barcode', 'brand', 'category', 'name' and 'mrp' only.");
+        return;
+    }
 }
 
 function uploadRows(){
@@ -176,6 +204,7 @@ function uploadRows(){
     	successClick("File upload successful");
     	}
     	getProductList();
+    	document.getElementById("process-data").disabled=true;
 		return;
 	}
 
@@ -216,24 +245,24 @@ function downloadErrors(){
 function displayProductList(data){
 	var $tbody = $('#product-table').find('tbody');
 	table.clear().draw();
+	var dataRows = [];
+	var maxLength=25;
 	for(var i in data){
 		var e = data[i];
 		var roleElement = document.getElementById('role');
         var role = roleElement.innerText;
+        var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
+        var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
+        var name = (e.name.length>27)?e.name.substring(0,27)+'...':e.name;
         if(role=="operator"){
-            var buttonHtml = ' <button class="edit_btn" disabled>edit</button>'
+            var buttonHtml = ' <button class="btn btn-outline-danger edit_btn" disabled>Edit</button>'
         }
         else
-		    var buttonHtml = ' <button onclick="displayEditProduct(' + e.id + ')">edit</button>';
-        table.row.add([
-                      e.barcode,
-                      e.brand,
-                      e.category,
-                      e.name,
-                      'Rs '+(Math.round(parseFloat(e.mrp) * 100) / 100).toFixed(2),
-                      buttonHtml
-                     ]).draw();
+		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditProduct(' + e.id + ')">edit</button>';
+
+		dataRows.push([e.barcode,brand,category,name,'Rs '+(Math.round(parseFloat(e.mrp) * 100)/100).toFixed(2),buttonHtml])
 	}
+	table.rows.add(dataRows).draw();
 }
 
 function displayEditProduct(id){
@@ -253,6 +282,7 @@ function resetUploadDialog(){
 	var $file = $('#productFile');
 	$file.val('');
 	$('#productFileName').html("Choose File");
+	$("#process-data").removeAttr("disabled");
 	//Reset various counts
 	processCount = 0;
 	fileData = [];
@@ -270,7 +300,14 @@ function updateUploadDialog(){
 function updateFileName(){
 	var $file = $('#productFile');
 	var fileName = $file.val().replace(/.*(\/|\\)/, '');
+	$("#process-data").removeAttr("disabled");
 	$('#productFileName').html(fileName);
+	document.getElementById("download-errors").disabled = true;
+    	processCount = 0;
+        	fileData = [];
+        	errorData = [];
+        	//Update counts
+        	updateUploadDialog();
 }
 
 function displayUploadData(){
@@ -279,9 +316,12 @@ function displayUploadData(){
 }
 
 function displayProduct(data){
+    var brandDropdown = $('#editBrand');
+    populateBrandDropdown(brandDropdown);
+    $("#editBrand").val(data.brand).trigger("change");
+    $("#editCategory").val(data.category).trigger("change");
+
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
-	$("#product-edit-form input[name=brand]").val(data.brand);
-	$("#product-edit-form input[name=category]").val(data.category);
 	$("#product-edit-form input[name=name]").val(data.name);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
 	$("#product-edit-form input[name=id]").val(data.id);
@@ -291,6 +331,59 @@ function displayProduct(data){
 function refresh(){
     location.reload(true);
 }
+//Brand - Category combination for dropdown
+function getBrandList(){
+    var url = $("meta[name=baseUrl]").attr("content")+'/api/brand';
+    $.ajax({
+    	   url: url,
+    	   type: 'GET',
+    	   success: function(data) {
+    	   		brandCategoryData = data;
+    	   		var brandDropdown = $('#inputBrand');
+    	   		populateBrandDropdown(brandDropdown);
+    	   },
+    	   error: handleAjaxError
+    	});
+}
+function populateBrandDropdown(brandDropdown){
+    // Clear existing options
+    brandDropdown.empty();
+    // Add an empty option
+    brandDropdown.append($('<option>', {
+        value: '',
+        text: 'Select'
+    }));
+    var distinctBrands = new Set();
+    // Iterate over the brand-category data to collect distinct brands
+    brandCategoryData.forEach(function(item) {
+       distinctBrands.add(item.brand);
+    });
+
+    distinctBrands.forEach(function(brand) {
+            brandDropdown.append($('<option>', {
+                value: brand,
+                text: brand
+            }));
+        });
+}
+function populateCategoryDropdown(selectedBrand, categoryDropdown){
+    categoryDropdown.empty();
+    categoryDropdown.append($('<option>', {
+            value: '',
+            text: 'Select'
+        }));
+    // Filter the brand-category data based on the selected brand
+    var filteredData = brandCategoryData.filter(function(item) {
+        return item.brand === selectedBrand;
+    });
+
+    filteredData.forEach(function(item) {
+            categoryDropdown.append($('<option>', {
+                value: item.category,
+                text: item.category
+            }));
+        });
+}
 //INITIALIZATION CODE
 function init(){
 	$('#add-product').click(addProduct);
@@ -299,6 +392,16 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName);
+    $('#inputBrand').on('change', function() {
+                                               var selectedBrand = $(this).val();
+                                               var categoryDropdown = $('#inputCategory');
+                                               populateCategoryDropdown(selectedBrand, categoryDropdown);
+                                            });
+    $('#editBrand').on('change', function() {
+                                                var selectedBrand = $(this).val();
+                                                var categoryDropdown = $('#editCategory');
+                                                populateCategoryDropdown(selectedBrand, categoryDropdown);
+                                                });
 
     var roleElement = document.getElementById('role');
     var role = roleElement.innerText;
@@ -312,9 +415,21 @@ function init(){
         document.getElementById("edit-product-modal").innerHTML = "";
     }
     document.getElementById("download-errors").disabled = true;
-    table = $('#product-table').DataTable({'columnDefs': [ {'targets': [5],'orderable': false }]});
+    table = $('#product-table').DataTable({'columnDefs': [ {'targets': [5],'orderable': false },
+                {'targets': [0,1,2,3,4,5], "className": "text-center"}],
+             searching: false,
+             info:false,
+             lengthMenu: [
+                     [10, 25, 50, -1],
+                     [10, 25, 50, 'All']
+                 ],
+             deferRender: true
+    });
+    $('.select2').select2();
+
 }
 
 $(document).ready(init);
 $(document).ready(getProductList);
+$(document).ready(getBrandList);
 

@@ -20,18 +20,18 @@ import org.springframework.stereotype.Repository;
     private EntityManager em;
 
     @Transactional
-<span class="nc" id="L23">    public void insert(SchedulerPojo pojo){em.persist(pojo);}</span>
+<span class="fc" id="L23">    public void insert(SchedulerPojo pojo){em.persist(pojo);}</span>
 
     public List&lt;SchedulerPojo&gt; selectAll(){
-<span class="nc" id="L26">        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_all, SchedulerPojo.class);</span>
-<span class="nc" id="L27">        return query.getResultList();</span>
+<span class="fc" id="L26">        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_all, SchedulerPojo.class);</span>
+<span class="fc" id="L27">        return query.getResultList();</span>
     }
 
     public List&lt;SchedulerPojo&gt; selectByDate(LocalDate start_date, LocalDate end_date){
-<span class="nc" id="L31">        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_by_date, SchedulerPojo.class);</span>
-<span class="nc" id="L32">        query.setParameter(&quot;start_date&quot;, start_date);</span>
-<span class="nc" id="L33">        query.setParameter(&quot;end_date&quot;, end_date);</span>
-<span class="nc" id="L34">        return query.getResultList();</span>
+<span class="fc" id="L31">        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_by_date, SchedulerPojo.class);</span>
+<span class="fc" id="L32">        query.setParameter(&quot;start_date&quot;, start_date);</span>
+<span class="fc" id="L33">        query.setParameter(&quot;end_date&quot;, end_date);</span>
+<span class="fc" id="L34">        return query.getResultList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

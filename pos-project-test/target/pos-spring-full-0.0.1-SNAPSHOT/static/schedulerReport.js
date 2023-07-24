@@ -10,6 +10,8 @@ function getGenerateReportUrl(){
 }
 
 function getSchedulerList(){
+table.clear().draw();
+table.row.add(["","Processing...","<i class='fa fa-refresh fa-spin'></i>",""]).draw();
 	var url = getSchedulerReportUrl();
 	$.ajax({
 	   url: url,
@@ -55,6 +57,7 @@ function getFilteredList(event) {
     success: function (response) {
         resetForm();
         displaySchedulerReportList(response);
+        successClick("Date filter applied successfully");
     },
     error: handleAjaxError,
   });
@@ -69,19 +72,16 @@ function displaySchedulerReportList(data){
     filteredData = data;
 	var $tbody = $('#brand-report-table').find('tbody');
 	table.clear().draw();
+	var dataRows = [];
 	for(var i in data){
 	if(data.length > 0){
     	    $("#download-report").removeAttr("disabled");
     	}
 		var e = data[i];
-		console.log(e);
-        table.row.add([
-                      e.date,
-                      e.invoiced_orders_count,
-                      e.invoiced_items_count,
-                      e.total_revenue
-                    ]).draw();
+        dataRows.push([e.date, e.invoiced_orders_count, e.invoiced_items_count,
+                        'Rs '+(Math.round(parseFloat(e.total_revenue)*100)/100).toFixed(2)]);
 	}
+	table.rows.add(dataRows).draw();
 }
 
 function resetForm() {
@@ -124,8 +124,19 @@ function init() {
     var today = new Date();
     dateInput.setAttribute("max", today.toISOString().substring(0, 10));
     dateInput2.setAttribute("max", today.toISOString().substring(0, 10));
-    table = $('#brand-report-table').DataTable({'columnDefs': [ {'targets': [1,2,3],'orderable': false }]});
+    table = $('#brand-report-table').DataTable({'columnDefs': [ {'targets': [1,2,3],'orderable': false },
+                                                                {'targets': [0,1,2,3], "className": "text-center"}],
+                                                                 searching: false,
+                                                                 info:false,
+                                                                 lengthMenu: [
+                                                                         [15, 25, 50, -1],
+                                                                         [15, 25, 50, 'All']
+                                                                     ],
+                                                                 order: [[0, 'desc']],
+                                                                 deferRender: true
+    });
  }
+ $(document).ready(init);
 $(document).ready(getSchedulerList);
-$(document).ready(init);
+
 

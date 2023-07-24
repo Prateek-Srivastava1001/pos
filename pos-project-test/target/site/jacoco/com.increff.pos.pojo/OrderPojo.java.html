@@ -7,15 +7,15 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-<span class="nc" id="L10">@Setter</span>
+<span class="pc" id="L10">@Setter</span>
 @Entity
 @Table(name=&quot;Orders&quot;)
 <span class="fc" id="L13">public class OrderPojo {</span>
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-<span class="nc" id="L16">    private int id;</span>
+<span class="fc" id="L16">    private int id;</span>
     @DateTimeFormat(pattern = &quot;yyyy-MM-dd HH:mm&quot;)
-<span class="nc" id="L18">    private LocalDateTime date_time;</span>
+<span class="fc" id="L18">    private LocalDateTime date_time;</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

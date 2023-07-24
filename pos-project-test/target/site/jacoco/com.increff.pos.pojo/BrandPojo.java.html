@@ -8,19 +8,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
-<span class="pc" id="L11">@Setter</span>
+<span class="fc" id="L11">@Setter</span>
 @Entity
 @Table(name=&quot;Brand&quot;)
 <span class="fc" id="L14">public class BrandPojo {</span>
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 <span class="fc" id="L17">    private int id;</span>
-    @NotBlank(message = &quot;Brand cannot be empty&quot;)
     @Size(max = 30, message=&quot;Brand cannot be more than 30 characters long&quot;)
-<span class="fc" id="L20">    private String brand;</span>
-    @NotBlank(message = &quot;Category cannot be empty&quot;)
+<span class="fc" id="L19">    private String brand;</span>
     @Size(max = 50, message=&quot;Category cannot be more than 50 characters long&quot;)
-<span class="fc" id="L23">    private String category;</span>
+<span class="fc" id="L21">    private String category;</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
