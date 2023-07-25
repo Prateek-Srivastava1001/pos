@@ -98,18 +98,20 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private NormalizeUtil normalizeUtil;
 &nbsp;    private ValidateUtil validateUtil;
 &nbsp;
+&nbsp;    // Adding BrandForm to the DataBase
 &nbsp;    public void add(BrandForm form) throws ApiException {
 <b class="fc">&nbsp;        BrandPojo pojo = converterUtil.convert(form);</b>
 <b class="fc">&nbsp;        normalizeUtil.normalize(pojo);</b>
 <b class="fc">&nbsp;        validateUtil.checkValid(pojo);</b>
 <b class="fc">&nbsp;        service.add(pojo);</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // Getting Brand data by ID
 &nbsp;    public BrandData get(int id) throws ApiException{
 <b class="fc">&nbsp;        BrandPojo pojo = service.getCheck(id);</b>
 <b class="fc">&nbsp;        return converterUtil.convert(pojo);</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    //Getting all data from DB
 &nbsp;    public List&lt;BrandData&gt; getAll(){
 <b class="fc">&nbsp;        List&lt;BrandPojo&gt; list = service.getAll();</b>
 <b class="fc">&nbsp;        List&lt;BrandData&gt; list2 = new ArrayList&lt;BrandData&gt;();</b>
@@ -119,6 +121,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return list2;</b>
 &nbsp;    }
 &nbsp;
+&nbsp;    //Updating
 &nbsp;    public void update(int id, BrandForm form) throws ApiException{
 <b class="fc">&nbsp;        BrandPojo pojo = converterUtil.convert(form);</b>
 <b class="fc">&nbsp;        normalizeUtil.normalize(pojo);</b>
@@ -149,7 +152,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

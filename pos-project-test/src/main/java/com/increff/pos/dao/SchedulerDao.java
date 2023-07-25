@@ -18,10 +18,10 @@ public class SchedulerDao extends AbstractDao{
 
     @PersistenceContext
     private EntityManager em;
-
+    //CREATE
     @Transactional
     public void insert(SchedulerPojo pojo){em.persist(pojo);}
-
+    //READ
     public List<SchedulerPojo> selectAll(){
         TypedQuery<SchedulerPojo> query = getQuery(select_all, SchedulerPojo.class);
         return query.getResultList();

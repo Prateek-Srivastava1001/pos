@@ -46,7 +46,7 @@ function displayFilteredReport(){
     var brand = formData[0].value;
     var category = formData[1].value;
     if(brand == null || brand ==""){
-        warnClick("Please fill Brand Data before applying filter");
+        refreshData();
         return;
     }
     table.clear().draw();

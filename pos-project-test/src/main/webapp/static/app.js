@@ -72,12 +72,31 @@ function readFileData(file, callback){
 		delimiter: "\t",
 		skipEmptyLines: "greedy",
 		complete: function(results) {
+		    if(hasDuplicateHeaders(results.meta.fields)){
+		    warnClick("Duplicate headers not supported");
+		    return;
+		    }
 			callback(results);
 	  	}	
 	}
 	Papa.parse(file, config);
 }
+function hasDuplicateHeaders(headers) {
+  const seenHeaders = {};
 
+  // Iterate through each header
+  for (const header of headers) {
+    // If the header already exists in the seenHeaders object, it's a duplicate
+    if (seenHeaders[header]) {
+      return true; // Return true if duplicates found
+    } else {
+      // Otherwise, mark the header as seen
+      seenHeaders[header] = true;
+    }
+  }
+
+  return false; // Return false if no duplicates found
+}
 
 function writeFileData(arr){
 	var config = {

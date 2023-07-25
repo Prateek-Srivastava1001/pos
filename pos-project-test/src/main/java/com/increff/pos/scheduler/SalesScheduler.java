@@ -31,6 +31,7 @@ public class SalesScheduler {
     OrderService orderService;
     @Autowired
     OrderItemService orderItemService;
+    // Scheduler code to create Day on Day report
     @Async
     @Scheduled(cron = "59 59 23 * * *")
     public void createReport() throws ApiException {

@@ -16,7 +16,7 @@ public class OrderItemService {
     private OrderItemDao dao;
     @Autowired
     private ProductService productService;
-
+    //CREATE
     @Transactional(rollbackOn = ApiException.class)
     public void add(OrderItemPojo pojo) throws ApiException{
         //check for duplicate in same order.
@@ -25,7 +25,7 @@ public class OrderItemService {
         }
         dao.insert(pojo);
     }
-
+    // gets all orderItems corresponding to particular order Id
     public List<OrderItemData> getAll(int order_id) throws ApiException {
         List<OrderItemPojo> pojoList =  dao.selectAll(order_id);
         List<OrderItemData> dataList = new ArrayList<>();
@@ -35,7 +35,7 @@ public class OrderItemService {
         }
         return dataList;
     }
-
+    //helper
     private OrderItemData convert(OrderItemPojo pojo) throws ApiException {
         OrderItemData data = new OrderItemData();
         data.setId(pojo.getId());

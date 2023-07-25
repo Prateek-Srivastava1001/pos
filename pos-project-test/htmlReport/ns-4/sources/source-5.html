@@ -111,13 +111,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;public class OrderService {</b>
 &nbsp;    @Autowired
 &nbsp;    private OrderDao dao;
-&nbsp;
+&nbsp;    //CREATE
 &nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public int add(OrderPojo pojo) throws ApiException{
 <b class="fc">&nbsp;        int orderId = dao.insert(pojo).getId();</b>
 <b class="fc">&nbsp;        return orderId;</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // returns order from given id, throws exception if it does not exist
 &nbsp;    @Transactional
 &nbsp;    public OrderPojo getCheck(int id) throws ApiException {
 <b class="fc">&nbsp;        OrderPojo pojo = dao.select(id);</b>
@@ -125,12 +125,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            throw new ApiException(&quot;Order with given id not found&quot;);</b>
 <b class="fc">&nbsp;        return pojo;</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // gets all orders from db
 &nbsp;    @Transactional
 &nbsp;    public List&lt;OrderPojo&gt; getAll(){
 <b class="fc">&nbsp;        return dao.selectAll();</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // gets all orders in a given timeframe (used in reports)
 &nbsp;    @Transactional
 &nbsp;    public List&lt;OrderPojo&gt; getByDate(LocalDateTime startDate, LocalDateTime endDate){
 <b class="fc">&nbsp;        return dao.getByDate(startDate,endDate);</b>
@@ -162,7 +162,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

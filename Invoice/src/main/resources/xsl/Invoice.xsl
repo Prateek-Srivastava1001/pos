@@ -45,7 +45,7 @@
     </xsl:template>
     <xsl:template match="invoice">
         <fo:block></fo:block>
-        <fo:block space-before="40pt" width="17cm" >
+        <fo:block space-before="35pt" width="17cm" >
             <fo:table>
                 <fo:table-column column-width="5.5cm"/>
                 <fo:table-column column-width="5.5cm"/>
@@ -53,8 +53,8 @@
                     <fo:table-row>
                         <fo:table-cell>
                             <fo:block text-align="left">
-                                <fo:inline font-weight="bold">Invoice Number</fo:inline>&#x2028;
-                                <fo:inline font-weight="bold">Invoice Date</fo:inline>&#x2028;
+                                <fo:inline font-weight="bold" font-size="11pt">Invoice Number</fo:inline>&#x2028;
+                                <fo:inline font-weight="bold" font-size="11pt">Invoice Date</fo:inline>&#x2028;
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell>
@@ -69,29 +69,29 @@
         </fo:block>
         <fo:block space-before="35pt">
             <fo:table line-height="25px" overflow="hidden">
-                <fo:table-column column-width="2cm"/>
+                <fo:table-column column-width="1.6cm"/>
                 <fo:table-column column-width="6.5cm"/>
                 <fo:table-column column-width="2cm"/>
-                <fo:table-column column-width="2.5cm"/>
-                <fo:table-column column-width="3cm"/>
+                <fo:table-column column-width="2.9cm"/>
+                <fo:table-column column-width="4cm"/>
                 <fo:table-header>
                     <fo:table-row background-color="#f5f5f5" text-align="center" font-weight="bold">
                         <fo:table-cell border="1px solid #b8b6b6">
-                            <fo:block>S No.</fo:block>
+                            <fo:block font-size="11pt">S No.</fo:block>
                         </fo:table-cell>
                         <fo:table-cell border="1px solid #b8b6b6">
                             <fo:block-container overflow="hidden" linefeed-treatment="preserve">
-                                <fo:block>Name</fo:block>
+                                <fo:block font-size="11pt">Name</fo:block>
                             </fo:block-container>
                         </fo:table-cell>
                         <fo:table-cell border="1px solid #b8b6b6">
-                            <fo:block>Quantity</fo:block>
+                            <fo:block font-size="11pt">Quantity</fo:block>
                         </fo:table-cell>
                         <fo:table-cell border="1px solid #b8b6b6">
-                            <fo:block>Unit Price</fo:block>
+                            <fo:block font-size="11pt">Unit Price</fo:block>
                         </fo:table-cell>
                         <fo:table-cell border="1px solid #b8b6b6">
-                            <fo:block>Total</fo:block>
+                            <fo:block font-size="11pt">Total</fo:block>
                         </fo:table-cell>
                     </fo:table-row>
                 </fo:table-header>
@@ -104,7 +104,7 @@
                             <fo:block>Total</fo:block>
                         </fo:table-cell>
                         <fo:table-cell  text-align="right" padding-right="3pt" background-color="#f5f5f5" border="1px solid #b8b6b6" >
-                            <fo:block>
+                            <fo:block font-size="10pt">
                                 <xsl:value-of select="amount" />
                             </fo:block>
                         </fo:table-cell>
@@ -117,7 +117,7 @@
     <xsl:template match="order_item">
         <fo:table-row>
             <fo:table-cell border="1px solid #b8b6b6" padding-left="3pt">
-                <fo:block>
+                <fo:block font-size="10pt">
                     <xsl:value-of select="id"/>
                 </fo:block>
             </fo:table-cell>
@@ -129,7 +129,7 @@
                             <fo:table-body>
                                 <fo:table-row>
                                     <fo:table-cell>
-                                        <fo:block>
+                                        <fo:block font-size="10pt">
                                             <xsl:call-template name="wrapText">
                                                 <xsl:with-param name="text" select="product_name"/>
                                             </xsl:call-template>
@@ -143,17 +143,17 @@
             </fo:table-cell>
 
             <fo:table-cell border="1px solid #b8b6b6" text-align="center">
-                <fo:block>
+                <fo:block font-size="10pt">
                     <xsl:value-of select="quantity"/>
                 </fo:block>
             </fo:table-cell>
             <fo:table-cell border="1px solid #b8b6b6" text-align="right" padding-right="3pt">
-                <fo:block>
+                <fo:block font-size="10pt">
                     <xsl:value-of select="selling_price"/>
                 </fo:block>
             </fo:table-cell>
             <fo:table-cell border="1px solid #b8b6b6" text-align="right" padding-right="3pt">
-                <fo:block>
+                <fo:block font-size="10pt">
                     <xsl:value-of select="amt"/>
                 </fo:block>
             </fo:table-cell>

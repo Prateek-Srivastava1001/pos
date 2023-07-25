@@ -129,10 +129,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    OrderService orderService;
 &nbsp;    @Autowired
 &nbsp;    OrderItemService orderItemService;
-&nbsp;
+&nbsp;    // Gets Day on Day sales report from DB
 &nbsp;    public List&lt;SchedulerPojo&gt; getScheduledData(){
 <b class="fc">&nbsp;        return schedulerService.getAll();</b>
 &nbsp;    }
+&nbsp;    // generates the Day on Day sales report and adds it to db
 &nbsp;    public void generateDailyReport() throws ApiException {
 <b class="fc">&nbsp;        scheduler.createReport();</b>
 &nbsp;    }
@@ -236,7 +237,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

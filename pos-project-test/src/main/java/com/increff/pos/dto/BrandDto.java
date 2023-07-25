@@ -22,18 +22,20 @@ public class BrandDto {
     private NormalizeUtil normalizeUtil;
     private ValidateUtil validateUtil;
 
+    // Adding BrandForm to the DataBase
     public void add(BrandForm form) throws ApiException {
         BrandPojo pojo = converterUtil.convert(form);
         normalizeUtil.normalize(pojo);
         validateUtil.checkValid(pojo);
         service.add(pojo);
     }
-
+    // Getting Brand data by ID
     public BrandData get(int id) throws ApiException{
         BrandPojo pojo = service.getCheck(id);
         return converterUtil.convert(pojo);
     }
 
+    //Getting all data from DB
     public List<BrandData> getAll(){
         List<BrandPojo> list = service.getAll();
         List<BrandData> list2 = new ArrayList<BrandData>();
@@ -43,6 +45,7 @@ public class BrandDto {
         return list2;
     }
 
+    //Updating
     public void update(int id, BrandForm form) throws ApiException{
         BrandPojo pojo = converterUtil.convert(form);
         normalizeUtil.normalize(pojo);

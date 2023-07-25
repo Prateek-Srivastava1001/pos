@@ -156,7 +156,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 <b class="fc">&nbsp;        return p;</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // Gets pojo based on brand-category combination, throws exception if it is not present
 &nbsp;    public BrandPojo combinationChecker(String brand, String category) throws ApiException{
 <b class="fc">&nbsp;        BrandPojo pojo = dao.checkForCombination(brand, category);</b>
 <b class="fc">&nbsp;        if(pojo == null){</b>
@@ -189,7 +189,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

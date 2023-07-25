@@ -18,10 +18,10 @@ public class ProductDao extends AbstractDao{
     private static String get_by_brand = "select p from ProductPojo p where brand_category=:brand_category";
     @PersistenceContext
     private EntityManager em;
-
+    //CREATE
     @Transactional
     public void insert(ProductPojo pojo){em.persist(pojo);}
-
+    //READ
     public ProductPojo select(int id){
         TypedQuery<ProductPojo> query = getQuery(select_id, ProductPojo.class);
         query.setParameter("id", id);

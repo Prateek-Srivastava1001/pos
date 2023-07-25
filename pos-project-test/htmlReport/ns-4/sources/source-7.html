@@ -107,7 +107,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;public class SchedulerService {</b>
 &nbsp;    @Autowired
 &nbsp;    SchedulerDao schedulerDao;
-&nbsp;
+&nbsp;    //CREATE
 &nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public void add(SchedulerPojo pojo) throws ApiException{
 <b class="fc">&nbsp;        List&lt;SchedulerPojo&gt; checkerList = schedulerDao.selectByDate(pojo.getDate(), pojo.getDate());</b>
@@ -121,6 +121,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            checker.setInvoiced_items_count(pojo.getInvoiced_items_count());</b>
 &nbsp;        }
 &nbsp;    }
+&nbsp;    //READ
 &nbsp;    public List&lt;SchedulerPojo&gt; getAll(){
 <b class="fc">&nbsp;        return schedulerDao.selectAll();</b>
 &nbsp;    }
@@ -130,7 +131,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        isValidDateRange(startDate,endDate);</b>
 <b class="fc">&nbsp;        return schedulerDao.selectByDate(startDate,endDate);</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    //helper
 &nbsp;    public static void isValidDateRange(LocalDate start, LocalDate end) throws ApiException {
 <b class="fc">&nbsp;        if (start.isAfter(end)) {</b>
 <b class="fc">&nbsp;            throw new ApiException(&quot;Start date cannot be after end date&quot;);</b>
@@ -160,7 +161,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

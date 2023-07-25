@@ -97,17 +97,19 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private InfoData info;
 &nbsp;    private ConverterUtil util;
 &nbsp;    private NormalizeUtil normalizeUtil;
+&nbsp;    // checks if the details are valid and returns an authentication object
 &nbsp;    public Authentication login(LoginForm f) throws ApiException{
 <b class="fc">&nbsp;        f.setEmail(f.getEmail().toLowerCase().trim());</b>
 <b class="fc">&nbsp;        UserPojo p = service.get(f.getEmail());</b>
 <b class="fc">&nbsp;        boolean authenticated = (p != null &amp;&amp; Objects.equals(p.getPassword(), f.getPassword()));</b>
 <b class="fc">&nbsp;        if (!authenticated) {</b>
 <b class="fc">&nbsp;            info.setMessage(&quot;Invalid details&quot;);</b>
-<b class="fc">&nbsp;            throw new ApiException(&quot;Invalid details&quot;);}</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Invalid details&quot;);</b>
+&nbsp;        }
 <b class="fc">&nbsp;        info.setRole(p.getRole());</b>
 <b class="fc">&nbsp;        return util.convert(p);</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // adds new user in db where role comes from pos.properties file
 &nbsp;    public UserPojo signup(LoginForm form) throws ApiException{
 <b class="fc">&nbsp;        String[] array = supervisor.split(&quot;,&quot;);</b>
 <b class="fc">&nbsp;        UserPojo p= util.convert(form, array);</b>
@@ -142,7 +144,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

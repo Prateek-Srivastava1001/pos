@@ -22,10 +22,12 @@ public class InventoryDto {
     ProductService productService;
     ConverterUtil converterUtil;
 
+    //Getting inventory data by id
     public InventoryData get(int id) throws ApiException{
         InventoryPojo pojo = inventoryService.getCheck(id);
         return converterUtil.convert(pojo);
     }
+    //Getting all data from DB
     public List<InventoryData> getAll() throws ApiException{
         List<InventoryPojo> pojoList = inventoryService.getAll();
         List<InventoryData> dataList = new ArrayList<>();
@@ -39,6 +41,7 @@ public class InventoryDto {
         }
         return dataList;
     }
+    //Updating by edit button
     public void edit(int id, InventoryForm form) throws ApiException {
         InventoryPojo pojo = converterUtil.convert(form);
         if(pojo.getQuantity()<0){
@@ -49,6 +52,7 @@ public class InventoryDto {
         }
         inventoryService.update(id, pojo);
     }
+    //Updating by upload (adds the inventory to existing value)
     public void editByUpload(InventoryForm form) throws ApiException{
         String barcode = form.getBarcode();
         InventoryPojo pojo = converterUtil.convert(form);

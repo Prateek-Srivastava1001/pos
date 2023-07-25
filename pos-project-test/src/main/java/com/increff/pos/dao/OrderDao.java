@@ -18,13 +18,13 @@ public class OrderDao extends  AbstractDao{
 
     @PersistenceContext
     private EntityManager em;
-
+    //CREATE
     @Transactional
     public OrderPojo insert(OrderPojo pojo){
         em.persist(pojo);
         return pojo;
     }
-
+    //READ
     public OrderPojo select(int id){
         TypedQuery<OrderPojo> query = getQuery(select_id, OrderPojo.class);
         query.setParameter("id", id);

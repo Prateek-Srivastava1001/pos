@@ -41,6 +41,7 @@ public class OrderDto {
     @Autowired
     InventoryService inventoryService;
     private int orderId=0;
+    //Creating Order in db
     @Transactional(rollbackOn = ApiException.class)
     public int add(List<OrderItemForm> forms) throws ApiException{
         if(forms.size()<1){
@@ -53,6 +54,7 @@ public class OrderDto {
         addItems(forms);
         return orderId;
     }
+    //Adding orderItems to the Order created
     @Transactional(rollbackOn = ApiException.class)
     public void addItems(List<OrderItemForm> formList) throws ApiException{
         for(OrderItemForm form:formList){
@@ -68,18 +70,22 @@ public class OrderDto {
             inventoryService.update(pojo.getProduct_id(),inventoryPojo);
         }
     }
+    //Checks the data while adding data in cart
     public void checker(OrderItemForm form) throws ApiException{
         normalize(form);
         int productId = productService.getByBarcode(form.getBarcode()).getId();
         OrderItemPojo pojo = convert(form, productId);
         checks(pojo);
     }
+    //Getting orderItem for a praticular order
     public List<OrderItemData> getOrderItemsByOrderId(int order_id) throws ApiException{
         return orderItemService.getAll(order_id);
     }
+    //Getting all order from order DB
     public List<OrderPojo> getListOrder() throws ApiException{
         return orderService.getAll();
     }
+    //Getting the invoice in PDF
     public ResponseEntity<byte[]> getInvoicePDF(int id) throws Exception {
         InvoiceForm invoiceForm = generateInvoiceForOrder(id);
         RestTemplate restTemplate = new RestTemplate();
@@ -92,6 +98,7 @@ public class OrderDto {
         ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
         return response;
     }
+    // Generates InvoiceForm to be used for invoice generation
     public InvoiceForm generateInvoiceForOrder(int orderId) throws ApiException{
         InvoiceForm invoiceForm = new InvoiceForm();
         OrderPojo orderPojo = orderService.getCheck(orderId);
@@ -132,7 +139,6 @@ public class OrderDto {
         }
 
     }
-
     private OrderItemPojo convert(OrderItemForm form, int productId) throws ApiException {
         OrderItemPojo pojo = new OrderItemPojo();
         pojo.setOrder_id(orderId);

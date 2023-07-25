@@ -37,10 +37,11 @@ public class ReportsDto {
     OrderService orderService;
     @Autowired
     OrderItemService orderItemService;
-
+    // Gets Day on Day sales report from DB
     public List<SchedulerPojo> getScheduledData(){
         return schedulerService.getAll();
     }
+    // generates the Day on Day sales report and adds it to db
     public void generateDailyReport() throws ApiException {
         scheduler.createReport();
     }

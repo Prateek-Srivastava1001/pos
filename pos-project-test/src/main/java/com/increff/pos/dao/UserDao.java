@@ -13,11 +13,12 @@ import com.increff.pos.pojo.UserPojo;
 @Repository
 public class UserDao extends AbstractDao {
 	private static String select_email = "select p from UserPojo p where email=:email";
-
+	//CREATE
 	@Transactional
 	public void insert(UserPojo p) {
 		em().persist(p);
 	}
+	//READ
 	public UserPojo select(String email) {
 		TypedQuery<UserPojo> query = getQuery(select_email, UserPojo.class);
 		query.setParameter("email", email);

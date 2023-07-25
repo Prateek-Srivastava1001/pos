@@ -21,17 +21,19 @@ public class UserDto{
     private InfoData info;
     private ConverterUtil util;
     private NormalizeUtil normalizeUtil;
+    // checks if the details are valid and returns an authentication object
     public Authentication login(LoginForm f) throws ApiException{
         f.setEmail(f.getEmail().toLowerCase().trim());
         UserPojo p = service.get(f.getEmail());
         boolean authenticated = (p != null && Objects.equals(p.getPassword(), f.getPassword()));
         if (!authenticated) {
             info.setMessage("Invalid details");
-            throw new ApiException("Invalid details");}
+            throw new ApiException("Invalid details");
+        }
         info.setRole(p.getRole());
         return util.convert(p);
     }
-
+    // adds new user in db where role comes from pos.properties file
     public UserPojo signup(LoginForm form) throws ApiException{
         String[] array = supervisor.split(",");
         UserPojo p= util.convert(form, array);

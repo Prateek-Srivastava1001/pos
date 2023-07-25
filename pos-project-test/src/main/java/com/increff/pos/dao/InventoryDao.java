@@ -18,10 +18,10 @@ public class InventoryDao extends AbstractDao{
 
     @PersistenceContext
     private EntityManager em;
-
+    //CREATE
     @Transactional
     public void insert(InventoryPojo pojo){em.persist(pojo);}
-
+    //READ
     public InventoryPojo select(int id){
         TypedQuery<InventoryPojo> query = getQuery(select_id, InventoryPojo.class);
         query.setParameter("id", id);

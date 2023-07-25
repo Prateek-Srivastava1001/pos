@@ -56,11 +56,11 @@ function updateBrand(event){
     	var brand = formData[0].value;
     	var category = formData[1].value;
     	if(brand==null ||brand==""){
-            dangerClick("Brand cannot be empty");
+            warnClick("Brand cannot be empty");
             return true;
         }
         if(category==null ||category==""){
-            dangerClick("Category cannot be empty");
+            warnClick("Category cannot be empty");
             return true;
         }
 	var json = toJson($form);
@@ -109,7 +109,6 @@ function processData(){
 	var file = $('#brandFile')[0].files[0];
     //Checking for .tsv extension
 	var extension = getExtension($('#brandFile').val());
-	console.log(extension);
     if(extension.toLowerCase() != 'tsv'){
     dangerClick('Please Upload File with extension .tsv ');
     console.log("INVALID FILE TYPE...");
@@ -118,9 +117,7 @@ function processData(){
     readFileData(file, readFileDataCallback);
 }
 function getExtension(filename) {
-    console.log(filename);
   var parts = filename.split('.');
-  console.log(parts);
   return parts[parts.length - 1];
 }
 function readFileDataCallback(results){
@@ -176,7 +173,7 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
-	        row.lineNumber=processCount;
+	        row.lineNumber=processCount+1;
 	   		row.error=response.responseText;
 	   		errorData.push(row);
 	   		uploadRows();
@@ -206,9 +203,7 @@ function displayBrandList(data){
         }
         else
 		    var buttonHtml = ' <button class="btn btn-outline-info" onclick="displayEditBrand(' + e.id + ')">Edit</button>';
-		var brand = (e.brand.length>maxLength)?e.brand.substring(0,maxLength)+'...':e.brand;
-		var category = (e.category.length>maxLength)?e.category.substring(0,maxLength)+'...':e.category;
-        dataRows.push([brand, category, buttonHtml]);
+        dataRows.push([e.brand, e.category, buttonHtml]);
 	}
 
 	table.rows.add(dataRows).draw();

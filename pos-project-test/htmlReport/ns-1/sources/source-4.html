@@ -110,13 +110,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;    @PersistenceContext
 &nbsp;    private EntityManager em;
-&nbsp;
+&nbsp;    //CREATE
 &nbsp;    @Transactional
 &nbsp;    public OrderPojo insert(OrderPojo pojo){
 <b class="fc">&nbsp;        em.persist(pojo);</b>
 <b class="fc">&nbsp;        return pojo;</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    //READ
 &nbsp;    public OrderPojo select(int id){
 <b class="fc">&nbsp;        TypedQuery&lt;OrderPojo&gt; query = getQuery(select_id, OrderPojo.class);</b>
 <b class="fc">&nbsp;        query.setParameter(&quot;id&quot;, id);</b>
@@ -161,7 +161,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

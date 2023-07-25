@@ -17,14 +17,16 @@ public class OrderItemDao extends AbstractDao{
 
     @PersistenceContext
     private EntityManager em;
+    //CREATE
     @Transactional
     public void insert(OrderItemPojo pojo){em.persist(pojo);}
-
+    //READ
     public List<OrderItemPojo> selectAll(int order_id){
         TypedQuery<OrderItemPojo> query = getQuery(select_all, OrderItemPojo.class);
         query.setParameter("order_id",order_id);
         return query.getResultList();
     }
+    // Checks if a product already exists for given order Id
     public OrderItemPojo checkDuplicate(int product_id, int order_id){
         TypedQuery<OrderItemPojo> query = getQuery(check_duplicate, OrderItemPojo.class);
         query.setParameter("product_id",product_id);

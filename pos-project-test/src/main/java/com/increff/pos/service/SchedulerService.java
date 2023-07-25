@@ -15,7 +15,7 @@ import com.increff.pos.util.StringUtil;
 public class SchedulerService {
     @Autowired
     SchedulerDao schedulerDao;
-
+    //CREATE
     @Transactional(rollbackOn = ApiException.class)
     public void add(SchedulerPojo pojo) throws ApiException{
         List<SchedulerPojo> checkerList = schedulerDao.selectByDate(pojo.getDate(), pojo.getDate());
@@ -29,6 +29,7 @@ public class SchedulerService {
             checker.setInvoiced_items_count(pojo.getInvoiced_items_count());
         }
     }
+    //READ
     public List<SchedulerPojo> getAll(){
         return schedulerDao.selectAll();
     }
@@ -38,7 +39,7 @@ public class SchedulerService {
         isValidDateRange(startDate,endDate);
         return schedulerDao.selectByDate(startDate,endDate);
     }
-
+    //helper
     public static void isValidDateRange(LocalDate start, LocalDate end) throws ApiException {
         if (start.isAfter(end)) {
             throw new ApiException("Start date cannot be after end date");

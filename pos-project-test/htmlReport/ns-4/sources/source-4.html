@@ -108,7 +108,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private OrderItemDao dao;
 &nbsp;    @Autowired
 &nbsp;    private ProductService productService;
-&nbsp;
+&nbsp;    //CREATE
 &nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public void add(OrderItemPojo pojo) throws ApiException{
 &nbsp;        //check for duplicate in same order.
@@ -117,7 +117,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 <b class="fc">&nbsp;        dao.insert(pojo);</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // gets all orderItems corresponding to particular order Id
 &nbsp;    public List&lt;OrderItemData&gt; getAll(int order_id) throws ApiException {
 <b class="fc">&nbsp;        List&lt;OrderItemPojo&gt; pojoList =  dao.selectAll(order_id);</b>
 <b class="fc">&nbsp;        List&lt;OrderItemData&gt; dataList = new ArrayList&lt;&gt;();</b>
@@ -127,7 +127,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        }</b>
 <b class="fc">&nbsp;        return dataList;</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    //helper
 &nbsp;    private OrderItemData convert(OrderItemPojo pojo) throws ApiException {
 <b class="fc">&nbsp;        OrderItemData data = new OrderItemData();</b>
 <b class="fc">&nbsp;        data.setId(pojo.getId());</b>
@@ -164,7 +164,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

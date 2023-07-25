@@ -30,7 +30,7 @@ public class ProductDto {
     ConverterUtil converterUtil;
     NormalizeUtil normalizeUtil;
     ValidateUtil validateUtil;
-
+    //Adds Product in DB and initializes Inventory with zero quantity
     public void add(ProductForm form) throws ApiException {
         normalizeUtil.normalize(form);
         BrandPojo brandPojo = brandService.combinationChecker(form.getBrand(), form.getCategory());
@@ -43,11 +43,13 @@ public class ProductDto {
         inventory.setQuantity(0);
         inventoryService.add(inventory);
     }
+    //Getting particular data from db
     public ProductData get(int id) throws ApiException{
         ProductPojo pojo = productService.getCheck(id);
         BrandPojo brandPojo = brandService.getCheck(pojo.getBrand_category());
         return converterUtil.convert(pojo, brandPojo);
     }
+    //Getting all data from db
     public List<ProductData> getAll() throws ApiException {
         List<ProductPojo> list = productService.getAll();
         List<ProductData> list2 = new ArrayList<ProductData>();
@@ -57,6 +59,7 @@ public class ProductDto {
         }
         return list2;
     }
+    //updating particular product
     public void update(int id, ProductForm form) throws ApiException{
         normalizeUtil.normalize(form);
         BrandPojo brandPojo = brandService.combinationChecker(form.getBrand(), form.getCategory());

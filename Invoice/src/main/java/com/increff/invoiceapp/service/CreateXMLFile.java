@@ -66,17 +66,17 @@ public class CreateXMLFile {
                 order_item.appendChild(quantity);
 
                 Element sellingPrice = document.createElement("selling_price");
-                sellingPrice.appendChild(document.createTextNode(Double.valueOf(df.format(o.getSellingPrice())).toString()));
+                sellingPrice.appendChild(document.createTextNode(formatDouble(o.getSellingPrice())));
                 order_item.appendChild(sellingPrice);
 
                 Element amt = document.createElement("amt");
-                amt.appendChild(document.createTextNode(Double.valueOf(df.format(o.getTotalAmount())).toString()));
+                amt.appendChild(document.createTextNode(formatDouble(o.getTotalAmount())));
                 order_item.appendChild(amt);
 
             }
 
             Element amount = document.createElement("amount");
-            amount.appendChild(document.createTextNode(invoiceForm.getAmount().toString()));
+            amount.appendChild(document.createTextNode(formatDouble(invoiceForm.getAmount())));
             root.appendChild(amount);
             // create the xml file
             //transform the DOM Object to an XML File
@@ -112,4 +112,7 @@ public class CreateXMLFile {
         return placedDate;
     }
 
+    private String formatDouble(double value) {
+        return String.format("%.2f", value);
+    }
 }

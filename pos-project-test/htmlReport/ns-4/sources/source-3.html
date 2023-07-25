@@ -108,23 +108,23 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;public class InventoryService {</b>
 &nbsp;    @Autowired
 &nbsp;    InventoryDao dao;
-&nbsp;
+&nbsp;    //CREATE
 &nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public void add(InventoryPojo pojo) throws ApiException{
 <b class="fc">&nbsp;        dao.insert(pojo);</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    //UPDATE
 &nbsp;    @Transactional(rollbackOn  = ApiException.class)
 &nbsp;    public void update(int id, InventoryPojo pojo) throws ApiException{
 <b class="fc">&nbsp;        InventoryPojo toUpdate = getCheck(id);</b>
 <b class="fc">&nbsp;        toUpdate.setQuantity(pojo.getQuantity());</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    //Get all data from db
 &nbsp;    public List&lt;InventoryPojo&gt; getAll() throws ApiException {
 <b class="fc">&nbsp;        List&lt;InventoryPojo&gt; pojoList =  dao.selectAll();</b>
 <b class="fc">&nbsp;        return pojoList;</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // Returns InventoryPojo from given id, throws exception if it does not exist
 &nbsp;    public InventoryPojo getCheck(int id) throws ApiException{
 <b class="fc">&nbsp;        InventoryPojo pojo = dao.select(id);</b>
 <b class="fc">&nbsp;        if (pojo == null) {</b>
@@ -156,7 +156,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

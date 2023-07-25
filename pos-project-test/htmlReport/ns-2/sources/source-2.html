@@ -98,10 +98,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    ProductService productService;
 &nbsp;    ConverterUtil converterUtil;
 &nbsp;
+&nbsp;    //Getting inventory data by id
 &nbsp;    public InventoryData get(int id) throws ApiException{
 <b class="fc">&nbsp;        InventoryPojo pojo = inventoryService.getCheck(id);</b>
 <b class="fc">&nbsp;        return converterUtil.convert(pojo);</b>
 &nbsp;    }
+&nbsp;    //Getting all data from DB
 &nbsp;    public List&lt;InventoryData&gt; getAll() throws ApiException{
 <b class="fc">&nbsp;        List&lt;InventoryPojo&gt; pojoList = inventoryService.getAll();</b>
 <b class="fc">&nbsp;        List&lt;InventoryData&gt; dataList = new ArrayList&lt;&gt;();</b>
@@ -115,6 +117,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        }</b>
 <b class="fc">&nbsp;        return dataList;</b>
 &nbsp;    }
+&nbsp;    //Updating by edit button
 &nbsp;    public void edit(int id, InventoryForm form) throws ApiException {
 <b class="fc">&nbsp;        InventoryPojo pojo = converterUtil.convert(form);</b>
 <b class="fc">&nbsp;        if(pojo.getQuantity()&lt;0){</b>
@@ -125,6 +128,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 <b class="fc">&nbsp;        inventoryService.update(id, pojo);</b>
 &nbsp;    }
+&nbsp;    //Updating by upload (adds the inventory to existing value)
 &nbsp;    public void editByUpload(InventoryForm form) throws ApiException{
 <b class="fc">&nbsp;        String barcode = form.getBarcode();</b>
 <b class="fc">&nbsp;        InventoryPojo pojo = converterUtil.convert(form);</b>
@@ -165,7 +169,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>

@@ -1422,3 +1422,126 @@ Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No q
 2023-07-24 10:48:46 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
 2023-07-24 10:48:46 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
 2023-07-24 10:48:47 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 11:55:27 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 11:55:27 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 11:55:27 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 11:55:27 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 11:55:27 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 11:55:27 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 17866 millipoints. (No context info available)
+2023-07-24 11:55:27 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 10365 millipoints. (No context info available)
+2023-07-24 11:55:27 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 10365 millipoints. (No context info available)
+2023-07-24 11:55:27 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 13:07:50 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:07:50 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:07:50 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:07:50 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 13:07:50 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 13:07:50 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 17866 millipoints. (No context info available)
+2023-07-24 13:07:50 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 10365 millipoints. (No context info available)
+2023-07-24 13:07:50 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 10365 millipoints. (No context info available)
+2023-07-24 13:07:50 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 13:17:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:17:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:17:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:17:04 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 13:17:04 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 13:17:04 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 3190 millipoints. (No context info available)
+2023-07-24 13:17:04 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 12369 millipoints. (No context info available)
+2023-07-24 13:17:04 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 10365 millipoints. (No context info available)
+2023-07-24 13:17:04 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 13:18:37 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:18:37 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:18:37 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:18:37 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 13:18:37 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 13:18:37 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 1020 millipoints. (No context info available)
+2023-07-24 13:18:37 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 3190 millipoints. (No context info available)
+2023-07-24 13:18:37 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 29049 millipoints. (No context info available)
+2023-07-24 13:18:37 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 10365 millipoints. (No context info available)
+2023-07-24 13:18:37 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 13:20:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:20:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:20:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:20:05 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 13:20:05 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 13:20:05 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 1020 millipoints. (No context info available)
+2023-07-24 13:20:05 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 3190 millipoints. (No context info available)
+2023-07-24 13:20:05 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 29049 millipoints. (No context info available)
+2023-07-24 13:20:05 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 29049 millipoints. (No context info available)
+2023-07-24 13:20:05 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 13:25:21 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:25:21 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:25:21 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:25:21 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 13:25:21 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 13:25:21 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 1020 millipoints. (No context info available)
+2023-07-24 13:25:21 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 3190 millipoints. (No context info available)
+2023-07-24 13:25:21 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 29049 millipoints. (No context info available)
+2023-07-24 13:25:21 WARN  FOUserAgent:97 - The contents of fo:block line 1 exceed the available area in the inline-progression direction by 29049 millipoints. (No context info available)
+2023-07-24 13:25:21 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 13:29:08 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:29:08 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:29:08 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 13:29:08 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 13:29:08 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 13:29:08 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:05:13 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:05:13 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:05:13 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:05:13 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:05:13 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:05:13 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:06:47 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:06:47 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:06:47 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:06:47 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:06:47 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:06:47 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:07:56 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:07:56 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:07:56 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:07:56 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:07:56 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:07:56 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:09:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:09:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:09:04 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:09:04 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:09:04 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:09:04 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:10:36 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:10:36 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:10:36 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:10:36 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:10:36 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:10:36 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:11:59 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:11:59 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:11:59 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:11:59 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:11:59 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:11:59 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:14:12 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:14:12 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:14:12 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:14:12 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:14:12 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:14:12 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:17:43 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:17:43 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:17:43 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:17:43 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:17:43 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:17:44 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-24 14:25:47 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:25:47 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:25:47 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-24 14:25:47 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-24 14:25:47 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-24 14:25:47 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-25 09:48:14 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-25 09:48:14 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-25 09:48:14 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-25 09:48:14 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-25 09:48:14 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-25 09:48:14 INFO  FOUserAgent:83 - Rendered page #1.

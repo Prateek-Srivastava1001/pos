@@ -126,7 +126,7 @@ function uploadRows(){
 	console.log(row);
 	processCount++;
 	if(parseFloat(row.quantity)>10000000){
-    	    row.lineNumber=processCount;
+    	    row.lineNumber=processCount+1;
             row.error="quantity cannot be more than 10000000";
             errorData.push(row);
             uploadRows();
@@ -146,7 +146,7 @@ function uploadRows(){
 	   		uploadRows();
 	   },
 	   error: function(response){
-	        row.lineNumber=processCount;
+	        row.lineNumber=processCount+1;
 	   		row.error=response.responseText
 	   		errorData.push(row);
 	   		uploadRows();

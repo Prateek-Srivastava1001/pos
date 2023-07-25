@@ -64,7 +64,7 @@ public class BrandService {
         }
         return p;
     }
-
+    // Gets pojo based on brand-category combination, throws exception if it is not present
     public BrandPojo combinationChecker(String brand, String category) throws ApiException{
         BrandPojo pojo = dao.checkForCombination(brand, category);
         if(pojo == null){

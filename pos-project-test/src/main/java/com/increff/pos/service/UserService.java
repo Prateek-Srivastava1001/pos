@@ -15,7 +15,7 @@ import com.increff.pos.pojo.UserPojo;
 public class UserService{
 	@Autowired
 	private UserDao dao;
-
+	//CREATE
 	@Transactional
 	public boolean add(UserPojo p) throws ApiException {
 		if(p.getEmail()==null || p.getEmail() == ""){
@@ -31,7 +31,7 @@ public class UserService{
 		dao.insert(p);
 		return true;
 	}
-
+	//READ
 	public UserPojo get(String email) throws ApiException {
 		return dao.select(email);
 	}

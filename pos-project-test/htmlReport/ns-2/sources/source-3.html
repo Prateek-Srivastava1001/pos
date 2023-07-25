@@ -133,6 +133,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Autowired
 &nbsp;    InventoryService inventoryService;
 <b class="fc">&nbsp;    private int orderId=0;</b>
+&nbsp;    //Creating Order in db
 &nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public int add(List&lt;OrderItemForm&gt; forms) throws ApiException{
 <b class="fc">&nbsp;        if(forms.size()&lt;1){</b>
@@ -145,6 +146,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        addItems(forms);</b>
 <b class="fc">&nbsp;        return orderId;</b>
 &nbsp;    }
+&nbsp;    //Adding orderItems to the Order created
 &nbsp;    @Transactional(rollbackOn = ApiException.class)
 &nbsp;    public void addItems(List&lt;OrderItemForm&gt; formList) throws ApiException{
 <b class="fc">&nbsp;        for(OrderItemForm form:formList){</b>
@@ -160,18 +162,22 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            inventoryService.update(pojo.getProduct_id(),inventoryPojo);</b>
 <b class="fc">&nbsp;        }</b>
 &nbsp;    }
+&nbsp;    //Checks the data while adding data in cart
 &nbsp;    public void checker(OrderItemForm form) throws ApiException{
 <b class="fc">&nbsp;        normalize(form);</b>
 <b class="fc">&nbsp;        int productId = productService.getByBarcode(form.getBarcode()).getId();</b>
 <b class="fc">&nbsp;        OrderItemPojo pojo = convert(form, productId);</b>
 <b class="fc">&nbsp;        checks(pojo);</b>
 &nbsp;    }
+&nbsp;    //Getting orderItem for a praticular order
 &nbsp;    public List&lt;OrderItemData&gt; getOrderItemsByOrderId(int order_id) throws ApiException{
 <b class="fc">&nbsp;        return orderItemService.getAll(order_id);</b>
 &nbsp;    }
+&nbsp;    //Getting all order from order DB
 &nbsp;    public List&lt;OrderPojo&gt; getListOrder() throws ApiException{
 <b class="fc">&nbsp;        return orderService.getAll();</b>
 &nbsp;    }
+&nbsp;    //Getting the invoice in PDF
 &nbsp;    public ResponseEntity&lt;byte[]&gt; getInvoicePDF(int id) throws Exception {
 <b class="fc">&nbsp;        InvoiceForm invoiceForm = generateInvoiceForOrder(id);</b>
 <b class="fc">&nbsp;        RestTemplate restTemplate = new RestTemplate();</b>
@@ -184,6 +190,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        ResponseEntity&lt;byte[]&gt; response = new ResponseEntity&lt;&gt;(contents, headers, HttpStatus.OK);</b>
 <b class="fc">&nbsp;        return response;</b>
 &nbsp;    }
+&nbsp;    // Generates InvoiceForm to be used for invoice generation
 &nbsp;    public InvoiceForm generateInvoiceForOrder(int orderId) throws ApiException{
 <b class="fc">&nbsp;        InvoiceForm invoiceForm = new InvoiceForm();</b>
 <b class="fc">&nbsp;        OrderPojo orderPojo = orderService.getCheck(orderId);</b>
@@ -224,7 +231,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        }
 &nbsp;
 &nbsp;    }
-&nbsp;
 &nbsp;    private OrderItemPojo convert(OrderItemForm form, int productId) throws ApiException {
 <b class="fc">&nbsp;        OrderItemPojo pojo = new OrderItemPojo();</b>
 <b class="fc">&nbsp;        pojo.setOrder_id(orderId);</b>
@@ -260,7 +266,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-20 10:21</div>
+    <div style="float:right;">generated on 2023-07-25 09:48</div>
 </div>
 </body>
 </html>
