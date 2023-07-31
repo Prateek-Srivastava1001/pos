@@ -296,7 +296,6 @@ function init(){
         {'targets': [2],'orderable': false },
         {'targets': [0,1,2], "className": "text-center"}
          ],
-         searching: false,
          info:false,
          lengthMenu: [
                  [10, 25, 50, -1],

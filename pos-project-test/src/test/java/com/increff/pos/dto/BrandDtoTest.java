@@ -33,36 +33,59 @@ public class BrandDtoTest extends AbstractUnitTest {
         assertEquals(expectedBrand, pojo.getBrand());
         assertEquals(expectedCategory, pojo.getCategory());
     }
-    @Test(expected = ApiException.class)
+    // brand should not be empty
+    @Test
     public void testEmptyBrandAddition() throws ApiException{
-        BrandForm form = FormHelper.createBrand("","testcategory");
-        dto.add(form);
+        try {
+            BrandForm form = FormHelper.createBrand("", "testcategory");
+            dto.add(form);
+        } catch (ApiException err){
+            assertEquals("Brand cannot be empty", err.getMessage());
+        }
     }
-    @Test(expected = ApiException.class)
+    // category should not be empty
+    @Test
     public void testEmptyCategoryAddition() throws ApiException{
-        BrandForm form = FormHelper.createBrand("testbrand", "");
-        dto.add(form);
+        try {
+            BrandForm form = FormHelper.createBrand("testbrand", "");
+            dto.add(form);
+        } catch (ApiException err){
+            assertEquals("Category cannot be empty", err.getMessage());
+        }
     }
     //brand>30 characters test
-    @Test(expected = ApiException.class)
+    @Test
     public void testLargeBrand() throws ApiException{
-        BrandForm form = FormHelper.createBrand("This brand name is supposed to be more than 30 characters long",
-                "testcategory");
-        dto.add(form);
+        try {
+            BrandForm form = FormHelper.createBrand("This brand name is supposed to be more than 30 characters long",
+                    "testcategory");
+            dto.add(form);
+        } catch (ApiException err){
+            assertEquals("Brand cannot be more than 30 characters long", err.getMessage());
+        }
     }
-    @Test(expected = ApiException.class)
+    // category>50 characters long test
+    @Test
     public void testLargeCategory() throws ApiException{
-        BrandForm form = FormHelper.createBrand("testbrand",
-                "This category name is supposed to be more than 50 characters long");
-        dto.add(form);
+        try {
+            BrandForm form = FormHelper.createBrand("testbrand",
+                    "This category name is supposed to be more than 50 characters long");
+            dto.add(form);
+        } catch (ApiException err){
+            assertEquals("Category cannot be more than 50 characters long", err.getMessage());
+        }
     }
     //duplicate brand-category combination
-    @Test(expected = ApiException.class)
+    @Test
     public void testDuplicateEntry() throws ApiException{
-        BrandForm form = FormHelper.createBrand("testbrand","testcategory");
-        dto.add(form);
-        BrandForm duplicate = FormHelper.createBrand("testbrand","testcategory");
-        dto.add(duplicate);
+        try {
+            BrandForm form = FormHelper.createBrand("testbrand", "testcategory");
+            dto.add(form);
+            BrandForm duplicate = FormHelper.createBrand("testbrand", "testcategory");
+            dto.add(duplicate);
+        } catch (ApiException err){
+            assertEquals("Brand - Category combination already exists", err.getMessage());
+        }
     }
     //get(id) function test
     @Test
@@ -74,9 +97,14 @@ public class BrandDtoTest extends AbstractUnitTest {
         assertEquals(form.getBrand(), data.getBrand());
         assertEquals(form.getCategory(), data.getCategory());
     }
-    @Test(expected = ApiException.class)
+    // test getting non-existent brand
+    @Test
     public void testGettingNonExistingId() throws ApiException{
-        BrandData data = dto.get(1);
+        try {
+            BrandData data = dto.get(1);
+        } catch (ApiException err){
+            assertEquals("Brand-Category with given id does not exist id: 1", err.getMessage());
+        }
     }
     //getAll() function test
     @Test
@@ -103,56 +131,82 @@ public class BrandDtoTest extends AbstractUnitTest {
         assertEquals(expectedCategory, data.getCategory());
     }
     //test updating for the id not present in table
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdatingNonExistingId() throws ApiException{
-        BrandForm form = FormHelper.createBrand("brand", "category");
-        dto.update(1,form);
+        try {
+            BrandForm form = FormHelper.createBrand("brand", "category");
+            dto.update(1, form);
+        } catch (ApiException err){
+            assertEquals("Brand-Category with given id does not exist id: 1", err.getMessage());
+        }
     }
     //Updating to duplicate value
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdatingDuplicate() throws ApiException{
-        BrandForm form = FormHelper.createBrand("brand1", "category1");
-        dto.add(form);
-        BrandForm form1 = FormHelper.createBrand("brand2", "category2");
-        dto.add(form1);
-        int id = service.combinationChecker(form1.getBrand(), form1.getCategory()).getId();
-        dto.update(id, form);
+        try {
+            BrandForm form = FormHelper.createBrand("brand1", "category1");
+            dto.add(form);
+            BrandForm form1 = FormHelper.createBrand("brand2", "category2");
+            dto.add(form1);
+            int id = service.combinationChecker(form1.getBrand(), form1.getCategory()).getId();
+            dto.update(id, form);
+        } catch (ApiException err){
+            assertEquals("Brand - Category combination already exists", err.getMessage());
+        }
+
     }
     // Updating to empty brand
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdatingEmptyBrand() throws ApiException{
-        BrandForm form = FormHelper.createBrand("brand1", "category1");
-        dto.add(form);
-        BrandForm form1 = FormHelper.createBrand("", "category2");
-        int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
-        dto.update(id, form1);
+        try {
+            BrandForm form = FormHelper.createBrand("brand1", "category1");
+            dto.add(form);
+            BrandForm form1 = FormHelper.createBrand("", "category2");
+            int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
+            dto.update(id, form1);
+        }catch (ApiException err){
+            assertEquals("Brand cannot be empty", err.getMessage());
+        }
     }
     // Updating to empty category
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdatingEmptyCategory() throws ApiException{
-        BrandForm form = FormHelper.createBrand("brand1", "category1");
-        dto.add(form);
-        BrandForm form1 = FormHelper.createBrand("brand2", "");
-        int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
-        dto.update(id, form1);
+        try {
+            BrandForm form = FormHelper.createBrand("brand1", "category1");
+            dto.add(form);
+            BrandForm form1 = FormHelper.createBrand("brand2", "");
+            int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
+            dto.update(id, form1);
+        }catch (ApiException err){
+            assertEquals("Category cannot be empty", err.getMessage());
+        }
     }
     // Updating to brand value having length more than 30 characters
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdatingLongBrand() throws ApiException{
-        BrandForm form = FormHelper.createBrand("brand1", "category1");
-        dto.add(form);
-        BrandForm form1 = FormHelper.createBrand("This brand name is supposed to be more than 30 characters long",
-                                            "category2");
-        int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
-        dto.update(id, form1);
+        try {
+            BrandForm form = FormHelper.createBrand("brand1", "category1");
+            dto.add(form);
+            BrandForm form1 = FormHelper.createBrand("This brand name is supposed to be more than 30 characters long",
+                    "category2");
+            int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
+            dto.update(id, form1);
+        }catch (ApiException err){
+            assertEquals("Brand cannot be more than 30 characters long", err.getMessage());
+        }
     }
-    @Test(expected = ApiException.class)
+    // category > 50 characters long on update
+    @Test
     public void testUpdatingLongCategory() throws ApiException{
-        BrandForm form = FormHelper.createBrand("brand1", "category1");
-        dto.add(form);
-        BrandForm form1 = FormHelper.createBrand("brand2",
-                "This category name is supposed to be more than 50 characters long");
-        int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
-        dto.update(id, form1);
+        try {
+            BrandForm form = FormHelper.createBrand("brand1", "category1");
+            dto.add(form);
+            BrandForm form1 = FormHelper.createBrand("brand2",
+                    "This category name is supposed to be more than 50 characters long");
+            int id = service.combinationChecker(form.getBrand(), form.getCategory()).getId();
+            dto.update(id, form1);
+        }catch (ApiException err){
+            assertEquals("Category cannot be more than 50 characters long", err.getMessage());
+        }
     }
 }

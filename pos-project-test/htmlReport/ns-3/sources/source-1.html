@@ -51,12 +51,12 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (25/25)
+    (26/26)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">SalesScheduler$$EnhancerBySpringCGLIB$$857e702e</td>
+    <td class="name">SalesScheduler$$EnhancerBySpringCGLIB$$4ce1e172</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -73,7 +73,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (25/25)
+    (26/26)
   </span>
 </td>
 </tr>
@@ -117,12 +117,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    OrderService orderService;
 &nbsp;    @Autowired
 &nbsp;    OrderItemService orderItemService;
+&nbsp;    // Scheduler code to create Day on Day report
 &nbsp;    @Async
 &nbsp;    @Scheduled(cron = &quot;59 59 23 * * *&quot;)
-&nbsp;    public void createReport() throws ApiException {
+&nbsp;    public void createReport() throws ApiException, InterruptedException {
 <b class="fc">&nbsp;        System.out.println(&quot;Ran Scheduler...&quot;);</b>
 <b class="fc">&nbsp;        SchedulerPojo pojo = new SchedulerPojo();</b>
 <b class="fc">&nbsp;        LocalDate date = LocalDate.now();</b>
+<b class="fc">&nbsp;        Thread.sleep(1100);</b>
 <b class="fc">&nbsp;        int totalItems = 0;</b>
 <b class="fc">&nbsp;        double totalRevenue = 0.0;</b>
 <b class="fc">&nbsp;        LocalDateTime startDate = date.atStartOfDay();</b>
@@ -173,7 +175,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-25 09:48</div>
+    <div style="float:right;">generated on 2023-07-27 09:04</div>
 </div>
 </body>
 </html>

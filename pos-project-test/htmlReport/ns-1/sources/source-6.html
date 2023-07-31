@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > ProductDao</title>
+  <title>Coverage Report > ProductService</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -18,10 +18,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">com.increff.pos.dao</a>
+    <a href="../index.html">com.increff.pos.service</a>
 </div>
 
-<h1>Coverage Summary for Class: ProductDao (com.increff.pos.dao)</h1>
+<h1>Coverage Summary for Class: ProductService (com.increff.pos.service)</h1>
 
 <table class="coverageStats">
 
@@ -37,7 +37,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">ProductDao</td>
+  <td class="name">ProductService</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -51,18 +51,18 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (17/17)
+    (40/40)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">ProductDao$$EnhancerBySpringCGLIB$$3e23c674</td>
+    <td class="name">ProductService$$EnhancerBySpringCGLIB$$e150b212</td>
   </tr>
   <tr>
-    <td class="name">ProductDao$$EnhancerBySpringCGLIB$$3e23c674$$FastClassBySpringCGLIB$$5e93c39</td>
+    <td class="name">ProductService$$EnhancerBySpringCGLIB$$e150b212$$FastClassBySpringCGLIB$$a3b856ae</td>
   </tr>
   <tr>
-    <td class="name">ProductDao$$FastClassBySpringCGLIB$$6a80f183</td>
+    <td class="name">ProductService$$FastClassBySpringCGLIB$$662934a3</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -79,7 +79,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (17/17)
+    (40/40)
   </span>
 </td>
 </tr>
@@ -90,49 +90,92 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.dao;
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.service;
 &nbsp;
 &nbsp;import java.util.List;
 &nbsp;
-&nbsp;import javax.persistence.EntityManager;
-&nbsp;import javax.persistence.PersistenceContext;
-&nbsp;import javax.persistence.TypedQuery;
 &nbsp;import javax.transaction.Transactional;
 &nbsp;
-&nbsp;import com.increff.pos.pojo.BrandPojo;
+&nbsp;import com.increff.pos.dao.ProductDao;
+&nbsp;import com.increff.pos.pojo.InventoryPojo;
 &nbsp;import com.increff.pos.pojo.ProductPojo;
-&nbsp;import org.springframework.stereotype.Repository;
-&nbsp;@Repository
-<b class="fc">&nbsp;public class ProductDao extends AbstractDao{</b>
-<b class="fc">&nbsp;    private static String select_id = &quot;select p from ProductPojo p where id=:id&quot;;</b>
-<b class="fc">&nbsp;    private static String select_all = &quot;select p from ProductPojo p&quot;;</b>
-<b class="fc">&nbsp;    private static String duplicate_check = &quot;select p from ProductPojo p where barcode=:barcode&quot;;</b>
-<b class="fc">&nbsp;    private static String get_by_brand = &quot;select p from ProductPojo p where brand_category=:brand_category&quot;;</b>
-&nbsp;    @PersistenceContext
-&nbsp;    private EntityManager em;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import com.increff.pos.util.StringUtil;
+&nbsp;@Service
+<b class="fc">&nbsp;public class ProductService {</b>
+&nbsp;    @Autowired
+&nbsp;    private ProductDao dao;
+&nbsp;    @Autowired
+&nbsp;    private InventoryService inventoryService;
+<b class="fc">&nbsp;    private double maxMrp = 1000000000;</b>
 &nbsp;    //CREATE
-&nbsp;    @Transactional
-<b class="fc">&nbsp;    public void insert(ProductPojo pojo){em.persist(pojo);}</b>
+&nbsp;    @Transactional(rollbackOn = ApiException.class)
+&nbsp;    public void add(ProductPojo pojo) throws ApiException{
+<b class="fc">&nbsp;        String barcode = pojo.getBarcode();</b>
+<b class="fc">&nbsp;        if(StringUtil.isEmpty(barcode)){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Barcode cannot be empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(StringUtil.isEmpty(pojo.getName())) {</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;name cannot be empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(pojo.getMrp()&lt;0){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(pojo.getMrp()&gt;maxMrp){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;MRP cannot be more than 1000000000&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(dao.checkBarcode(pojo.getBarcode()) != null){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Product Barcode already exists&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        dao.insert(pojo);</b>
+&nbsp;    }
+&nbsp;    //UPDATE
+&nbsp;    @Transactional(rollbackOn  = ApiException.class)
+&nbsp;    public void update(int id, ProductPojo pojo) throws ApiException{
+&nbsp;        //Same checks as that in add
+<b class="fc">&nbsp;        if(StringUtil.isEmpty(pojo.getBarcode())) {</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Barcode cannot be empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(StringUtil.isEmpty(pojo.getName())) {</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;name cannot be empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(pojo.getMrp()&lt;0){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;MRP cannot be negative. This is not how math works...&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(pojo.getMrp()&gt;maxMrp){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;MRP cannot be more than 1000000000&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        ProductPojo checker = dao.checkBarcode(pojo.getBarcode());</b>
+<b class="fc">&nbsp;        if(checker != null &amp;&amp; dao.select(id) != checker){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Product Barcode already exists&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        ProductPojo toUpdate = getCheck(id);</b>
+<b class="fc">&nbsp;        toUpdate.setBarcode(pojo.getBarcode());</b>
+<b class="fc">&nbsp;        toUpdate.setBrand_category(pojo.getBrand_category());</b>
+<b class="fc">&nbsp;        toUpdate.setName(pojo.getName());</b>
+<b class="fc">&nbsp;        toUpdate.setMrp(pojo.getMrp());</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public List&lt;ProductPojo&gt; getAll(){return  dao.selectAll();}</b>
+&nbsp;
 &nbsp;    //READ
-&nbsp;    public ProductPojo select(int id){
-<b class="fc">&nbsp;        TypedQuery&lt;ProductPojo&gt; query = getQuery(select_id, ProductPojo.class);</b>
-<b class="fc">&nbsp;        query.setParameter(&quot;id&quot;, id);</b>
-<b class="fc">&nbsp;        return getSingle(query);</b>
+&nbsp;    public ProductPojo getCheck(int id) throws ApiException{
+<b class="fc">&nbsp;        ProductPojo p = dao.select(id);</b>
+<b class="fc">&nbsp;        if (p == null) {</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Product Details with given id does not exist id: &quot; + id);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return p;</b>
 &nbsp;    }
-&nbsp;    public List&lt;ProductPojo&gt; selectAll(){
-<b class="fc">&nbsp;        TypedQuery&lt;ProductPojo&gt; query = getQuery(select_all, ProductPojo.class);</b>
-<b class="fc">&nbsp;        return query.getResultList();</b>
+&nbsp;    public ProductPojo getByBarcode(String barcode) throws ApiException{
+<b class="fc">&nbsp;        ProductPojo pojo = dao.checkBarcode(barcode);</b>
+<b class="fc">&nbsp;        if(pojo==null){</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Product with given barcode not found&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return pojo;</b>
 &nbsp;    }
-&nbsp;    public ProductPojo checkBarcode(String barcode){
-<b class="fc">&nbsp;        TypedQuery&lt;ProductPojo&gt; query = getQuery(duplicate_check, ProductPojo.class);</b>
-<b class="fc">&nbsp;        query.setParameter(&quot;barcode&quot;, barcode);</b>
-<b class="fc">&nbsp;        return getSingle(query);</b>
-&nbsp;    }
-&nbsp;    public List&lt;ProductPojo&gt; getByBrand(int brand_category){
-<b class="fc">&nbsp;        TypedQuery&lt;ProductPojo&gt; query = getQuery(get_by_brand, ProductPojo.class);</b>
-<b class="fc">&nbsp;        query.setParameter(&quot;brand_category&quot;, brand_category);</b>
-<b class="fc">&nbsp;        return query.getResultList();</b>
-&nbsp;    }
+<b class="fc">&nbsp;    public List&lt;ProductPojo&gt; getByBrand(int id){return  dao.getByBrand(id);}</b>
 &nbsp;}
 </code>
 </pre>
@@ -157,7 +200,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-25 09:48</div>
+    <div style="float:right;">generated on 2023-07-27 09:37</div>
 </div>
 </body>
 </html>

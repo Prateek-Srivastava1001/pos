@@ -42,13 +42,13 @@ public class ReportsDto {
         return schedulerService.getAll();
     }
     // generates the Day on Day sales report and adds it to db
-    public void generateDailyReport() throws ApiException {
+    public void generateDailyReport() throws ApiException, InterruptedException {
         scheduler.createReport();
     }
     public List<SchedulerPojo> getByDate(ReportsForm form) throws ApiException {
         return schedulerService.getByDate(form);
     }
-
+    //Generating daily sales report
     @Transactional(rollbackOn = ApiException.class)
     public List<ReportsData> getSalesReport(ReportsForm dates) throws ApiException{
         String startDate = dates.getStartDate() + " 00:00:00";
@@ -96,7 +96,7 @@ public class ReportsDto {
         }
         return salesReport;
     }
-
+    // Generating Inventory Report
     @Transactional(rollbackOn = ApiException.class)
     public List<ReportsData> getInventoryReport() throws ApiException{
         List<ReportsData> inventoryReport = new ArrayList<>();
@@ -115,7 +115,7 @@ public class ReportsDto {
         }
         return inventoryReport;
     }
-
+    // helper
     private void isValidDateTimeRange(LocalDateTime start, LocalDateTime end) throws ApiException{
         if (start.isAfter(end)) {
             throw new ApiException("Start date cannot be after end date");

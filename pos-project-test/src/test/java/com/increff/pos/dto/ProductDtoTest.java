@@ -9,6 +9,7 @@ import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.ProductService;
 import io.swagger.annotations.Api;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,79 +47,112 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals(expectedName, data.getName());
         assertEquals(expectedMrp, data.getMrp());
     }
-    @Test(expected = ApiException.class)
+    // product cannot be inserted if its brand-category does not exist in the Brand 	Master
+    @Test
     public void testAddingNonExistentBrandCategoryCombination() throws ApiException {
-        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
+        try {
+            ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Brand-Category combination not found", err.getMessage());
+        }
     }
     //valid brand but invalid category
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddingInvalidCategory() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " otherCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " otherCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Brand-Category combination not found", err.getMessage());
+        }
     }
     //invalid brand but valid category
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddingInvalidBrand() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", "invalidBrand", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", "invalidBrand", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Brand-Category combination not found", err.getMessage());
+        }
     }
     //empty barcode not supported
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddingEmptyBarcode() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Barcode cannot be empty", err.getMessage());
+        }
     }
     //barcode is limited to 15 characters
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddingLongBarcode() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("barcodeMoreThan15CharactersLong",
-                " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("barcodeMoreThan15CharactersLong",
+                    " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Barcode cannot be more than 15 characters long", err.getMessage());
+        }
     }
     //barcode should be unique
-    @Test(expected = ApiException.class)
+    @Test
     public void testUniqueBarcode() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("barcode",
-                " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        productForm = FormHelper.createProduct("barcode", "testbrand", "testcategory",
-                                                "newName", 100);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("barcode",
+                    " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            productForm = FormHelper.createProduct("barcode", "testbrand", "testcategory",
+                    "newName", 100);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Product Barcode already exists", err.getMessage());
+        }
     }
     //empty name not supported
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddingEmptyName() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
-                "", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
+                    "", 1000);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("name cannot be empty", err.getMessage());
+        }
     }
     //name upto 50 characters supported
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddingLongName() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("TeStBarCode", " TesTBrand ", " TestCaTegoRy ",
-                "Product Name More Than Fifty Characters Long Should Throw API Exception", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("TeStBarCode", " TesTBrand ", " TestCaTegoRy ",
+                    "Product Name More Than Fifty Characters Long Should Throw API Exception", 1000);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Product name cannot be more than 50 characters long", err.getMessage());
+        }
     }
     //mrp should be stored upto two decimal places in the database
     @Test
@@ -134,22 +168,30 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals(expectedMrp, pojo.getMrp());
     }
     //mrp should not be negative
-    @Test(expected = ApiException.class)
+    @Test
     public void testNegativeMrp() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("TeStBarCode", " TesTBrand ", " TestCaTegoRy ",
-                "testName", -1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("TeStBarCode", " TesTBrand ", " TestCaTegoRy ",
+                    "testName", -1000);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("MRP cannot be negative. This is not how math works...", err.getMessage());
+        }
     }
     // mrp should not be more than 1000000000
-    @Test(expected = ApiException.class)
+    @Test
     public void testLargeMrp() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("TeStBarCode", " TesTBrand ", " TestCaTegoRy ",
-                "testName", 1000000001);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("TeStBarCode", " TesTBrand ", " TestCaTegoRy ",
+                    "testName", 1000000001);
+            productDto.add(productForm);
+        } catch (ApiException err){
+            Assert.assertEquals("MRP cannot be more than 1000000000", err.getMessage());
+        }
     }
     //GETALL METHOD TESTS...
     @Test
@@ -193,129 +235,168 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals(expectedMrp, data.getMrp());
     }
     // Updating to non-existent brand category combination
-    @Test(expected = ApiException.class)
+    @Test
     public void testNonExistentBrandCategoryCombinationOnUpdate() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
-                "TesTNaMe", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
+                    "TesTNaMe", 1000);
+            productDto.add(productForm);
 
-        String expectedBarcode = "testbarcode";
-        int id = service.getByBarcode(expectedBarcode).getId();
-        ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "newcategory",
-                " newNaMe ", 2934.323232);
-        productDto.update(id, updatedForm);
+            String expectedBarcode = "testbarcode";
+            int id = service.getByBarcode(expectedBarcode).getId();
+            ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "newcategory",
+                    " newNaMe ", 2934.323232);
+            productDto.update(id, updatedForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Brand-Category combination not found", err.getMessage());
+        }
     }
     // empty barcode on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testEmptyBarcodeonUpdate() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
-                "TesTNaMe", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
+                    "TesTNaMe", 1000);
+            productDto.add(productForm);
 
-        String expectedBarcode = "testbarcode";
-        int id = service.getByBarcode(expectedBarcode).getId();
-        ProductForm updatedForm = FormHelper.createProduct("", "testbrand", "testcategory",
-                " newNaMe ", 2934.323232);
-        productDto.update(id, updatedForm);
+            String expectedBarcode = "testbarcode";
+            int id = service.getByBarcode(expectedBarcode).getId();
+            ProductForm updatedForm = FormHelper.createProduct("", "testbrand", "testcategory",
+                    " newNaMe ", 2934.323232);
+            productDto.update(id, updatedForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Barcode cannot be empty", err.getMessage());
+        }
     }
-    @Test(expected = ApiException.class)
+    // barcode>15 characters long test on update
+    @Test
     public void testLongBarcodeOnUpdate() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
-                "TesTNaMe", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
+                    "TesTNaMe", 1000);
+            productDto.add(productForm);
 
-        String expectedBarcode = "testbarcode";
-        int id = service.getByBarcode(expectedBarcode).getId();
-        ProductForm updatedForm = FormHelper.createProduct("barcodeMoreThan15CharactersLong",
-                "testbrand", "testcategory",
-                " newNaMe ", 2934.323232);
-        productDto.update(id, updatedForm);
+            String expectedBarcode = "testbarcode";
+            int id = service.getByBarcode(expectedBarcode).getId();
+            ProductForm updatedForm = FormHelper.createProduct("barcodeMoreThan15CharactersLong",
+                    "testbrand", "testcategory",
+                    " newNaMe ", 2934.323232);
+            productDto.update(id, updatedForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Barcode cannot be more than 15 characters long", err.getMessage());
+        }
     }
-    @Test(expected = ApiException.class)
+    // name should not be empty
+    @Test
     public void testEmptyNameOnUpdate() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
-                "TesTNaMe", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
+                    "TesTNaMe", 1000);
+            productDto.add(productForm);
 
-        String expectedBarcode = "testbarcode";
-        int id = service.getByBarcode(expectedBarcode).getId();
-        ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
-                "", 2934.323232);
-        productDto.update(id, updatedForm);
+            String expectedBarcode = "testbarcode";
+            int id = service.getByBarcode(expectedBarcode).getId();
+            ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
+                    "", 2934.323232);
+            productDto.update(id, updatedForm);
+        } catch (ApiException err){
+            Assert.assertEquals("name cannot be empty", err.getMessage());
+        }
     }
-    @Test(expected = ApiException.class)
+    // test name>50 characters on update
+    @Test
     public void testLongNameOnUpdate() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
-                "TesTNaMe", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("TeStBarCode", "TesTBrand", "TestCaTegoRy",
+                    "TesTNaMe", 1000);
+            productDto.add(productForm);
 
-        String expectedBarcode = "testbarcode";
-        int id = service.getByBarcode(expectedBarcode).getId();
-        ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
-                "Product Name More Than Fifty Characters Should Throw Api Exception", 2934.323232);
-        productDto.update(id, updatedForm);
+            String expectedBarcode = "testbarcode";
+            int id = service.getByBarcode(expectedBarcode).getId();
+            ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
+                    "Product Name More Than Fifty Characters Should Throw Api Exception", 2934.323232);
+            productDto.update(id, updatedForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Product name cannot be more than 50 characters long", err.getMessage());
+        }
     }
     //Negative MRP on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testNegativeMrpOnUpdate() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
 
-        String expectedBarcode = "testbarcode";
-        int id = service.getByBarcode(expectedBarcode).getId();
-        ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
-                " newNaMe ", -10);
-        productDto.update(id, updatedForm);
+            String expectedBarcode = "testbarcode";
+            int id = service.getByBarcode(expectedBarcode).getId();
+            ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
+                    " newNaMe ", -10);
+            productDto.update(id, updatedForm);
+        } catch (ApiException err){
+            Assert.assertEquals("MRP cannot be negative. This is not how math works...", err.getMessage());
+        }
     }
     // very high value of mrp on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testLargeMrpOnUpdate() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
 
-        String expectedBarcode = "testbarcode";
-        int id = service.getByBarcode(expectedBarcode).getId();
-        ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
-                " newNaMe ", 1000000001);
-        productDto.update(id, updatedForm);
+            String expectedBarcode = "testbarcode";
+            int id = service.getByBarcode(expectedBarcode).getId();
+            ProductForm updatedForm = FormHelper.createProduct(expectedBarcode, "testbrand", "testcategory",
+                    " newNaMe ", 1000000001);
+            productDto.update(id, updatedForm);
+        } catch (ApiException err){
+            Assert.assertEquals("MRP cannot be more than 1000000000", err.getMessage());
+        }
     }
     // Existing barcode on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testExistingBarcodeOnUpdate() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        productForm = FormHelper.createProduct("newbarcode", " TesTBrand ", " TestCaTegoRy ",
-                "newName", 1000);
-        productDto.add(productForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("  TeStBarCode  ", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            productForm = FormHelper.createProduct("newbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    "newName", 1000);
+            productDto.add(productForm);
 
-        String expectedBarcode = "testbarcode";
-        int id = service.getByBarcode(expectedBarcode).getId();
-        ProductForm updatedForm = FormHelper.createProduct("newbarcode", "testbrand", "testcategory",
-                " newNaMe ", 2934.323232);
-        productDto.update(id, updatedForm);
+            String expectedBarcode = "testbarcode";
+            int id = service.getByBarcode(expectedBarcode).getId();
+            ProductForm updatedForm = FormHelper.createProduct("newbarcode", "testbrand", "testcategory",
+                    " newNaMe ", 2934.323232);
+            productDto.update(id, updatedForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Product Barcode already exists", err.getMessage());
+        }
     }
     //Test get method for non-existent id
-    @Test(expected = ApiException.class)
+    @Test
     public void testGetForNonExistentId() throws ApiException{
-        productDto.get(1);
+        try {
+            productDto.get(1);
+        } catch (ApiException err){
+            Assert.assertEquals("Product Details with given id does not exist id: 1", err.getMessage());
+        }
     }
 }

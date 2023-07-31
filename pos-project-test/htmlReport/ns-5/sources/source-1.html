@@ -90,6 +90,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;@Component
 <b class="fc">&nbsp;public class ConverterUtil {</b>
+&nbsp;    // BrandPojo -&gt; BrandData conversion
 &nbsp;    public static BrandData convert(BrandPojo pojo){
 <b class="fc">&nbsp;        BrandData data = new BrandData();</b>
 <b class="fc">&nbsp;        data.setCategory(pojo.getCategory());</b>
@@ -97,12 +98,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        data.setId(pojo.getId());</b>
 <b class="fc">&nbsp;        return data;</b>
 &nbsp;    }
+&nbsp;    // BrandForm -&gt; BrandPojo conversion
 &nbsp;    public static BrandPojo convert(BrandForm form){
 <b class="fc">&nbsp;        BrandPojo pojo = new BrandPojo();</b>
 <b class="fc">&nbsp;        pojo.setBrand(form.getBrand());</b>
 <b class="fc">&nbsp;        pojo.setCategory(form.getCategory());</b>
 <b class="fc">&nbsp;        return pojo;</b>
 &nbsp;    }
+&nbsp;    // ProductPojo -&gt; ProductData conversion. Data contains Brand and Category, hence using BrandPojo
 &nbsp;    public static ProductData convert(ProductPojo pojo, BrandPojo brandPojo){
 <b class="fc">&nbsp;        ProductData data = new ProductData();</b>
 <b class="fc">&nbsp;        data.setId(pojo.getId());</b>
@@ -113,6 +116,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        data.setMrp(pojo.getMrp());</b>
 <b class="fc">&nbsp;        return  data;</b>
 &nbsp;    }
+&nbsp;    // ProductForm -&gt; ProductPojo conversion. we get BrandId from brandPojo
 &nbsp;    public static ProductPojo convert(ProductForm form, BrandPojo brandPojo){
 <b class="fc">&nbsp;        ProductPojo pojo = new ProductPojo();</b>
 <b class="fc">&nbsp;        pojo.setBarcode(form.getBarcode());</b>
@@ -123,20 +127,20 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        pojo.setMrp(mrp);</b>
 <b class="fc">&nbsp;        return pojo;</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    //InventoryPojo -&gt; InventoryData conversion
 &nbsp;    public static InventoryData convert(InventoryPojo pojo){
 <b class="fc">&nbsp;        InventoryData data = new InventoryData();</b>
 <b class="fc">&nbsp;        data.setId(pojo.getId());</b>
 <b class="fc">&nbsp;        data.setQuantity(pojo.getQuantity());</b>
 <b class="fc">&nbsp;        return data;</b>
 &nbsp;    }
+&nbsp;    // InventoryForm -&gt; InventoryPojo conversion
 &nbsp;    public static InventoryPojo convert(InventoryForm form){
 <b class="fc">&nbsp;        InventoryPojo pojo = new InventoryPojo();</b>
 <b class="fc">&nbsp;        pojo.setQuantity(form.getQuantity());</b>
 <b class="fc">&nbsp;        return pojo;</b>
 &nbsp;    }
-&nbsp;
-&nbsp;
+&nbsp;    // converting UserPojo to Authentication object
 &nbsp;    public static Authentication convert(UserPojo p) {
 &nbsp;        // Create principal
 <b class="fc">&nbsp;        UserPrincipal principal = new UserPrincipal();</b>
@@ -153,12 +157,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;                authorities);
 <b class="fc">&nbsp;        return token;</b>
 &nbsp;    }
-&nbsp;
+&nbsp;    // LoginForm -&gt; UserPojo conversion, uses String[] array for assigning supervisor role
 &nbsp;    public static UserPojo convert(LoginForm form, String[] array){
 <b class="fc">&nbsp;        int flag=0;</b>
 <b class="fc">&nbsp;        UserPojo pojo = new UserPojo();</b>
 <b class="fc">&nbsp;        pojo.setEmail(form.getEmail());</b>
 <b class="fc">&nbsp;        pojo.setPassword(form.getPassword());</b>
+&nbsp;        // assigning Supervisor role if email is present in array
 <b class="fc">&nbsp;        for(String supervisor: array){</b>
 <b class="fc">&nbsp;            if(supervisor.equals(pojo.getEmail())) {</b>
 <b class="fc">&nbsp;                flag = 1;</b>
@@ -200,7 +205,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-25 09:48</div>
+    <div style="float:right;">generated on 2023-07-27 09:04</div>
 </div>
 </body>
 </html>

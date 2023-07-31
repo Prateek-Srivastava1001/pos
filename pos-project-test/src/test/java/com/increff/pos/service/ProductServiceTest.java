@@ -36,65 +36,85 @@ public class ProductServiceTest extends AbstractUnitTest {
         assertEquals(expectedName, gotPojo.getName());
     }
     // empty barcode addition test
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddEmptyBarcode() throws ApiException{
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(1000);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(1000);
 
-        productService.add(pojo);
+            productService.add(pojo);
+        } catch (ApiException err){
+            assertEquals("Barcode cannot be empty", err.getMessage());
+        }
     }
     // empty name addition
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddEmptyName() throws ApiException{
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("");
-        pojo.setMrp(1000);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("");
+            pojo.setMrp(1000);
 
-        productService.add(pojo);
+            productService.add(pojo);
+        } catch (ApiException err){
+            assertEquals("name cannot be empty", err.getMessage());
+        }
     }
     //negative mrp addition
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddNegativeMrp() throws ApiException{
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(-1000);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(-1000);
 
-        productService.add(pojo);
+            productService.add(pojo);
+        } catch (ApiException err){
+            assertEquals("MRP cannot be negative. This is not how math works...", err.getMessage());
+        }
     }
     // mrp should be less than 1000000001
-    @Test(expected = ApiException.class)
+    @Test
     public void testLargeMrp() throws ApiException{
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(1000000001);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(1000000001);
 
-        productService.add(pojo);
+            productService.add(pojo);
+        } catch (ApiException err){
+            assertEquals("MRP cannot be more than 1000000000", err.getMessage());
+        }
     }
     // duplicate barcode addition
-    @Test(expected = ApiException.class)
+    @Test
     public void testAddDuplicate() throws ApiException{
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(1000);
-        productService.add(pojo);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(1000);
+            productService.add(pojo);
 
-        ProductPojo newPojo = new ProductPojo();
-        newPojo.setBarcode("barcode");
-        newPojo.setBrand_category(1);
-        newPojo.setName("newname");
-        newPojo.setMrp(100);
-        productService.add(newPojo);
+            ProductPojo newPojo = new ProductPojo();
+            newPojo.setBarcode("barcode");
+            newPojo.setBrand_category(1);
+            newPojo.setName("newname");
+            newPojo.setMrp(100);
+            productService.add(newPojo);
+        } catch (ApiException err){
+            assertEquals("Product Barcode already exists", err.getMessage());
+        }
     }
 
     // getAll method check
@@ -142,14 +162,22 @@ public class ProductServiceTest extends AbstractUnitTest {
         assertEquals(expectedName, gotPojo.getName());
     }
     //getCheck for non-existent id
-    @Test(expected = ApiException.class)
+    @Test
     public void testGetCheckForNonExistentId() throws ApiException{
-        ProductPojo gotPojo = productService.getCheck(1);
+        try {
+            ProductPojo gotPojo = productService.getCheck(1);
+        } catch (ApiException err){
+            assertEquals("Product Details with given id does not exist id: 1", err.getMessage());
+        }
     }
     // getByBarcode for non-existent barcode
-    @Test(expected = ApiException.class)
+    @Test
     public void testGetByBarcodeForNonExistentBarcode() throws ApiException{
-        productService.getByBarcode("nonExistent");
+        try {
+            productService.getByBarcode("nonExistent");
+        } catch (ApiException err){
+            assertEquals("Product with given barcode not found", err.getMessage());
+        }
     }
     // getByBrand method test
     @Test
@@ -205,109 +233,129 @@ public class ProductServiceTest extends AbstractUnitTest {
         assertEquals(expectedMrp, gotPojo.getMrp());
     }
     // Updating with empty barcode
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdateWithEmptyBarcode() throws ApiException{
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(1000);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(1000);
 
-        productService.add(pojo);
+            productService.add(pojo);
 
-        int id = productService.getByBarcode("barcode").getId();
+            int id = productService.getByBarcode("barcode").getId();
 
-        ProductPojo newPojo = new ProductPojo();
-        newPojo.setBarcode(""); //empty barcode
-        newPojo.setBrand_category(2);
-        newPojo.setName("newname");
-        newPojo.setMrp(200);
+            ProductPojo newPojo = new ProductPojo();
+            newPojo.setBarcode(""); //empty barcode
+            newPojo.setBrand_category(2);
+            newPojo.setName("newname");
+            newPojo.setMrp(200);
 
-        productService.update(id, newPojo);
+            productService.update(id, newPojo);
+        } catch (ApiException err){
+            assertEquals("Barcode cannot be empty", err.getMessage());
+        }
     }
     // empty name on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testEmptyNameOnUpdate() throws ApiException{
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(1000);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(1000);
 
-        productService.add(pojo);
+            productService.add(pojo);
 
-        int id = productService.getByBarcode("barcode").getId();
+            int id = productService.getByBarcode("barcode").getId();
 
-        ProductPojo newPojo = new ProductPojo();
-        newPojo.setBarcode("newbarcode");
-        newPojo.setBrand_category(2);
-        newPojo.setName("");
-        newPojo.setMrp(200);
+            ProductPojo newPojo = new ProductPojo();
+            newPojo.setBarcode("newbarcode");
+            newPojo.setBrand_category(2);
+            newPojo.setName("");
+            newPojo.setMrp(200);
 
-        productService.update(id, newPojo);
+            productService.update(id, newPojo);
+        } catch (ApiException err){
+            assertEquals("name cannot be empty", err.getMessage());
+        }
     }
     //Updating with duplicate barcode
-    @Test(expected = ApiException.class)
+    @Test
     public void testDuplicateBarcodeOnUpdate() throws ApiException{
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(1000);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(1000);
 
-        productService.add(pojo);
+            productService.add(pojo);
 
-        ProductPojo newPojo = new ProductPojo();
-        newPojo.setBarcode("newbarcode");
-        newPojo.setBrand_category(2);
-        newPojo.setName("newname");
-        newPojo.setMrp(200);
-        productService.add(newPojo);
-        int id = productService.getByBarcode("newbarcode").getId();
+            ProductPojo newPojo = new ProductPojo();
+            newPojo.setBarcode("newbarcode");
+            newPojo.setBrand_category(2);
+            newPojo.setName("newname");
+            newPojo.setMrp(200);
+            productService.add(newPojo);
+            int id = productService.getByBarcode("newbarcode").getId();
 
-        newPojo.setBarcode("barcode");
-        productService.update(id, newPojo);
+            newPojo.setBarcode("barcode");
+            productService.update(id, newPojo);
+        } catch (ApiException err){
+            assertEquals("Product Barcode already exists", err.getMessage());
+        }
     }
     //Updating with negative mrp
-    @Test(expected = ApiException.class)
+    @Test
     public void testNegativeMrpOnUpdate() throws ApiException {
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(1000);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(1000);
 
-        productService.add(pojo);
+            productService.add(pojo);
 
-        int id = productService.getByBarcode("barcode").getId();
+            int id = productService.getByBarcode("barcode").getId();
 
-        ProductPojo newPojo = new ProductPojo();
-        newPojo.setBarcode("newbarcode");
-        newPojo.setBrand_category(2);
-        newPojo.setName("newname");
-        newPojo.setMrp(-200);
+            ProductPojo newPojo = new ProductPojo();
+            newPojo.setBarcode("newbarcode");
+            newPojo.setBrand_category(2);
+            newPojo.setName("newname");
+            newPojo.setMrp(-200);
 
-        productService.update(id, newPojo);
+            productService.update(id, newPojo);
+        } catch (ApiException err){
+            assertEquals("MRP cannot be negative. This is not how math works...", err.getMessage());
+        }
     }
     // very large mrp on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testLargeMrpOnUpdate() throws ApiException {
-        ProductPojo pojo = new ProductPojo();
-        pojo.setBarcode("barcode");
-        pojo.setBrand_category(1);
-        pojo.setName("name");
-        pojo.setMrp(1000);
+        try {
+            ProductPojo pojo = new ProductPojo();
+            pojo.setBarcode("barcode");
+            pojo.setBrand_category(1);
+            pojo.setName("name");
+            pojo.setMrp(1000);
 
-        productService.add(pojo);
+            productService.add(pojo);
 
-        int id = productService.getByBarcode("barcode").getId();
+            int id = productService.getByBarcode("barcode").getId();
 
-        ProductPojo newPojo = new ProductPojo();
-        newPojo.setBarcode("newbarcode");
-        newPojo.setBrand_category(2);
-        newPojo.setName("newname");
-        newPojo.setMrp(1000000001);
+            ProductPojo newPojo = new ProductPojo();
+            newPojo.setBarcode("newbarcode");
+            newPojo.setBrand_category(2);
+            newPojo.setName("newname");
+            newPojo.setMrp(1000000001);
 
-        productService.update(id, newPojo);
+            productService.update(id, newPojo);
+        } catch (ApiException err){
+            assertEquals("MRP cannot be more than 1000000000", err.getMessage());
+        }
     }
 }

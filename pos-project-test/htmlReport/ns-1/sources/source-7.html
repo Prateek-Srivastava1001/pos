@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > SchedulerDao</title>
+  <title>Coverage Report > SchedulerService</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -18,10 +18,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">com.increff.pos.dao</a>
+    <a href="../index.html">com.increff.pos.service</a>
 </div>
 
-<h1>Coverage Summary for Class: SchedulerDao (com.increff.pos.dao)</h1>
+<h1>Coverage Summary for Class: SchedulerService (com.increff.pos.service)</h1>
 
 <table class="coverageStats">
 
@@ -37,7 +37,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">SchedulerDao</td>
+  <td class="name">SchedulerService</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -51,18 +51,18 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (10/10)
+    (15/15)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">SchedulerDao$$EnhancerBySpringCGLIB$$fac20910</td>
+    <td class="name">SchedulerService$$EnhancerBySpringCGLIB$$c13cbcee</td>
   </tr>
   <tr>
-    <td class="name">SchedulerDao$$EnhancerBySpringCGLIB$$fac20910$$FastClassBySpringCGLIB$$1d544ff4</td>
+    <td class="name">SchedulerService$$EnhancerBySpringCGLIB$$c13cbcee$$FastClassBySpringCGLIB$$2c478be1</td>
   </tr>
   <tr>
-    <td class="name">SchedulerDao$$FastClassBySpringCGLIB$$d8690237</td>
+    <td class="name">SchedulerService$$FastClassBySpringCGLIB$$24dba017</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -79,7 +79,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     100%
   </span>
   <span class="absValue">
-    (10/10)
+    (15/15)
   </span>
 </td>
 </tr>
@@ -90,40 +90,52 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.dao;
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.service;
 &nbsp;
 &nbsp;import java.time.LocalDate;
 &nbsp;import java.util.List;
-&nbsp;
-&nbsp;import javax.persistence.EntityManager;
-&nbsp;import javax.persistence.PersistenceContext;
-&nbsp;import javax.persistence.TypedQuery;
 &nbsp;import javax.transaction.Transactional;
 &nbsp;
+&nbsp;import com.increff.pos.dao.SchedulerDao;
+&nbsp;import com.increff.pos.model.ReportsForm;
 &nbsp;import com.increff.pos.pojo.SchedulerPojo;
-&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import com.increff.pos.util.StringUtil;
 &nbsp;
-&nbsp;@Repository
-<b class="fc">&nbsp;public class SchedulerDao extends AbstractDao{</b>
-<b class="fc">&nbsp;    private static String select_all = &quot;select p from SchedulerPojo p&quot;;</b>
-<b class="fc">&nbsp;    private static String select_by_date = &quot;select p from SchedulerPojo p where date&gt;=:start_date and date&lt;=:end_date&quot;;</b>
-&nbsp;
-&nbsp;    @PersistenceContext
-&nbsp;    private EntityManager em;
+&nbsp;@Service
+<b class="fc">&nbsp;public class SchedulerService {</b>
+&nbsp;    @Autowired
+&nbsp;    SchedulerDao schedulerDao;
 &nbsp;    //CREATE
-&nbsp;    @Transactional
-<b class="fc">&nbsp;    public void insert(SchedulerPojo pojo){em.persist(pojo);}</b>
-&nbsp;    //READ
-&nbsp;    public List&lt;SchedulerPojo&gt; selectAll(){
-<b class="fc">&nbsp;        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_all, SchedulerPojo.class);</b>
-<b class="fc">&nbsp;        return query.getResultList();</b>
+&nbsp;    @Transactional(rollbackOn = ApiException.class)
+&nbsp;    public void add(SchedulerPojo pojo) throws ApiException{
+<b class="fc">&nbsp;        List&lt;SchedulerPojo&gt; checkerList = schedulerDao.selectByDate(pojo.getDate(), pojo.getDate());</b>
+<b class="fc">&nbsp;        if(checkerList.size() == 0) {</b>
+<b class="fc">&nbsp;            schedulerDao.insert(pojo);</b>
+&nbsp;        }
+&nbsp;        else{
+<b class="fc">&nbsp;            SchedulerPojo checker = checkerList.get(0);</b>
+<b class="fc">&nbsp;            checker.setTotal_revenue(pojo.getTotal_revenue());</b>
+<b class="fc">&nbsp;            checker.setInvoiced_orders_count(pojo.getInvoiced_orders_count());</b>
+<b class="fc">&nbsp;            checker.setInvoiced_items_count(pojo.getInvoiced_items_count());</b>
+&nbsp;        }
 &nbsp;    }
-&nbsp;
-&nbsp;    public List&lt;SchedulerPojo&gt; selectByDate(LocalDate start_date, LocalDate end_date){
-<b class="fc">&nbsp;        TypedQuery&lt;SchedulerPojo&gt; query = getQuery(select_by_date, SchedulerPojo.class);</b>
-<b class="fc">&nbsp;        query.setParameter(&quot;start_date&quot;, start_date);</b>
-<b class="fc">&nbsp;        query.setParameter(&quot;end_date&quot;, end_date);</b>
-<b class="fc">&nbsp;        return query.getResultList();</b>
+&nbsp;    //READ
+&nbsp;    public List&lt;SchedulerPojo&gt; getAll(){
+<b class="fc">&nbsp;        return schedulerDao.selectAll();</b>
+&nbsp;    }
+&nbsp;    public List&lt;SchedulerPojo&gt; getByDate(ReportsForm form) throws ApiException {
+<b class="fc">&nbsp;        LocalDate startDate = LocalDate.parse(form.getStartDate());</b>
+<b class="fc">&nbsp;        LocalDate endDate = LocalDate.parse(form.getEndDate());</b>
+<b class="fc">&nbsp;        isValidDateRange(startDate,endDate);</b>
+<b class="fc">&nbsp;        return schedulerDao.selectByDate(startDate,endDate);</b>
+&nbsp;    }
+&nbsp;    //helper
+&nbsp;    public static void isValidDateRange(LocalDate start, LocalDate end) throws ApiException {
+<b class="fc">&nbsp;        if (start.isAfter(end)) {</b>
+<b class="fc">&nbsp;            throw new ApiException(&quot;Start date cannot be after end date&quot;);</b>
+&nbsp;        }
 &nbsp;    }
 &nbsp;}
 </code>
@@ -149,7 +161,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-25 09:48</div>
+    <div style="float:right;">generated on 2023-07-27 09:37</div>
 </div>
 </body>
 </html>

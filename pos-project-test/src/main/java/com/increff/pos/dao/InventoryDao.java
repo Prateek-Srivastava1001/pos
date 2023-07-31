@@ -27,7 +27,6 @@ public class InventoryDao extends AbstractDao{
         query.setParameter("id", id);
         return getSingle(query);
     }
-
     public List<InventoryPojo> selectAll(){
         TypedQuery<InventoryPojo> query = getQuery(select_all, InventoryPojo.class);
         return query.getResultList();

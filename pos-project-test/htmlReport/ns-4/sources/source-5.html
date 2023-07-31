@@ -56,10 +56,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 </tr>
   <tr>
-    <td class="name">OrderService$$EnhancerBySpringCGLIB$$78e8c77</td>
+    <td class="name">OrderService$$EnhancerBySpringCGLIB$$9b21db69</td>
   </tr>
   <tr>
-    <td class="name">OrderService$$EnhancerBySpringCGLIB$$78e8c77$$FastClassBySpringCGLIB$$627e7c3a</td>
+    <td class="name">OrderService$$EnhancerBySpringCGLIB$$9b21db69$$FastClassBySpringCGLIB$$1370671e</td>
   </tr>
   <tr>
     <td class="name">OrderService$$FastClassBySpringCGLIB$$feafb4a4</td>
@@ -118,7 +118,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return orderId;</b>
 &nbsp;    }
 &nbsp;    // returns order from given id, throws exception if it does not exist
-&nbsp;    @Transactional
 &nbsp;    public OrderPojo getCheck(int id) throws ApiException {
 <b class="fc">&nbsp;        OrderPojo pojo = dao.select(id);</b>
 <b class="fc">&nbsp;        if(pojo==null)</b>
@@ -126,12 +125,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        return pojo;</b>
 &nbsp;    }
 &nbsp;    // gets all orders from db
-&nbsp;    @Transactional
 &nbsp;    public List&lt;OrderPojo&gt; getAll(){
 <b class="fc">&nbsp;        return dao.selectAll();</b>
 &nbsp;    }
 &nbsp;    // gets all orders in a given timeframe (used in reports)
-&nbsp;    @Transactional
 &nbsp;    public List&lt;OrderPojo&gt; getByDate(LocalDateTime startDate, LocalDateTime endDate){
 <b class="fc">&nbsp;        return dao.getByDate(startDate,endDate);</b>
 &nbsp;    }
@@ -162,7 +159,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-07-25 09:48</div>
+    <div style="float:right;">generated on 2023-07-27 09:04</div>
 </div>
 </body>
 </html>

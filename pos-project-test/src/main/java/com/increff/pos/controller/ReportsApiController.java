@@ -30,7 +30,7 @@ public class ReportsApiController {
     }
     @ApiOperation(value = "Generates scheduler report")
     @RequestMapping(path = "/api/reports/scheduler/generate", method = RequestMethod.GET)
-    public void generateDailyReport() throws ApiException {
+    public void generateDailyReport() throws ApiException, InterruptedException {
         dto.generateDailyReport();
     }
 

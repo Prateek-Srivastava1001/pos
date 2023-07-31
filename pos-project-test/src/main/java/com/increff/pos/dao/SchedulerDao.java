@@ -26,7 +26,7 @@ public class SchedulerDao extends AbstractDao{
         TypedQuery<SchedulerPojo> query = getQuery(select_all, SchedulerPojo.class);
         return query.getResultList();
     }
-
+    // Gets Day-on-day sales report for a given timeframe
     public List<SchedulerPojo> selectByDate(LocalDate start_date, LocalDate end_date){
         TypedQuery<SchedulerPojo> query = getQuery(select_by_date, SchedulerPojo.class);
         query.setParameter("start_date", start_date);

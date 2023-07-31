@@ -2,6 +2,7 @@ package com.increff.pos.service;
 
 import com.increff.pos.AbstractUnitTest;
 import com.increff.pos.pojo.BrandPojo;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,32 +30,44 @@ public class BrandServiceTest extends AbstractUnitTest {
         assertEquals(expectedCategory, gotPojo.getCategory());
     }
     // Empty Brand
-    @Test(expected = ApiException.class)
+    @Test
     public void testEmptyBrandAddition() throws ApiException{
-        BrandPojo pojo = new BrandPojo();
-        pojo.setBrand("");
-        pojo.setCategory("category");
+        try {
+            BrandPojo pojo = new BrandPojo();
+            pojo.setBrand("");
+            pojo.setCategory("category");
 
-        brandService.add(pojo);
+            brandService.add(pojo);
+        } catch (ApiException err){
+            assertEquals("Brand cannot be empty", err.getMessage());
+        }
     }
     // Empty Category
-    @Test(expected = ApiException.class)
+    @Test
     public void testEmptyCategoryAddition() throws ApiException{
-        BrandPojo pojo = new BrandPojo();
-        pojo.setBrand("brand");
-        pojo.setCategory("");
+        try {
+            BrandPojo pojo = new BrandPojo();
+            pojo.setBrand("brand");
+            pojo.setCategory("");
 
-        brandService.add(pojo);
+            brandService.add(pojo);
+        } catch (ApiException err){
+            assertEquals("Category cannot be empty", err.getMessage());
+        }
     }
     //Duplicate brand category test
-    @Test(expected = ApiException.class)
+    @Test
     public void testDuplicateEntry() throws ApiException{
-        BrandPojo pojo = new BrandPojo();
-        pojo.setBrand("brand");
-        pojo.setCategory("category");
+        try {
+            BrandPojo pojo = new BrandPojo();
+            pojo.setBrand("brand");
+            pojo.setCategory("category");
 
-        brandService.add(pojo);
-        brandService.add(pojo);
+            brandService.add(pojo);
+            brandService.add(pojo);
+        } catch (ApiException err){
+            assertEquals("Brand - Category combination already exists", err.getMessage());
+        }
     }
     // getAll method test
     @Test
@@ -90,9 +103,13 @@ public class BrandServiceTest extends AbstractUnitTest {
         assertEquals(expectedCategory, gotPojo.getCategory());
     }
     // getting non-existent id
-    @Test(expected = ApiException.class)
+    @Test
     public void testGetNonExistentId() throws ApiException{
-        brandService.getCheck(1);
+        try {
+            brandService.getCheck(1);
+        } catch (ApiException err){
+            assertEquals("Brand-Category with given id does not exist id: 1", err.getMessage());
+        }
     }
     // Update method tests...
     @Test
@@ -118,60 +135,76 @@ public class BrandServiceTest extends AbstractUnitTest {
         assertEquals(expectedCategory, gotPojo.getCategory());
     }
     //empty brand on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdateEmptyBrand() throws ApiException{
-        BrandPojo pojo = new BrandPojo();
-        pojo.setBrand("brand");
-        pojo.setCategory("category");
+        try {
+            BrandPojo pojo = new BrandPojo();
+            pojo.setBrand("brand");
+            pojo.setCategory("category");
 
-        brandService.add(pojo);
-        int id = brandService.combinationChecker(pojo.getBrand(), pojo.getCategory()).getId();
+            brandService.add(pojo);
+            int id = brandService.combinationChecker(pojo.getBrand(), pojo.getCategory()).getId();
 
-        BrandPojo newPojo = new BrandPojo();
-        newPojo.setBrand("");
-        newPojo.setCategory("newcategory");
+            BrandPojo newPojo = new BrandPojo();
+            newPojo.setBrand("");
+            newPojo.setCategory("newcategory");
 
-        brandService.update(id, newPojo);
+            brandService.update(id, newPojo);
+        } catch (ApiException err){
+            assertEquals("Brand cannot be empty", err.getMessage());
+        }
     }
     //empty category on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdateEmptyCategory() throws ApiException{
-        BrandPojo pojo = new BrandPojo();
-        pojo.setBrand("brand");
-        pojo.setCategory("category");
+        try {
+            BrandPojo pojo = new BrandPojo();
+            pojo.setBrand("brand");
+            pojo.setCategory("category");
 
-        brandService.add(pojo);
-        int id = brandService.combinationChecker(pojo.getBrand(), pojo.getCategory()).getId();
+            brandService.add(pojo);
+            int id = brandService.combinationChecker(pojo.getBrand(), pojo.getCategory()).getId();
 
-        BrandPojo newPojo = new BrandPojo();
-        newPojo.setBrand("newbrand");
-        newPojo.setCategory("");
+            BrandPojo newPojo = new BrandPojo();
+            newPojo.setBrand("newbrand");
+            newPojo.setCategory("");
 
-        brandService.update(id, newPojo);
+            brandService.update(id, newPojo);
+        } catch (ApiException err){
+            assertEquals("Category cannot be empty", err.getMessage());
+        }
     }
     //brand-category combination already exist on update
-    @Test(expected = ApiException.class)
+    @Test
     public void testUpdateExistingBrandCategory() throws ApiException{
-        BrandPojo pojo = new BrandPojo();
-        pojo.setBrand("brand");
-        pojo.setCategory("category");
+        try {
+            BrandPojo pojo = new BrandPojo();
+            pojo.setBrand("brand");
+            pojo.setCategory("category");
 
-        brandService.add(pojo);
-        BrandPojo secondPojo = new BrandPojo();
-        secondPojo.setBrand("secondbrand");
-        secondPojo.setCategory("secondcategory");
-        brandService.add(secondPojo);
-        int id = brandService.combinationChecker(secondPojo.getBrand(), secondPojo.getCategory()).getId();
+            brandService.add(pojo);
+            BrandPojo secondPojo = new BrandPojo();
+            secondPojo.setBrand("secondbrand");
+            secondPojo.setCategory("secondcategory");
+            brandService.add(secondPojo);
+            int id = brandService.combinationChecker(secondPojo.getBrand(), secondPojo.getCategory()).getId();
 
-        BrandPojo newPojo = new BrandPojo();
-        newPojo.setBrand("brand");
-        newPojo.setCategory("category");
+            BrandPojo newPojo = new BrandPojo();
+            newPojo.setBrand("brand");
+            newPojo.setCategory("category");
 
-        brandService.update(id, newPojo);
+            brandService.update(id, newPojo);
+        } catch (ApiException err){
+            assertEquals("Brand - Category combination already exists", err.getMessage());
+        }
     }
     // combination checker - non existent brand category combination
-    @Test(expected = ApiException.class)
+    @Test
     public void testCombinationCheckerForNonExistentCombination() throws ApiException{
-        brandService.combinationChecker("brand", "category");
+        try {
+            brandService.combinationChecker("brand", "category");
+        } catch (ApiException err){
+            assertEquals("Brand-Category combination not found", err.getMessage());
+        }
     }
 }

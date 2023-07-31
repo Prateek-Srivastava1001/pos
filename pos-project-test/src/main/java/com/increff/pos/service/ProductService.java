@@ -65,7 +65,7 @@ public class ProductService {
         toUpdate.setName(pojo.getName());
         toUpdate.setMrp(pojo.getMrp());
     }
-
+    // Gets all products from database
     public List<ProductPojo> getAll(){return  dao.selectAll();}
 
     //READ
@@ -76,6 +76,7 @@ public class ProductService {
         }
         return p;
     }
+    // Gets product corresponding to given barcode
     public ProductPojo getByBarcode(String barcode) throws ApiException{
         ProductPojo pojo = dao.checkBarcode(barcode);
         if(pojo==null){
@@ -83,5 +84,6 @@ public class ProductService {
         }
         return pojo;
     }
+    // Gets product with given brand-category id (Used in inventory report)
     public List<ProductPojo> getByBrand(int id){return  dao.getByBrand(id);}
 }

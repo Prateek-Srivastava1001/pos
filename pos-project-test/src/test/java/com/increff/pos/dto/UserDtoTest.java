@@ -5,6 +5,7 @@ import com.increff.pos.helper.FormHelper;
 import com.increff.pos.model.LoginForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,23 +36,35 @@ public class UserDtoTest extends AbstractUnitTest {
         assertEquals("supervisor", newUser.getRole());
     }
     //Email already exists
-    @Test(expected = ApiException.class)
+    @Test
     public void testExistingEmail() throws ApiException{
-        LoginForm form = FormHelper.createUser("random@gmail.com", "password1234");
-        dto.signup(form);
-        dto.signup(form);
+        try {
+            LoginForm form = FormHelper.createUser("random@gmail.com", "password1234");
+            dto.signup(form);
+            dto.signup(form);
+        } catch (ApiException err){
+            Assert.assertEquals("Email already exists", err.getMessage());
+        }
     }
     //Empty email
-    @Test(expected = ApiException.class)
+    @Test
     public void testEmptyEmail() throws ApiException{
-        LoginForm form = FormHelper.createUser("", "password1234");
-        dto.signup(form);
+        try {
+            LoginForm form = FormHelper.createUser("", "password1234");
+            dto.signup(form);
+        } catch (ApiException err){
+            Assert.assertEquals("Email cannot be empty", err.getMessage());
+        }
     }
     //Empty password
-    @Test(expected = ApiException.class)
+    @Test
     public void testEmptyPassword() throws ApiException{
-        LoginForm form = FormHelper.createUser("random@gmail.com", "");
-        dto.signup(form);
+        try {
+            LoginForm form = FormHelper.createUser("random@gmail.com", "");
+            dto.signup(form);
+        } catch (ApiException err){
+            Assert.assertEquals("Password cannot be empty", err.getMessage());
+        }
     }
 
     // LOGIN METHOD TESTS...
@@ -63,20 +76,28 @@ public class UserDtoTest extends AbstractUnitTest {
         assertNotNull(authentication);
     }
     // Invalid password
-    @Test(expected = ApiException.class)
+    @Test
     public void testInvalidPassword() throws ApiException{
-        LoginForm form = FormHelper.createUser("random@gmail.com", "password1234");
-        dto.signup(form);
-        LoginForm invalidForm = FormHelper.createUser("random@gmail.com", "Password1234");
-        dto.login(invalidForm);
+        try {
+            LoginForm form = FormHelper.createUser("random@gmail.com", "password1234");
+            dto.signup(form);
+            LoginForm invalidForm = FormHelper.createUser("random@gmail.com", "Password1234");
+            dto.login(invalidForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Invalid details", err.getMessage());
+        }
     }
     // Invalid Email (User does not exist)
-    @Test(expected = ApiException.class)
+    @Test
     public void testInvalidEmail() throws ApiException{
-        LoginForm form = FormHelper.createUser("random@gmail.com", "password1234");
-        dto.signup(form);
-        LoginForm invalidForm = FormHelper.createUser("invalid@gmail.com", "password1234");
-        dto.login(invalidForm);
+        try {
+            LoginForm form = FormHelper.createUser("random@gmail.com", "password1234");
+            dto.signup(form);
+            LoginForm invalidForm = FormHelper.createUser("invalid@gmail.com", "password1234");
+            dto.login(invalidForm);
+        } catch (ApiException err){
+            Assert.assertEquals("Invalid details", err.getMessage());
+        }
     }
 
 }

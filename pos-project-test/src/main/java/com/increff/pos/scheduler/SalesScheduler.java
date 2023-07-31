@@ -34,10 +34,11 @@ public class SalesScheduler {
     // Scheduler code to create Day on Day report
     @Async
     @Scheduled(cron = "59 59 23 * * *")
-    public void createReport() throws ApiException {
+    public void createReport() throws ApiException, InterruptedException {
         System.out.println("Ran Scheduler...");
         SchedulerPojo pojo = new SchedulerPojo();
         LocalDate date = LocalDate.now();
+        Thread.sleep(1100);
         int totalItems = 0;
         double totalRevenue = 0.0;
         LocalDateTime startDate = date.atStartOfDay();

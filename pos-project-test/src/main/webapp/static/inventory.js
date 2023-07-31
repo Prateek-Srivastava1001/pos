@@ -271,7 +271,6 @@ function init(){
     document.getElementById("download-errors").disabled = true;
     table = $('#inventory-table').DataTable({'columnDefs': [ {'targets': [2],'orderable': false },
                     {'targets': [0,1,2], "className": "text-center"}],
-                 searching: false,
                  info:false,
         lengthMenu: [
                 [15, 25, 50, -1],

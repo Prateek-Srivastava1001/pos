@@ -71,37 +71,51 @@ public class InventoryDtoTest extends AbstractUnitTest {
         InventoryData data = inventoryDto.get(id);
         assertEquals(expectedQuantity, data.getQuantity());
     }
-    @Test(expected = ApiException.class)
+    // quantity should not be negative
+    @Test
     public void testNegativeQuantityEdit() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = -10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = -10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
+        }catch (ApiException err){
+            assertEquals("Quantity cannot be negative", err.getMessage());
+        }
     }
-    @Test(expected = ApiException.class)
+    // inventory cannot be edited if product for corresponding does not exist
+    @Test
     public void testNonExistentIdEdit() throws ApiException{
-        InventoryForm inventoryForm = FormHelper.createInventory(10, "barcode");
-        inventoryDto.edit(1, inventoryForm);
+        try {
+            InventoryForm inventoryForm = FormHelper.createInventory(10, "barcode");
+            inventoryDto.edit(1, inventoryForm);
+        }catch (ApiException err){
+            assertEquals("Product Details with given id does not exist id: 1", err.getMessage());
+        }
     }
     // large value of quantity on edit
-    @Test(expected = ApiException.class)
+    @Test
     public void testLargeQuantityOnEdit() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10000001;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10000001;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
+        } catch (ApiException err){
+            assertEquals("Quantity cannot be more than 10000000", err.getMessage());
+        }
     }
 
     //EDITBYUPLOAD METHOD TESTS...
@@ -123,36 +137,50 @@ public class InventoryDtoTest extends AbstractUnitTest {
         InventoryData data = inventoryDto.get(id);
         assertEquals(expectedQuantity, data.getQuantity());
     }
-    @Test(expected = ApiException.class)
+    // test adding negative quantity by upload
+    @Test
     public void testNegativeQuantityEditByUpload() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = -10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.editByUpload(inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = -10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.editByUpload(inventoryForm);
+        } catch (ApiException err){
+            assertEquals("Quantity cannot be negative", err.getMessage());
+        }
     }
     // large quantity edit on upload
-    @Test(expected = ApiException.class)
+    @Test
     public void testLargeQuantityEditByUpload() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10000001;
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.editByUpload(inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10000001;
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.editByUpload(inventoryForm);
+        } catch (ApiException err){
+            assertEquals("Quantity out of bound", err.getMessage());
+        }
     }
-    @Test(expected = ApiException.class)
+    // inventory cannot be changed by upload method if product for corresponding barcode does not exists
+    @Test
     public void testNonExistentBarcodeEditByUpload() throws ApiException{
-        InventoryForm inventoryForm = FormHelper.createInventory(10, "nonExistent");
-        inventoryDto.editByUpload(inventoryForm);
+        try {
+            InventoryForm inventoryForm = FormHelper.createInventory(10, "nonExistent");
+            inventoryDto.editByUpload(inventoryForm);
+        } catch (ApiException err){
+            assertEquals("Product with given barcode not found", err.getMessage());
+        }
     }
 
 }

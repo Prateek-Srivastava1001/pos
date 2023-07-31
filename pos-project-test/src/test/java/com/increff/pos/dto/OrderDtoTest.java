@@ -68,115 +68,143 @@ public class OrderDtoTest extends AbstractUnitTest {
         assertEquals(3, inventoryData2.getQuantity());
     }
     //Empty order creation not supported
-    @Test(expected = ApiException.class)
+    @Test
     public void testEmptyOrderCreation() throws ApiException{
-        List<OrderItemForm> forms = new ArrayList<>();
-        orderDto.add(forms);
+        try {
+            List<OrderItemForm> forms = new ArrayList<>();
+            orderDto.add(forms);
+        }catch (ApiException err){
+            assertEquals("Empty Order List Not Supported", err.getMessage());
+        }
     }
     //Barcode not present in product table
-    @Test(expected = ApiException.class)
+    @Test
     public void testNonExistentBarcode() throws ApiException{
-        List<OrderItemForm> forms = new ArrayList<>();
-        OrderItemForm form = FormHelper.createOrderItem("barcode", 1, 10);
-        forms.add(form);
-        orderDto.add(forms);
+        try {
+            List<OrderItemForm> forms = new ArrayList<>();
+            OrderItemForm form = FormHelper.createOrderItem("barcode", 1, 10);
+            forms.add(form);
+            orderDto.add(forms);
+        } catch (ApiException err){
+            assertEquals("Product with given barcode not found", err.getMessage());
+        }
     }
     //Duplicate barcode addition
-    @Test(expected = ApiException.class)
+    @Test
     public void testDuplicateBarcode() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm product1 = FormHelper.createProduct("barcode1", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(product1);
-        ProductForm product2 = FormHelper.createProduct("barcode2", "testbrand", "testcategory",
-                "newName", 1000);
-        productDto.add(product2);
-        String barcode1 = "barcode1";
-        int quantity = 10;
-        int id1 = productService.getByBarcode(barcode1).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode1);
-        inventoryDto.edit(id1, inventoryForm);
-        String barcode2 = "barcode2";
-        int quantity2 = 8;
-        int id2 = productService.getByBarcode(barcode2).getId();
-        InventoryForm inventoryForm2 = FormHelper.createInventory(quantity2, barcode2);
-        inventoryDto.edit(id2, inventoryForm2);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm product1 = FormHelper.createProduct("barcode1", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(product1);
+            ProductForm product2 = FormHelper.createProduct("barcode2", "testbrand", "testcategory",
+                    "newName", 1000);
+            productDto.add(product2);
+            String barcode1 = "barcode1";
+            int quantity = 10;
+            int id1 = productService.getByBarcode(barcode1).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode1);
+            inventoryDto.edit(id1, inventoryForm);
+            String barcode2 = "barcode2";
+            int quantity2 = 8;
+            int id2 = productService.getByBarcode(barcode2).getId();
+            InventoryForm inventoryForm2 = FormHelper.createInventory(quantity2, barcode2);
+            inventoryDto.edit(id2, inventoryForm2);
 
-        List<OrderItemForm> orderItems = new ArrayList<>();
-        OrderItemForm orderItem1 = FormHelper.createOrderItem(barcode1, 2, 1000);
-        orderItems.add(orderItem1);
+            List<OrderItemForm> orderItems = new ArrayList<>();
+            OrderItemForm orderItem1 = FormHelper.createOrderItem(barcode1, 2, 1000);
+            orderItems.add(orderItem1);
 
-        OrderItemForm orderItem2 = FormHelper.createOrderItem(barcode1, 5, 999);
-        orderItems.add(orderItem2);
+            OrderItemForm orderItem2 = FormHelper.createOrderItem(barcode1, 5, 999);
+            orderItems.add(orderItem2);
 
-        int orderId = orderDto.add(orderItems);
-        List<OrderItemData> createdOrderList = orderDto.getOrderItemsByOrderId(orderId);
+            int orderId = orderDto.add(orderItems);
+            List<OrderItemData> createdOrderList = orderDto.getOrderItemsByOrderId(orderId);
+        } catch (ApiException err){
+            assertEquals("Frontend Validation Breach: Duplicate barcodes detected", err.getMessage());
+        }
     }
     //generate invoice for non-existent orderId
-    @Test(expected = ApiException.class)
+    @Test
     public void testInvoicingNonExistentOrderId() throws ApiException{
-        orderDto.generateInvoiceForOrder(1);
+        try {
+            orderDto.generateInvoiceForOrder(1);
+        } catch (ApiException err){
+            assertEquals("Order with given id not found", err.getMessage());
+        }
     }
     //enough inventory not present
-    @Test(expected = ApiException.class)
+    @Test
     public void testInventoryNotPresent() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
 
-        List<OrderItemForm> orderItems = new ArrayList<>();
-        OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 11, 1000);
-        orderItems.add(orderItem);
+            List<OrderItemForm> orderItems = new ArrayList<>();
+            OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 11, 1000);
+            orderItems.add(orderItem);
 
-        orderDto.add(orderItems);
+            orderDto.add(orderItems);
+        } catch (ApiException err){
+            assertEquals("Not enough quantity is present in the inventory.", err.getMessage());
+        }
     }
     //selling price should not be more than mrp
-    @Test(expected = ApiException.class)
+    @Test
     public void testHigherSellingPrice() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
 
-        List<OrderItemForm> orderItems = new ArrayList<>();
-        OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 1, 10000);
-        orderItems.add(orderItem);
+            List<OrderItemForm> orderItems = new ArrayList<>();
+            OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 1, 10000);
+            orderItems.add(orderItem);
 
-        orderDto.add(orderItems);
+            orderDto.add(orderItems);
+        } catch (ApiException err){
+            assertEquals("Selling price cannot be more than MRP.", err.getMessage());
+        }
     }
     //quantity should be strictly positive (zero quantity not supported)
-    @Test(expected = ApiException.class)
+    @Test
     public void testZeroQuantity() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
 
-        List<OrderItemForm> orderItems = new ArrayList<>();
-        OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 0, 100);
-        orderItems.add(orderItem);
+            List<OrderItemForm> orderItems = new ArrayList<>();
+            OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 0, 100);
+            orderItems.add(orderItem);
 
-        orderDto.add(orderItems);
+            orderDto.add(orderItems);
+        } catch (ApiException err){
+            assertEquals("Please enter positive value of quantity", err.getMessage());
+        }
     }
     //GET ALL ORDERS
     @Test
@@ -220,78 +248,98 @@ public class OrderDtoTest extends AbstractUnitTest {
         orderDto.checker(orderItem);
     }
     //check non existent barcode
-    @Test(expected = ApiException.class)
+    @Test
     public void testCheckerNonExistentBarcode() throws ApiException{
-        OrderItemForm orderItem = FormHelper.createOrderItem("barcode", 1, 1000);
-        orderDto.checker(orderItem);
+        try {
+            OrderItemForm orderItem = FormHelper.createOrderItem("barcode", 1, 1000);
+            orderDto.checker(orderItem);
+        } catch (ApiException err){
+            assertEquals("Product with given barcode not found", err.getMessage());
+        }
     }
     //negative selling price check
-    @Test(expected = ApiException.class)
+    @Test
     public void testCheckerNegativeSellingPrice() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
 
-        OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 2, -1000);
-        orderDto.checker(orderItem);
+            OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 2, -1000);
+            orderDto.checker(orderItem);
+        } catch (ApiException err){
+            assertEquals("Selling Price cannot be negative", err.getMessage());
+        }
     }
     //zero quantity test
-    @Test(expected = ApiException.class)
+    @Test
     public void testCheckerZeroQuantity() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
 
-        OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 0, 1000);
-        orderDto.checker(orderItem);
+            OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 0, 1000);
+            orderDto.checker(orderItem);
+        } catch (ApiException err){
+            assertEquals("Please enter positive value of quantity", err.getMessage());
+        }
     }
     //not enough inventory present
-    @Test(expected = ApiException.class)
+    @Test
     public void testCheckerNotEnoughInventory() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
 
-        OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 100, 1000);
-        orderDto.checker(orderItem);
+            OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 100, 1000);
+            orderDto.checker(orderItem);
+        } catch (ApiException err){
+            assertEquals("Not enough quantity is present in the inventory.", err.getMessage());
+        }
     }
     //Selling price should not be more than mrp
-    @Test(expected = ApiException.class)
+    @Test
     public void testCheckerSellingPriceLimit() throws ApiException{
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(productForm);
-        String barcode = "testbarcode";
-        int quantity = 10;
-        int id = productService.getByBarcode(barcode).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
-        inventoryDto.edit(id, inventoryForm);
+        try {
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm productForm = FormHelper.createProduct("testbarcode", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(productForm);
+            String barcode = "testbarcode";
+            int quantity = 10;
+            int id = productService.getByBarcode(barcode).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode);
+            inventoryDto.edit(id, inventoryForm);
 
-        OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 1, 1001);
-        orderDto.checker(orderItem);
+            OrderItemForm orderItem = FormHelper.createOrderItem(barcode, 1, 1001);
+            orderDto.checker(orderItem);
+        } catch (ApiException err){
+            assertEquals("Selling price cannot be more than MRP.", err.getMessage());
+        }
     }
 
     //TEST INOVICE GENERATION

@@ -33,6 +33,7 @@ public class BrandDao extends AbstractDao{
         TypedQuery<BrandPojo> query = getQuery(select_all, BrandPojo.class);
         return query.getResultList();
     }
+    // Gets BrandPojo for given brand-category combination
     public BrandPojo checkForCombination(String brand, String category){
         TypedQuery<BrandPojo> query = getQuery(combination_checker, BrandPojo.class);
         query.setParameter("brand", brand);

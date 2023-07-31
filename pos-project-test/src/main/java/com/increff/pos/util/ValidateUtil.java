@@ -13,6 +13,7 @@ import java.util.Set;
 
 @Component
 public class ValidateUtil {
+    // for db validations
     public static <T> Set<ConstraintViolation<T>> validate(T form) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();

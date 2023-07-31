@@ -26,7 +26,6 @@ public class OrderService {
         return orderId;
     }
     // returns order from given id, throws exception if it does not exist
-    @Transactional
     public OrderPojo getCheck(int id) throws ApiException {
         OrderPojo pojo = dao.select(id);
         if(pojo==null)
@@ -34,12 +33,10 @@ public class OrderService {
         return pojo;
     }
     // gets all orders from db
-    @Transactional
     public List<OrderPojo> getAll(){
         return dao.selectAll();
     }
     // gets all orders in a given timeframe (used in reports)
-    @Transactional
     public List<OrderPojo> getByDate(LocalDateTime startDate, LocalDateTime endDate){
         return dao.getByDate(startDate,endDate);
     }

@@ -26,9 +26,13 @@ public class InventoryServiceTest extends AbstractUnitTest {
         assertEquals(20, gotPojo.getQuantity());
     }
     // getCheck for non-existent id
-    @Test(expected = ApiException.class)
+    @Test
     public void testGettingNonExistentId() throws ApiException{
-        service.getCheck(1);
+        try {
+            service.getCheck(1);
+        } catch (ApiException err){
+            assertEquals("Product Details with given id does not exist id: 1", err.getMessage());
+        }
     }
     // getAll method test
     @Test

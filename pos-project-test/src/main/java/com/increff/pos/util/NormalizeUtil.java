@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class NormalizeUtil {
+    //Normalize functions trims and converts data to lowercase
     public static void normalize(BrandPojo p) {
         p.setCategory(p.getCategory().toLowerCase ().trim());
         p.setBrand(p.getBrand().toLowerCase ().trim());

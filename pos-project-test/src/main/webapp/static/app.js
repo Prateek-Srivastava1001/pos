@@ -76,6 +76,13 @@ function readFileData(file, callback){
 		    warnClick("Duplicate headers not supported");
 		    return;
 		    }
+		    var headers = Object.keys(results.data[0]);
+            for( var i in headers){
+                if(headers[i]==null || headers[i]==""){
+                    warnClick("File should not contain empty headers");
+                    return;
+                }
+            }
 			callback(results);
 	  	}	
 	}

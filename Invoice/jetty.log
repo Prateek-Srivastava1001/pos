@@ -1557,3 +1557,27 @@ Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No q
 2023-07-25 15:55:02 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
 2023-07-25 15:55:02 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
 2023-07-25 15:55:02 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-26 14:34:55 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-26 14:34:55 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-26 14:34:55 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-26 14:34:55 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-26 14:34:55 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-26 14:34:55 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-27 08:47:05 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 08:47:05 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 08:47:05 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 08:47:05 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-27 08:47:05 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-27 08:47:05 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-27 08:50:18 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 08:50:18 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 08:50:18 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 08:50:19 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-27 08:50:19 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-27 08:50:19 INFO  FOUserAgent:83 - Rendered page #1.
+2023-07-27 09:03:29 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 09:03:29 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 09:03:29 WARN  FOUserAgent:97 - The following feature isn't implemented by Apache FOP, yet: table-layout="auto" (on fo:table) (No context info available)
+2023-07-27 09:03:29 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2023-07-27 09:03:29 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2023-07-27 09:03:29 INFO  FOUserAgent:83 - Rendered page #1.

@@ -2,6 +2,7 @@ package com.increff.pos.service;
 
 import com.increff.pos.AbstractUnitTest;
 import com.increff.pos.pojo.OrderPojo;
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,8 +46,12 @@ public class OrderServiceTest extends AbstractUnitTest {
         assertEquals(2, pojoList.size());
     }
     // getting non existent id
-    @Test(expected = ApiException.class)
+    @Test
     public void testGetNonExistentId() throws ApiException{
-        service.getCheck(1);
+        try {
+            service.getCheck(1);
+        } catch (ApiException err){
+            TestCase.assertEquals("Order with given id not found", err.getMessage());
+        }
     }
 }

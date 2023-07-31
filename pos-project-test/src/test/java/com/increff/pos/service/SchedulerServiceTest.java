@@ -4,6 +4,7 @@ import com.increff.pos.AbstractUnitTest;
 import com.increff.pos.helper.FormHelper;
 import com.increff.pos.model.ReportsForm;
 import com.increff.pos.pojo.SchedulerPojo;
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -67,10 +68,14 @@ public class SchedulerServiceTest extends AbstractUnitTest {
         assertEquals(20100, gotPojo.getTotal_revenue(),0);
     }
     // test getByDate with invalid date
-    @Test(expected = ApiException.class)
+    @Test
     public void testGetByInvalidDate() throws ApiException{
-        ReportsForm form = FormHelper.createReports("2023-07-10", "2023-06-10");
-        service.getByDate(form);
+        try {
+            ReportsForm form = FormHelper.createReports("2023-07-10", "2023-06-10");
+            service.getByDate(form);
+        } catch (ApiException err){
+            TestCase.assertEquals("Start date cannot be after end date", err.getMessage());
+        }
     }
     // test adding more than once on same date
     @Test

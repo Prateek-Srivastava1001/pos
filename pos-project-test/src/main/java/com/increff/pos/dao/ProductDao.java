@@ -31,11 +31,13 @@ public class ProductDao extends AbstractDao{
         TypedQuery<ProductPojo> query = getQuery(select_all, ProductPojo.class);
         return query.getResultList();
     }
+    // Gets ProductPojo for a given barcode
     public ProductPojo checkBarcode(String barcode){
         TypedQuery<ProductPojo> query = getQuery(duplicate_check, ProductPojo.class);
         query.setParameter("barcode", barcode);
         return getSingle(query);
     }
+    // Gets all products corresponding to a given brand-category combination
     public List<ProductPojo> getByBrand(int brand_category){
         TypedQuery<ProductPojo> query = getQuery(get_by_brand, ProductPojo.class);
         query.setParameter("brand_category", brand_category);

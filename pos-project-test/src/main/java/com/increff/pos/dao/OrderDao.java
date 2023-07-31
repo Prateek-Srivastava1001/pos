@@ -30,7 +30,7 @@ public class OrderDao extends  AbstractDao{
         query.setParameter("id", id);
         return getSingle(query);
     }
-
+    // Gets list of orders created in given timeframe
     public List<OrderPojo> getByDate(LocalDateTime start_date, LocalDateTime end_date){
         TypedQuery<OrderPojo> query = getQuery(select_date, OrderPojo.class);
         query.setParameter("start_date",start_date);

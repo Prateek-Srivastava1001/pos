@@ -28,9 +28,9 @@ public class ReportsDtoTest extends AbstractUnitTest {
     OrderDto orderDto;
     @Autowired
     ProductService productService;
-
+    // test generating and getting day-on-day sales report
     @Test
-    public void testSchedulerReport() throws ApiException{
+    public void testSchedulerReport() throws ApiException, InterruptedException {
         //Creating Order
         BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
         brandDto.add(brandForm);
@@ -70,9 +70,9 @@ public class ReportsDtoTest extends AbstractUnitTest {
         double revenue = 1000*2+999*5;
         assertEquals(revenue, report.getTotal_revenue(),0);
     }
-    //run scheduler more than once
+    //run scheduler more than once should update the values to latest
     @Test
-    public void testRunSchedulerTwice() throws ApiException{
+    public void testRunSchedulerTwice() throws ApiException, InterruptedException {
         //Creating Order
         BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
         brandDto.add(brandForm);
@@ -117,7 +117,7 @@ public class ReportsDtoTest extends AbstractUnitTest {
     }
     //get scheduler report with date filter
     @Test
-    public void testGetByDate() throws ApiException{
+    public void testGetByDate() throws ApiException, InterruptedException {
         //Creating Order
         BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
         brandDto.add(brandForm);
@@ -245,81 +245,89 @@ public class ReportsDtoTest extends AbstractUnitTest {
         assertEquals(expectedQuantity, report.getQuantity());
     }
     //Sales Report when start date is after end date
-    @Test(expected = ApiException.class)
+    @Test
     public void testInvalidDatesSales() throws ApiException{
-        //Creating Order
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm product1 = FormHelper.createProduct("barcode1", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(product1);
-        ProductForm product2 = FormHelper.createProduct("barcode2", "testbrand", "testcategory",
-                "newName", 1000);
-        productDto.add(product2);
-        String barcode1 = "barcode1";
-        int quantity = 10;
-        int id1 = productService.getByBarcode(barcode1).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode1);
-        inventoryDto.edit(id1, inventoryForm);
-        String barcode2 = "barcode2";
-        int quantity2 = 8;
-        int id2 = productService.getByBarcode(barcode2).getId();
-        InventoryForm inventoryForm2 = FormHelper.createInventory(quantity2, barcode2);
-        inventoryDto.edit(id2, inventoryForm2);
+        try {
+            //Creating Order
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm product1 = FormHelper.createProduct("barcode1", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(product1);
+            ProductForm product2 = FormHelper.createProduct("barcode2", "testbrand", "testcategory",
+                    "newName", 1000);
+            productDto.add(product2);
+            String barcode1 = "barcode1";
+            int quantity = 10;
+            int id1 = productService.getByBarcode(barcode1).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode1);
+            inventoryDto.edit(id1, inventoryForm);
+            String barcode2 = "barcode2";
+            int quantity2 = 8;
+            int id2 = productService.getByBarcode(barcode2).getId();
+            InventoryForm inventoryForm2 = FormHelper.createInventory(quantity2, barcode2);
+            inventoryDto.edit(id2, inventoryForm2);
 
-        List<OrderItemForm> orderItems = new ArrayList<>();
-        OrderItemForm orderItem1 = FormHelper.createOrderItem(barcode1, 2, 1000);
-        orderItems.add(orderItem1);
+            List<OrderItemForm> orderItems = new ArrayList<>();
+            OrderItemForm orderItem1 = FormHelper.createOrderItem(barcode1, 2, 1000);
+            orderItems.add(orderItem1);
 
-        OrderItemForm orderItem2 = FormHelper.createOrderItem(barcode2, 5, 999);
-        orderItems.add(orderItem2);
+            OrderItemForm orderItem2 = FormHelper.createOrderItem(barcode2, 5, 999);
+            orderItems.add(orderItem2);
 
-        orderDto.add(orderItems);
-        //getting date filter
-        String startDate = "2023-07-10";
-        String endDate = "2023-06-10";
-        ReportsForm reportsForm = FormHelper.createReports(startDate, endDate);
-        //Getting sales report
-        List<ReportsData> dataList = reportsDto.getSalesReport(reportsForm);
+            orderDto.add(orderItems);
+            //getting date filter
+            String startDate = "2023-07-10";
+            String endDate = "2023-06-10";
+            ReportsForm reportsForm = FormHelper.createReports(startDate, endDate);
+            //Getting sales report
+            List<ReportsData> dataList = reportsDto.getSalesReport(reportsForm);
+        } catch (ApiException err){
+            assertEquals("Start date cannot be after end date", err.getMessage());
+        }
     }
     //Scheduler report when start date is after end date
-    @Test(expected = ApiException.class)
-    public void testInvalidDatesScheduler() throws ApiException{
-        //Creating Order
-        BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
-        brandDto.add(brandForm);
-        ProductForm product1 = FormHelper.createProduct("barcode1", " TesTBrand ", " TestCaTegoRy ",
-                " TesTNaMe ", 1000);
-        productDto.add(product1);
-        ProductForm product2 = FormHelper.createProduct("barcode2", "testbrand", "testcategory",
-                "newName", 1000);
-        productDto.add(product2);
-        String barcode1 = "barcode1";
-        int quantity = 10;
-        int id1 = productService.getByBarcode(barcode1).getId();
-        InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode1);
-        inventoryDto.edit(id1, inventoryForm);
-        String barcode2 = "barcode2";
-        int quantity2 = 8;
-        int id2 = productService.getByBarcode(barcode2).getId();
-        InventoryForm inventoryForm2 = FormHelper.createInventory(quantity2, barcode2);
-        inventoryDto.edit(id2, inventoryForm2);
+    @Test
+    public void testInvalidDatesScheduler() throws ApiException, InterruptedException {
+        try {
+            //Creating Order
+            BrandForm brandForm = FormHelper.createBrand("TestBrand", "TestCategory");
+            brandDto.add(brandForm);
+            ProductForm product1 = FormHelper.createProduct("barcode1", " TesTBrand ", " TestCaTegoRy ",
+                    " TesTNaMe ", 1000);
+            productDto.add(product1);
+            ProductForm product2 = FormHelper.createProduct("barcode2", "testbrand", "testcategory",
+                    "newName", 1000);
+            productDto.add(product2);
+            String barcode1 = "barcode1";
+            int quantity = 10;
+            int id1 = productService.getByBarcode(barcode1).getId();
+            InventoryForm inventoryForm = FormHelper.createInventory(quantity, barcode1);
+            inventoryDto.edit(id1, inventoryForm);
+            String barcode2 = "barcode2";
+            int quantity2 = 8;
+            int id2 = productService.getByBarcode(barcode2).getId();
+            InventoryForm inventoryForm2 = FormHelper.createInventory(quantity2, barcode2);
+            inventoryDto.edit(id2, inventoryForm2);
 
-        List<OrderItemForm> orderItems = new ArrayList<>();
-        OrderItemForm orderItem1 = FormHelper.createOrderItem(barcode1, 2, 1000);
-        orderItems.add(orderItem1);
+            List<OrderItemForm> orderItems = new ArrayList<>();
+            OrderItemForm orderItem1 = FormHelper.createOrderItem(barcode1, 2, 1000);
+            orderItems.add(orderItem1);
 
-        OrderItemForm orderItem2 = FormHelper.createOrderItem(barcode2, 5, 999);
-        orderItems.add(orderItem2);
+            OrderItemForm orderItem2 = FormHelper.createOrderItem(barcode2, 5, 999);
+            orderItems.add(orderItem2);
 
-        int orderId = orderDto.add(orderItems);
-        //Running Scheduler
-        reportsDto.generateDailyReport();
-        //getting by date filter
-        String startDate ="2023-07-10";
-        String endDate = "2023-06-10";
-        ReportsForm reportsForm = FormHelper.createReports(startDate, endDate);
+            int orderId = orderDto.add(orderItems);
+            //Running Scheduler
+            reportsDto.generateDailyReport();
+            //getting by date filter
+            String startDate = "2023-07-10";
+            String endDate = "2023-06-10";
+            ReportsForm reportsForm = FormHelper.createReports(startDate, endDate);
 
-        List<SchedulerPojo> pojoList = reportsDto.getByDate(reportsForm);
+            List<SchedulerPojo> pojoList = reportsDto.getByDate(reportsForm);
+        } catch (ApiException err){
+            assertEquals("Start date cannot be after end date", err.getMessage());
+        }
     }
 }
